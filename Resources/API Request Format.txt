@@ -1,0 +1,32 @@
+Request Format for our API calls:
+//NOTE: API Key: 448EF5FD8D44DDC1C6A6B07437D20FFE
+
+//COMMON CALLS
+
+//To get details from a single match. This will probably be our most common call. Example MatchID: 936109256
+GetMatchDetails  https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&match_id=<MatchID>
+
+//To get a list of the most recent matches played by a certain user. Example AccountID:4294967295
+GetMatchHistory  https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&player_id=<AccountID>
+
+//To get an updated list of what numeric heroID refers to which in-game hero.
+GetHeroes                    https://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&language=en_us
+
+//To get user's steam avatar and name. Example 64bitSteamID: 76561198085020796
+GetPlayerSummaries           http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&steamids=<64bitSteamID>
+
+//To get a user's 64bitSteamID from a VanityURL. Example VanityURL: SA_Summit
+http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&vanityurl=<VanityURL>
+
+//OTHER
+
+//To get a sequence of matches starting at a certain MatchID in decending order. Results are the same as GetMatchHistory. Example MatchID: 936109256
+GetMatchHistoryBySequenceNum https://api.steampowered.com/IDOTA2Match_570/GetMatchHistoryBySequenceNum/v0001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&start_at_match_seq_num=<MatchID>
+
+//To get a Dota team's info. This won't be used in our current design but may be required later as an extension of functionality. Example TeamID: 1526174
+//Note: It appears that you can't search for a team by a PlayerID. So if we want to add teams to the design, we may have to pull all the team info and store it in our database.
+//		To do that, https://api.steampowered.com/IDOTA2Match_570/GetTeamInfoByTeamID/v001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE should be sufficient. You can then adjust the
+//		start_at_team_id modifier to the last teamID pulled.
+GetTeamInfoByTeamID          https://api.steampowered.com/IDOTA2Match_570/GetTeamInfoByTeamID/v001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&start_at_team_id=<TeamID>&teams_requested=1
+
+

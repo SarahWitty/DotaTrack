@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2014 at 03:40 AM
+-- Generation Time: Oct 03, 2014 at 04:00 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -37,6 +37,44 @@ CREATE TABLE IF NOT EXISTS `match` (
   `matchType` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `performance`
+--
+
+CREATE TABLE IF NOT EXISTS `performance` (
+  `matchId` int(11) NOT NULL,
+  `PlayerId` int(11) NOT NULL,
+  `level` int(11) NOT NULL DEFAULT '0',
+  `hero` int(11) NOT NULL DEFAULT '0',
+  `kill` int(11) DEFAULT NULL,
+  `deaths` int(11) DEFAULT NULL,
+  `assists` int(11) DEFAULT NULL,
+  `lastHits` int(11) DEFAULT NULL,
+  `denies` int(11) DEFAULT NULL,
+  `xpm` int(11) DEFAULT NULL,
+  `gpm` int(11) DEFAULT NULL,
+  `heroDamage` int(11) DEFAULT NULL,
+  `towerDamage` int(11) DEFAULT NULL,
+  `item0` int(11) DEFAULT NULL,
+  `item1` int(11) DEFAULT NULL,
+  `item2` int(11) DEFAULT NULL,
+  `item3` int(11) DEFAULT NULL,
+  `item4` int(11) DEFAULT NULL,
+  `item5` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `playerId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -46,6 +84,18 @@ CREATE TABLE IF NOT EXISTS `match` (
 --
 ALTER TABLE `match`
  ADD PRIMARY KEY (`matchId`);
+
+--
+-- Indexes for table `performance`
+--
+ALTER TABLE `performance`
+ ADD PRIMARY KEY (`level`,`hero`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+ ADD PRIMARY KEY (`playerId`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
