@@ -1,9 +1,20 @@
-class match extends ORM
+<?php defined('SYSPATH') or die('No direct script access.');
+
+class Model_ORM_Match extends ORM
 {
-	Database::$default = 'dotatrack';
-	
 	protected $_table_name = 'match';
 	protected $_primary_key = 'matchId';
+	
+	protected $_table_columns = array(
+		'matchId' =>  array('type'=>'int'),
+		'skillLevel' =>  array('type'=>'int'),
+		'duration' =>  array('type'=>'int'),
+		'result' =>  array('type'=>'tinyint'),
+		'gameMode' =>  array('type'=>'int'),
+		'region' =>  array('type'=>'int'),
+		'date' =>  array('type'=>'date'),
+		'matchType' =>  array('type'=>'int'),
+	);
 	
 	public function rules(){
 		return array(
@@ -43,3 +54,5 @@ class match extends ORM
 		);
 	}
 }
+
+?>

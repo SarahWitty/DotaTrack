@@ -1,9 +1,13 @@
-class player extends ORM
+<?php defined('SYSPATH') or die('No direct script access.');
+
+class Model_ORM_Player extends ORM
 {
-	Database::$default = 'dotatrack';
-	
 	protected $_table_name = 'player';
 	protected $_primary_key = 'playerId';
+	
+	protected $_table_columns = array(
+		'playerId' =>  array('type'=>'int'),
+	);
 	
 	public function rules(){
 		return array(
@@ -13,3 +17,5 @@ class player extends ORM
 		);
 	}
 }
+
+?>

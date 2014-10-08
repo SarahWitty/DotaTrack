@@ -1,9 +1,30 @@
-class performance extends ORM
+<?php defined('SYSPATH') or die('No direct script access.');
+
+class Model_ORM_Performance extends ORM
 {
-	Database::$default = 'dotatrack';
-	
 	protected $_table_name = 'performance';
 	protected $_primary_key = 'matchId';
+	
+	protected $_table_columns = array(
+		'matchId' =>  array('type'=>'int'),
+		'level' =>  array('type'=>'int'),
+		'hero' =>  array('type'=>'int'),
+		'kill' =>  array('type'=>'int'),
+		'deaths' =>  array('type'=>'int'),
+		'assists' =>  array('type'=>'int'),
+		'lastHits' =>  array('type'=>'int'),
+		'denies' =>  array('type'=>'int'),
+		'xpm' =>  array('type'=>'int'),
+		'gpm' =>  array('type'=>'int'),
+		'heroDamage' =>  array('type'=>'int'),
+		'towerDamage' =>  array('type'=>'int'),
+		'item0' =>  array('type'=>'int'),
+		'item1' =>  array('type'=>'int'),
+		'item2' =>  array('type'=>'int'),
+		'item3' =>  array('type'=>'int'),
+		'item4' =>  array('type'=>'int'),
+		'item5' =>  array('type'=>'int'),
+	);
 	
 	public function rules(){
 		return array(
@@ -67,3 +88,5 @@ class performance extends ORM
 		);
 	}
 }
+
+?>
