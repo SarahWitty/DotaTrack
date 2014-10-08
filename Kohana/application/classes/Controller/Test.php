@@ -6,8 +6,10 @@ class Controller_Test extends Controller_Template {
 
 	public function action_index()
 	{
-		$this->template->model = 'testing';
-		$this->template->output = array('testing', '1', '2', '3');
+		$this->template->model = 'API Model';
+		$api = Model::factory('API');
+		$api->get_match_details('946986070');
+		$this->template->output = '7';
 	}
 
 }
