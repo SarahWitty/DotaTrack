@@ -103,7 +103,7 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  expose      set the X-Powered-By header                        FALSE
  */
 Kohana::init(array(
-	'base_url'   => '/~michaeleaton/DotaTrack/Kohana/',
+	'base_url'   => '/DotaTrack/Kohana',
 ));
 
 /**
