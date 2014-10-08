@@ -69,6 +69,7 @@ mb_substitute_character('none');
  * Set the default language
  */
 I18n::lang('en-us');
+Cookie::$salt = 'Your-Salt-Goes-Here';
 
 if (isset($_SERVER['SERVER_PROTOCOL']))
 {
