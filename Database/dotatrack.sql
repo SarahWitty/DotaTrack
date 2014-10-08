@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `match` (
 --
 
 CREATE TABLE IF NOT EXISTS `performance` (
+  `performanceId` int(11) NOT NULL AUTO_INCREMENT,
   `matchId` int(11) NOT NULL,
   `playerId` int(11) NOT NULL,
   `level` int(11) NOT NULL DEFAULT '0',
@@ -62,16 +63,18 @@ CREATE TABLE IF NOT EXISTS `performance` (
   `item2` int(11) DEFAULT NULL,
   `item3` int(11) DEFAULT NULL,
   `item4` int(11) DEFAULT NULL,
-  `item5` int(11) DEFAULT NULL
+  `item5` int(11) DEFAULT NULL,
+  PRIMARY KEY (`performanceId`)
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Table structure for table `player`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE IF NOT EXISTS `player` (
   `playerId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -86,15 +89,9 @@ ALTER TABLE `match`
  ADD PRIMARY KEY (`matchId`);
 
 --
--- Indexes for table `performance`
+-- Indexes for table `player`
 --
-ALTER TABLE `performance`
- ADD PRIMARY KEY (`playerId`,'matchId');
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
+ALTER TABLE `player`
  ADD PRIMARY KEY (`playerId`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
