@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2014 at 04:00 AM
+-- Generation Time: Oct 06, 2014 at 10:50 PM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -27,14 +27,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `match` (
-  `matchId` int(11) NOT NULL,
-  `skillLevel` int(11) NOT NULL,
-  `duration` int(11) NOT NULL,
-  `result` varchar(8) NOT NULL,
-  `gameMode` int(11) NOT NULL,
-  `region` int(11) NOT NULL,
+  `matchId` int(10) NOT NULL,
+  `skillLevel` int(1) NOT NULL,
+  `duration` int(1) NOT NULL,
+  `result` tinyint(1) NOT NULL,
+  `gameMode` int(2) NOT NULL,
+  `region` int(3) NOT NULL,
   `date` date NOT NULL,
-  `matchType` varchar(15) NOT NULL
+  `matchType` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `match` (
 
 CREATE TABLE IF NOT EXISTS `performance` (
   `matchId` int(11) NOT NULL,
-  `PlayerId` int(11) NOT NULL,
+  `playerId` int(11) NOT NULL,
   `level` int(11) NOT NULL DEFAULT '0',
   `hero` int(11) NOT NULL DEFAULT '0',
   `kill` int(11) DEFAULT NULL,
@@ -89,7 +89,7 @@ ALTER TABLE `match`
 -- Indexes for table `performance`
 --
 ALTER TABLE `performance`
- ADD PRIMARY KEY (`level`,`hero`);
+ ADD PRIMARY KEY (`playerId`,'matchId');
 
 --
 -- Indexes for table `user`

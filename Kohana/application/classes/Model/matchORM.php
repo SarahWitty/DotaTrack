@@ -1,7 +1,10 @@
-class Model_DotaTrackDatabase extends ORM
+class match extends ORM
 {
 	Database::$default = 'dotatrack';
-
+	
+	protected $_table_name = 'match';
+	protected $_primary_key = 'matchId';
+	
 	public function rules(){
 		return array(
 			'matchId' => array(
