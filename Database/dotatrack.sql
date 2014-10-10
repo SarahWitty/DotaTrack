@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.9.1
+-- version 4.2.7.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Oct 08, 2014 at 01:35 AM
--- Server version: 5.6.17
--- PHP Version: 5.3.29
+-- Host: 127.0.0.1
+-- Generation Time: Oct 10, 2014 at 03:49 PM
+-- Server version: 5.6.20
+-- PHP Version: 5.5.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `performance` (
   `playerId` int(11) NOT NULL,
   `level` int(11) NOT NULL DEFAULT '0',
   `hero` int(11) NOT NULL DEFAULT '0',
-  `kill` int(11) DEFAULT NULL,
+  `kills` int(11) DEFAULT NULL,
   `deaths` int(11) DEFAULT NULL,
   `assists` int(11) DEFAULT NULL,
   `lastHits` int(11) DEFAULT NULL,
@@ -71,13 +71,13 @@ CREATE TABLE IF NOT EXISTS `performance` (
   `item3` int(11) DEFAULT NULL,
   `item4` int(11) DEFAULT NULL,
   `item5` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `performance`
 --
 
-INSERT INTO `performance` (`performanceId`, `matchId`, `playerId`, `level`, `hero`, `kill`, `deaths`, `assists`, `lastHits`, `denies`, `xpm`, `gpm`, `heroDamage`, `towerDamage`, `item0`, `item1`, `item2`, `item3`, `item4`, `item5`) VALUES
+INSERT INTO `performance` (`performanceId`, `matchId`, `playerId`, `level`, `hero`, `kills`, `deaths`, `assists`, `lastHits`, `denies`, `xpm`, `gpm`, `heroDamage`, `towerDamage`, `item0`, `item1`, `item2`, `item3`, `item4`, `item5`) VALUES
 (1, 378075206, 2147483647, 25, 39, 15, 2, 17, 89, 11, 751, 527, 21050, 829, 46, 96, 108, 63, 123, 36),
 (2, 378075206, 2147483647, 22, 9, 9, 4, 17, 135, 11, 612, 559, 16326, 4311, 212, 147, 149, 168, 46, 50),
 (3, 378075206, 2147483647, 17, 5, 7, 6, 6, 65, 1, 375, 363, 6701, 892, 48, 152, 108, 13, 69, 0),

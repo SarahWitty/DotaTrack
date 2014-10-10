@@ -9,7 +9,7 @@ class Model_ORM_Performance extends ORM
 		'matchId' =>  array('type'=>'int'),
 		'level' =>  array('type'=>'int'),
 		'hero' =>  array('type'=>'int'),
-		'kill' =>  array('type'=>'int'),
+		'kills' =>  array('type'=>'int'),
 		'deaths' =>  array('type'=>'int'),
 		'assists' =>  array('type'=>'int'),
 		'lastHits' =>  array('type'=>'int'),
@@ -40,7 +40,7 @@ class Model_ORM_Performance extends ORM
 			'hero' => array(
 				array('not_empty'),
 			),
-			'kill' => array(
+			'kills' => array(
 				array('not_empty'),
 			),
 			'deaths' => array(
