@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-class Model_Api extends Model {
+class Model_Api extends Model
+{
 	
 	// Will return the match details for a given match ID.
 	//
@@ -82,7 +83,7 @@ class Model_Api extends Model {
 		$requestAddress = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/" .
 		"?key=448EF5FD8D44DDC1C6A6B07437D20FFE&steamids=";
 		foreach ($steamId as &$id) {
-			$requestAddress .= $id);
+		$requestAddress .= $id);
 		}
 	
 		//$playerSummary = Request::factory($requestAddress);
