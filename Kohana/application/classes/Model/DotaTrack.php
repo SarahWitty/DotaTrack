@@ -216,7 +216,7 @@ class Model_DotaTrack extends Model {
 	 * specified by the projection array in the order specified by the ordering
 	 * array.
 	 */
-	protected function internalGetStatistics($projection, $criteria, $ordering)
+	protected function internalGetStatistics($projection, $criteria)
 	{
 		return array( array() );
 	}

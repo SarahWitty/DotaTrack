@@ -3,10 +3,23 @@
 class Model_ORM_Performance extends ORM
 {
 	protected $_table_name = 'performance';
-	protected $_primary_key = 'matchId';
+	protected $_primary_key = 'perfomanceId';
+	
+	protected $_has_one = array(
+		'Player' => array(
+			'model' => 'ORM_Player',
+			'foreign_key' => 'playerId',
+		),
+		'Match' => array(
+			'model' => 'ORM_Match',
+			'foreign_key' => 'matchId',
+		),
+	);	
 	
 	protected $_table_columns = array(
+		'performanceId' => array('type'=>'int'),
 		'matchId' =>  array('type'=>'int'),
+		'playerId' => array('type'=>'int'),
 		'level' =>  array('type'=>'int'),
 		'hero' =>  array('type'=>'int'),
 		'kills' =>  array('type'=>'int'),
@@ -28,10 +41,16 @@ class Model_ORM_Performance extends ORM
 	
 	public function rules(){
 		return array(
+			'performanceId' => array(
+				array('not_empty'),
+			),
 			'matchId' => array(
 				array('not_empty'),
 				array('min_length', array(':value', 1)),
 				array('max_length', array(':value', 10)),
+			),
+			'playerId' => array(
+				array('not_empty'),
 			),
 			'level' => array(
 				array('not_empty'),
