@@ -861,6 +861,24 @@ class Model_DotaTrack extends Model {
 			);
 	}
 
+	/**
+	 * Writes the match list information given to the model.
+	 *
+	 * OVERRIDE THIS. This function may not receive all the attributes of a match
+	 * every time it executes, so be sure to handle only partial data insertions,
+	 * using null/default values to handle missing fields. Of course, match Ids and
+	 * player Ids will be specified.
+	 *
+	 * @param $matchList Essentially the same as the output from getMatchList().
+	 * Note, however, that this associative array may be missing some fields as
+	 * mentioned above.
+	 *
+	 * @return A boolean indicating if the return was successful.
+	 */
+	protected function internalSetMatchList($matchList)
+	{
+		// On failure
+		return false;
 	}
 }
 
