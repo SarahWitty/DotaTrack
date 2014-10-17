@@ -80,6 +80,20 @@ class Model_DotaTrack extends Model {
 			$sanitizedProjection, $sanitizedCriteria);
 	}
 
+	/**
+	 * Gets all information about the specified player.
+	 *
+	 * This function gets all available player data associated with the player
+	 * matching the given criteria. In general, this function should be expected to
+	 * return no more than one player.
+	 *
+	 * @param $criteria An array of arrays containing criteria used to identify the
+	 * player whose data should be returned. The array takes the standard criteria
+	 * format similar to array(array("key", "operator", "value"), etc... ).
+	 *
+	 * @return An associative array of player information containing all the
+	 * information available about the player specified by the criteria.
+	 */
 	public function getPlayerData($criteria)
 	{
 		$sanitizedCriteria = $this->whitelistPlayerCriteria($criteria);
@@ -87,6 +101,19 @@ class Model_DotaTrack extends Model {
 		return $this->internalGetPlayerData($sanitizedCriteria);
 	}
 
+	/**
+	 * Adds all information specified in the given match list.
+	 *
+	 * This function inserts data into the given model. This is only applicable to
+	 * models which are writeable. The given match list does not have to specify
+	 * all possible match data, but it must at least provide the match id and the
+	 * player ids for any given performance data.
+	 *
+	 * @param $matchList An array of associative arrays containing match data. This
+	 * datastructure essentially looks like the return structure of getMatchList().
+	 *
+	 * @return A boolean indicating if the data was successfully inserted.
+	 */
 	public function addMatchList($matchList)
 	{
 		$sanitizedMatchList = $this->whitelistMatchList($matchList);
@@ -94,11 +121,62 @@ class Model_DotaTrack extends Model {
 		return $this->internalAddMatchList($sanitizedMatchList);
 	}
 
+	/**
+	 * Adds all information specified to the player list.
+	 *
+	 * This function inserts data into the given model. It is only applicable to
+	 * models which are writeable. The given player data should describe a single
+	 * player.
+	 *
+	 * @param $playerData An associative array containing player data. This
+	 * datastructure essentially looks like the return structure of
+	 * getPlayerData().
+	 *
+	 * @return A boolean indicating if the data was successfully inserted.
+	 */
 	public function addPlayerData($playerData)
 	{
 		$sanitizedPlayerData = $this->whitelistPlayerData($playerData);
 
 		return $this->internalAddPlayerData($sanitizedPlayerData);
+	}
+
+	/**
+	 * Updates a specific match with the given data.
+	 *
+	 * This function updates a match with the given data. Like addMatchList(), this
+	 * function may only be used on models that are writeable.
+	 *
+	 * @param $matchId The id of the match which should be updated.
+	 *
+	 * @return A boolean indicating if the data was successfully updated.
+	 */
+	public function updateMatchData($matchId, $matchData)
+	{
+		$sanitizedMatchData = $this->whitelistMatchData($matchData);
+
+		return $this->internalUpdateMatchData($sanitizedCriteria, $sanitizedMatchData);
+	}
+
+ 	/**
+	 * Updates a specific player with the given data.
+	 *
+	 * This function updates a player with the given data. Like addPlayerData(),
+	 * this function may only be used on models that are writeable. In general,
+	 * this function should specify criteria that selects only one player so that
+	 * the update will not have unexpected results.
+	 *
+	 * @param $criteria An array of arrays containing criteria used to identify the player
+	 * which should be updated with the given information.
+	 *
+	 * @return A boolean indicating if the data was successfully updated.
+	 */
+	public function updatePlayerData($criteria, $playerData)
+	{
+		$sanitizedCriteria = $this->whitelistPlayerCriteria($criteria);
+		$sanitizedPlayerData = $this->whitelistPlayerData($playerData);
+
+		return $this->internalUpdatePlayerData($sanitizedCriteria, $sanitizedPlayerData);
 	}
 
 	/**
@@ -118,20 +196,6 @@ class Model_DotaTrack extends Model {
 		return $sanitizedCriteria;
 	}
 
-	public function updateMatchData($matchId, $matchData)
-	{
-		$sanitizedMatchData = $this->whitelistMatchData($matchData);
-
-		return $this->internalUpdateMatchData($sanitizedCriteria, $sanitizedMatchData);
-	}
-
-	public function updatePlayerData($criteria, $playerData)
-	{
-		$sanitizedCriteria = $this->whitelistPlayerCriteria($criteria);
-		$sanitizedPlayerData = $this->whitelistPlayerData($playerData);
-
-		return $this->internalUpdatePlayerData($sanitizedCriteria, $sanitizedPlayerData);
-	}
 	/**
 	 * Whitelists criteria to prevent injection of invalid criteria into
 	 * queries.
@@ -186,6 +250,16 @@ class Model_DotaTrack extends Model {
 		return $sanitizedOrdering;
 	}
 
+	/**
+	* Whitelists the ordering to prevent injection of invalid criteria into
+	* queries.
+	*
+	* @param $criteria The raw array containing field names and ordering
+	* criteria which will be filtered for harmful input.
+	*
+	* @return A refined version of the ordering array containing only valid
+	* field names and ordering criteria.
+	*/
 	private function whitelistPlayerCriteria($criteria)
 	{
 		$sanitizedCriteria = array();
@@ -193,6 +267,16 @@ class Model_DotaTrack extends Model {
 		return $sanitizedCriteria;
 	}
 
+	/**
+	* Whitelists the ordering to prevent injection of invalid criteria into
+	* queries.
+	*
+	* @param $criteria The raw array containing field names and ordering
+	* criteria which will be filtered for harmful input.
+	*
+	* @return A refined version of the ordering array containing only valid
+	* field names and ordering criteria.
+	*/
 	private function whitelistMatchList($matchList)
 	{
 		$sanitizedMatchList = array();
@@ -200,6 +284,16 @@ class Model_DotaTrack extends Model {
 		return $sanitizedMatchList;
 	}
 
+	/**
+	* Whitelists the ordering to prevent injection of invalid criteria into
+	* queries.
+	*
+	* @param $criteria The raw array containing field names and ordering
+	* criteria which will be filtered for harmful input.
+	*
+	* @return A refined version of the ordering array containing only valid
+	* field names and ordering criteria.
+	*/
 	private function whitelistPlayerData($playerData)
 	{
 		$sanitizedPlayerData = array();
@@ -918,7 +1012,7 @@ class Model_DotaTrack extends Model {
 	}
 
 	/**
-	 * Gets information about the specified player in the statistics.
+	 * Gets information about the specified player in the criteria.
 	 *
 	 * OVERIDE THIS. Given the player vanity url, 32 bit, or 64 bit Id, we should be able to
 	 * return player information from the API and given the player Id (equivalent
@@ -982,12 +1076,10 @@ class Model_DotaTrack extends Model {
 	/**
 	 * Updates a specific match with the given data.
 	 *
-	 * Finds all the matches matching the given criteria and applies the match
-	 * data to those matches. Users should note that this may modify more than
-	 * one match if the criteria are not specific enough.
+	 * OVERRIDE THIS. Finds the match matching the given id and applies the match
+	 * data to that match.
 	 *
-	 * @param $criteria An array of arrays containing criteria to select the
-	 * match(es) which should be modified by this update.
+	 * @param $matchId The id of the match which should be updated.
 	 *
 	 * @param $matchData An associative array of fields and the values which should
 	 * be stored in those fields. Essentially the same as the output from
@@ -1004,11 +1096,12 @@ class Model_DotaTrack extends Model {
 	/**
 	 * Updates a specific player with the given data.
 	 *
-	 * Finds the player matching the given criteria and then applies the player
-	 * data to the match. In general, it is expected that the criteria will select
-	 * a single player.
+	 * OVERRIDE THIS. Finds the player matching the given criteria and then applies
+	 * the player data to the match. In general, it is expected that the criteria
+	 * will select a single player.
 	 *
-	 * @param $criteria An array of arrays containing criteria to select a player which should be modified by this update.
+	 * @param $criteria An array of arrays containing criteria to select a player
+	 * which should be modified by this update.
 	 *
 	 * @param $matchData An associative array of fields and the values which should
 	 * be stored in those fields. Essentially the same as the output from
