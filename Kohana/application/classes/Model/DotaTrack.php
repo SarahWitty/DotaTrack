@@ -964,6 +964,18 @@ class Model_DotaTrack extends Model {
 		// On failure
 		return false;
 	}
+
+	protected function updateMatchData($criteria, $matchData)
+	{
+		// On failure
+		return false;
+	}
+
+	protected function updatePlayerData($criteria, $playerData)
+	{
+		// On failure
+		return false;
+	}
 }
 
 ?>
