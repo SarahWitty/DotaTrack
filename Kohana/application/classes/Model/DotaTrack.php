@@ -942,7 +942,7 @@ class Model_DotaTrack extends Model {
 	 * Note, however, that this associative array may be missing some fields as
 	 * mentioned above.
 	 *
-	 * @return A boolean indicating if the return was successful.
+	 * @return A boolean indicating if the write was successful.
 	 */
 	protected function internalSetMatchList($matchList)
 	{
@@ -957,7 +957,7 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @param $playerData Essentially the same as the output from getPlayerData().
 	 *
-	 * @return A boolean indicating if the return was successful.
+	 * @return A boolean indicating if the write was successful.
 	 */
 	protected function internalSetPlayerData($playerData)
 	{
@@ -965,12 +965,43 @@ class Model_DotaTrack extends Model {
 		return false;
 	}
 
+	/**
+	 * Updates a specific match with the given data.
+	 *
+	 * Finds all the matches matching the given criteria and applies the match
+	 * data to those matches. Users should note that this may modify more than
+	 * one match if the criteria are not specific enough.
+	 *
+	 * @param $criteria An array of arrays containing criteria to select the
+	 * match(es) which should be modified by this update.
+	 *
+	 * @param $matchData An associative array of fields and the values which should
+	 * be stored in those fields. Essentially the same as the output from
+	 * getMatchData() except that most of the fields may be missing.
+	 *
+	 * @return A boolean indicating if the write was successful.
+	 */
 	protected function updateMatchData($criteria, $matchData)
 	{
 		// On failure
 		return false;
 	}
 
+	/**
+	 * Updates a specific player with the given data.
+	 *
+	 * Finds the player matching the given criteria and then applies the player
+	 * data to the match. In general, it is expected that the criteria will select
+	 * a single player.
+	 *
+	 * @param $criteria An array of arrays containing criteria to select a player which should be modified by this update.
+	 *
+	 * @param $matchData An associative array of fields and the values which should
+	 * be stored in those fields. Essentially the same as the output from
+	 * getPlayerData() except that most of the fields may be missing.
+	 *
+	 * @return A boolian indicating if the write was successful.
+	 */
 	protected function updatePlayerData($criteria, $playerData)
 	{
 		// On failure
