@@ -118,6 +118,20 @@ class Model_DotaTrack extends Model {
 		return $sanitizedCriteria;
 	}
 
+	public function updateMatchData($matchId, $matchData)
+	{
+		$sanitizedMatchData = $this->whitelistMatchData($matchData);
+
+		return $this->internalUpdateMatchData($sanitizedCriteria, $sanitizedMatchData);
+	}
+
+	public function updatePlayerData($criteria, $playerData)
+	{
+		$sanitizedCriteria = $this->whitelistPlayerCriteria($criteria);
+		$sanitizedPlayerData = $this->whitelistPlayerData($playerData);
+
+		return $this->internalUpdatePlayerData($sanitizedCriteria, $sanitizedPlayerData);
+	}
 	/**
 	 * Whitelists criteria to prevent injection of invalid criteria into
 	 * queries.
@@ -981,7 +995,7 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @return A boolean indicating if the write was successful.
 	 */
-	protected function updateMatchData($criteria, $matchData)
+	protected function internalUpdateMatchData($matchId, $matchData)
 	{
 		// On failure
 		return false;
@@ -1002,7 +1016,7 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @return A boolian indicating if the write was successful.
 	 */
-	protected function updatePlayerData($criteria, $playerData)
+	protected function internalUpdatePlayerData($criteria, $playerData)
 	{
 		// On failure
 		return false;
