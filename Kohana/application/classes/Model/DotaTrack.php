@@ -862,6 +862,33 @@ class Model_DotaTrack extends Model {
 	}
 
 	/**
+	 * Gets information about the specified player in the statistics.
+	 *
+	 * OVERIDE THIS. Given the player vanity url, 32 bit, or 64 bit Id, we should be able to
+	 * return player information from the API and given the player Id (equivalent
+	 * to the 32 bit id) we should be able to return player information from the
+	 * database.
+	 *
+	 * @param $criteria An associative array containing the given id criteria to
+	 * select the player. Currently this includes the player ids in various forms.
+	 * However, in the future, we may want to add support for user name queries
+	 * through the SteamGuard API to our API model, so this function may be able to
+	 * be used for that.
+	 *
+	 * @return An associative array of player information. The example given has
+	 * some sample information, but it could use some elaboration if we determine
+	 * we need more player information in order to use the application. (Research
+	 * on SteamGuard API pending.)
+	 */
+	protected function internalGetPlayerData($criteria)
+	{
+		return array(
+			"playerId" => 1234567890,
+			"imageUrl" => "dudeX"
+			);
+	}
+
+	/**
 	 * Writes the match list information given to the model.
 	 *
 	 * OVERRIDE THIS. This function may not receive all the attributes of a match
@@ -876,6 +903,21 @@ class Model_DotaTrack extends Model {
 	 * @return A boolean indicating if the return was successful.
 	 */
 	protected function internalSetMatchList($matchList)
+	{
+		// On failure
+		return false;
+	}
+
+	/**
+	 * Writes the player data given to the model.
+	 *
+	 * OVERRIDE THIS
+	 *
+	 * @param $playerData Essentially the same as the output from getPlayerData().
+	 *
+	 * @return A boolean indicating if the return was successful.
+	 */
+	protected function internalSetPlayerData($playerData)
 	{
 		// On failure
 		return false;
