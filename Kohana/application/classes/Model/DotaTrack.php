@@ -80,6 +80,27 @@ class Model_DotaTrack extends Model {
 			$sanitizedProjection, $sanitizedCriteria);
 	}
 
+	public function getPlayerData($criteria)
+	{
+		$sanitizedCriteria = $this->whitelistPlayerCriteria($criteria);
+
+		return $this->internalGetPlayerData($sanitizedCriteria);
+	}
+
+	public function setMatchList($matchList)
+	{
+		$sanitizedMatchList = $this->whitelistMatchList($matchList);
+
+		return $this->internalSetMatchList($sanitizedMatchList);
+	}
+
+	public function setPlayerData($playerData)
+	{
+		$sanitizedPlayerData = $this->whitelistPlayerData($playerData);
+
+		return $this->internalSetPlayerData($sanitizedPlayerData);
+	}
+
 	/**
 	 * Whitelists criteria to prevent injection of invalid criteria into
 	 * queries.
@@ -149,6 +170,27 @@ class Model_DotaTrack extends Model {
 		$sanitizedOrdering = array();
 
 		return $sanitizedOrdering;
+	}
+
+	private function whitelistPlayerCriteria($criteria)
+	{
+		$sanitizedCriteria = array();
+
+		return $sanitizedCriteria;
+	}
+
+	private function whitelistMatchList($matchList)
+	{
+		$sanitizedMatchList = array();
+
+		return $sanitizedMatchList;
+	}
+
+	private function whitelistPlayerData($playerData)
+	{
+		$sanitizedPlayerData = array();
+
+		return $sanitizedPlayerData;
 	}
 
 	/**
