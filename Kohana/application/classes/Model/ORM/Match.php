@@ -2,8 +2,16 @@
 
 class Model_ORM_Match extends ORM
 {
-	protected $_table_name = 'match';
+	protected $_table_name = 'matches';
 	protected $_primary_key = 'matchId';
+	
+	protected $_has_many = array(
+		'Performances' => array(			
+			'foreign_key' => 'matchId',
+			'model' => 'ORM_Performance',
+			'far_key' => 'performanceId'
+		),
+	);
 	
 	protected $_table_columns = array(
 		'matchId' =>  array('type'=>'int'),

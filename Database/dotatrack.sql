@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2014 at 03:49 PM
+-- Generation Time: Oct 11, 2014 at 06:13 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `match`
+-- Table structure for table `matches`
 --
 
-CREATE TABLE IF NOT EXISTS `match` (
+CREATE TABLE IF NOT EXISTS `matches` (
   `matchId` int(10) NOT NULL,
   `skillLevel` int(1) NOT NULL,
   `duration` int(1) NOT NULL,
@@ -38,10 +38,10 @@ CREATE TABLE IF NOT EXISTS `match` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `match`
+-- Dumping data for table `matches`
 --
 
-INSERT INTO `match` (`matchId`, `skillLevel`, `duration`, `result`, `gameMode`, `region`, `date`, `matchType`) VALUES
+INSERT INTO `matches` (`matchId`, `skillLevel`, `duration`, `result`, `gameMode`, `region`, `date`, `matchType`) VALUES
 (378075206, 0, 2593, 1, 1, 0, '2013-11-10', 0);
 
 -- --------------------------------------------------------
@@ -113,9 +113,9 @@ INSERT INTO `player` (`playerId`) VALUES
 --
 
 --
--- Indexes for table `match`
+-- Indexes for table `matches`
 --
-ALTER TABLE `match`
+ALTER TABLE `matches`
  ADD PRIMARY KEY (`matchId`);
 
 --
