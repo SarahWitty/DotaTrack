@@ -87,18 +87,18 @@ class Model_DotaTrack extends Model {
 		return $this->internalGetPlayerData($sanitizedCriteria);
 	}
 
-	public function setMatchList($matchList)
+	public function addMatchList($matchList)
 	{
 		$sanitizedMatchList = $this->whitelistMatchList($matchList);
 
-		return $this->internalSetMatchList($sanitizedMatchList);
+		return $this->internalAddMatchList($sanitizedMatchList);
 	}
 
-	public function setPlayerData($playerData)
+	public function addPlayerData($playerData)
 	{
 		$sanitizedPlayerData = $this->whitelistPlayerData($playerData);
 
-		return $this->internalSetPlayerData($sanitizedPlayerData);
+		return $this->internalAddPlayerData($sanitizedPlayerData);
 	}
 
 	/**
@@ -944,7 +944,7 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @return A boolean indicating if the write was successful.
 	 */
-	protected function internalSetMatchList($matchList)
+	protected function internalAddMatchList($matchList)
 	{
 		// On failure
 		return false;
@@ -959,7 +959,7 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @return A boolean indicating if the write was successful.
 	 */
-	protected function internalSetPlayerData($playerData)
+	protected function internalAddPlayerData($playerData)
 	{
 		// On failure
 		return false;
