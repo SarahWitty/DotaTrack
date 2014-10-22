@@ -28,12 +28,9 @@ class Model_ORM_Match extends ORM
 		return array(
 			'matchId' => array(
 				array('not_empty'),
-				array('min_length', array(':value', 1)),
-				array('max_length', array(':value', 10)),
 			),
-			'skillLevel' => array(
+			/*'skillLevel' => array(
 				array('not_empty'),
-				array('length', array(':value', 1)),
 			),
 			'duration' => array(
 				array('not_empty'),
@@ -41,7 +38,6 @@ class Model_ORM_Match extends ORM
 			),
 			'result' => array(
 				array('not_empty'),
-				array('length', array(':value', 1)),
 			),
 			'gameMode' => array(
 				array('not_empty'),
@@ -50,15 +46,13 @@ class Model_ORM_Match extends ORM
 			),
 			'region' => array(
 				array('not_empty'),
-				array('length', array(':value', 3)),
 			),
 			'date' => array(
 				array('not_empty'),
 			),
 			'matchType' => array(
 				array('not_empty'),
-				array('length', array(':value', 1)),
-			),			
+			),*/			
 		);
 	}
 }
