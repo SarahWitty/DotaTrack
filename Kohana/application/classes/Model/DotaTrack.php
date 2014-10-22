@@ -2,6 +2,13 @@
 
 class Model_DotaTrack extends Model {
 
+	protected $matchListCriteriaWhitelist;
+	protected $matchListWhitelist;
+	protected $statisticsProjectionWhitelist;
+	protected $statisticsCriteriaWhitelist;
+	protected $playerCriteriaWhitelist;
+	protected $playerDataWhitelist;
+
 	/**
 	 * Gets all the data for a single match.
 	 *
@@ -70,10 +77,9 @@ class Model_DotaTrack extends Model {
 	 * specified by the projection array in the order specified by the ordering
 	 * array.
 	 */
-	public function getStatistics($projection, $criteria, $ordering)
+	public function getStatistics($projection, $criteria)
 	{
 		$sanitizedProjection = $this->whitelistStatisticProjection($projection);
-		$sanitizedOrdering = $this->whitelistStatisticOrdering($ordering);
 		$sanitizedCriteria = $this->whitelistStatisticCriteria($criteria);
 
 		return $this->internalGetStatistics(
@@ -234,31 +240,14 @@ class Model_DotaTrack extends Model {
 	}
 
 	/**
-	 * Whitelists the ordering to prevent injection of invalid criteria into
-	 * queries.
-	 *
-	 * @param $criteria The raw array containing field names and ordering
-	 * criteria which will be filtered for harmful input.
-	 *
-	 * @return A refined version of the ordering array containing only valid
-	 * field names and ordering criteria.
-	 */
-	private function whitelistStatisticOrdering($ordering)
-	{
-		$sanitizedOrdering = array();
-
-		return $sanitizedOrdering;
-	}
-
-	/**
-	* Whitelists the ordering to prevent injection of invalid criteria into
+	* Whitelists the player criteria to prevent injection of invalid criteria into
 	* queries.
 	*
-	* @param $criteria The raw array containing field names and ordering
+	* @param $criteria The raw array containing field names, avlues, and ordering
 	* criteria which will be filtered for harmful input.
 	*
 	* @return A refined version of the ordering array containing only valid
-	* field names and ordering criteria.
+	* field names, values and ordering criteria.
 	*/
 	private function whitelistPlayerCriteria($criteria)
 	{
@@ -268,14 +257,14 @@ class Model_DotaTrack extends Model {
 	}
 
 	/**
-	* Whitelists the ordering to prevent injection of invalid criteria into
+	* Whitelists the match list to prevent injection of invalid data into
 	* queries.
 	*
-	* @param $criteria The raw array containing field names and ordering
-	* criteria which will be filtered for harmful input.
+	* @param $criteria The raw array of arrays containing field names and corresponding values
+	* which will be filtered for harmful input.
 	*
 	* @return A refined version of the ordering array containing only valid
-	* field names and ordering criteria.
+	* field names and corresponding values.
 	*/
 	private function whitelistMatchList($matchList)
 	{
@@ -283,22 +272,73 @@ class Model_DotaTrack extends Model {
 
 		return $sanitizedMatchList;
 	}
+	
+	/**
+	 * Whitelists 
+	 */
+	private function whitelistMatchData($matchData)
+	{
+		$sanitizedMatchData = array();
+
+		return $sanitizedMatchData;
+	}
 
 	/**
-	* Whitelists the ordering to prevent injection of invalid criteria into
-	* queries.
-	*
-	* @param $criteria The raw array containing field names and ordering
-	* criteria which will be filtered for harmful input.
-	*
-	* @return A refined version of the ordering array containing only valid
-	* field names and ordering criteria.
-	*/
+	 * Whitelists the player data to prevent injection of invalid data into
+	 * queries.
+	 *
+	 * @param $criteria The raw array containing field names and corresponding values
+	 * which will be filtered for harmful input.
+	 *
+	 * @return A refined version of the ordering array containing only valid
+	 * field names and corresponding values.
+	 */
 	private function whitelistPlayerData($playerData)
 	{
 		$sanitizedPlayerData = array();
 
 		return $sanitizedPlayerData;
+	}
+
+	/**
+	 * General whitelist function which filters input based on the given whitelist.
+	 *
+	 * @param $input The input array to be filtered by the whitelist. An associative array.
+	 *
+	 * @param $whiteList The whitelist array that will filter the input. Given as
+	 * an associative array mapping fieldnames to an optional regex to verify input.
+	 *
+	 * @return A sanitized input array as an associative array.
+	 */
+	private function whitelistGeneral($input, $whitelist)
+	{
+		$sanitizedInput = array();
+
+		foreach($input as $key=>$value)
+		{
+			// Make sure the key is in the whitelist
+			if(isset($whitelist[$key]))
+			{
+				// Make sure the value matches the whitelist criteria (if there is any)
+				if(isset($value) && $value != "" && preg_match($whitelist[$key], $value))
+				{
+					// Add the value to the sanitized input
+					$sanitizedInput[$key] = $value;
+				}
+				// Value failed to meet input criteria
+				else
+				{
+					Log::instance()->add(Log::DEBUG, "Input value does not match whitelist criteria ('$key' => '$value').");
+				}
+			}
+			// Key is not a valid input
+			else
+			{
+				Log::instance()->add(Log::DEBUG, "Input key does not exist in the whitelist ('$key' => '$value').");
+			}
+		}
+
+		return $sanitizedInput;
 	}
 
 	/**
