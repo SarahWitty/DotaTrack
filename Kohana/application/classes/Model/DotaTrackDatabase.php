@@ -1,8 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_DotaTrackDatabaseModel extends Model
+class Model_DotaTrackDatabase extends Model
 {
-	Database::$default = 'dotatrack';	
 	
 	//join to performance table through matchId
 	protected function internalGetMatchData($matchId)
@@ -107,8 +106,22 @@ class Model_DotaTrackDatabaseModel extends Model
 	}
 	
 	//
-	protected function internalSetMatchList($criteria){
-		
+	protected function internalSetMatchList($matchList){
+			foreach($matchList as $match){
+			$matches = ORM::factory('ORM_Match');
+			$matches
+				->values($match, array('matchId','skillLevel','duration','result','gameMode','region','date','matchType'))
+				->create();
+			foreach($match['playerPerformance'] as $perform){	
+				$performance = ORM::factory('ORM_Performance');
+				$player = ORM::factory('ORM_Player');				
+				
+				$performance
+					->values($perform)->create();
+				$player->playerId = $perform['playerId'];
+				$player->save();
+			}
+		}
 	}
 }
 

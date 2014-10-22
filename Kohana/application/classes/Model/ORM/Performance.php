@@ -53,8 +53,7 @@ class Model_ORM_Performance extends ORM
 				array('not_empty'),
 			),
 			'level' => array(
-				array('not_empty'),
-				array('length', array(':value', 1)),
+				array('not_empty')
 			),
 			'hero' => array(
 				array('not_empty'),
