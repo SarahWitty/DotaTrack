@@ -2,7 +2,6 @@
 
 class Model_DotaTrackDatabase extends Model
 {
-	
 	//join to performance table through matchId
 	protected function internalGetMatchData($matchId)
 	{
@@ -11,13 +10,13 @@ class Model_DotaTrackDatabase extends Model
 		$performances_array = array();
 		foreach($performances as $performance){
 			array_push($performances_array, $performance->as_array());
-		}		
+		}
 		$match_array = $match->as_array();
-		$match_array['performances'] = $performances_array;		
-	
+		$match_array['performances'] = $performances_array;
+
 		return $match_array;
 	}
-	
+
 	protected function internalGetMatchList($criteria)
 	{
 		$query = DB::select()->from('matches')
@@ -26,12 +25,12 @@ class Model_DotaTrackDatabase extends Model
 			$field = $requirementArray[0];
 			$operand = $requirementArray[1];
 			$value = $requirementArray[2];
-			
+
 			$query = $query->where($field, $operand, $value);
 		}
 		$results = $query->execute()->as_array();
 		$matches_array = array();
-		
+
 		foreach($results as $result) {
 			$performance = array();
 			$performance['performanceId'] = $result['performanceId'];
@@ -52,7 +51,7 @@ class Model_DotaTrackDatabase extends Model
 			$performance['item2'] = $result['item2'];
 			$performance['item3'] = $result['item3'];
 			$performance['item4'] = $result['item4'];
-			
+
 			if(array_key_exists($result['matchId'], $matches_array)){
 				$resultMatchId = $result['matchId'];
 				if(!isset($matches_array[$resultMatchId])){
@@ -70,7 +69,7 @@ class Model_DotaTrackDatabase extends Model
 				$match['date'] = $result['date'];
 				$match['matchType'] = $result['matchType'];
 				$matches_array[$result['matchId']] = $match;
-				
+
 				$matches_array[$result['matchId']]['playerPerformance'] = array();
 				array_push($matches_array[$result['matchId']]['playerPerformance'], $performance);
 			}
@@ -86,13 +85,13 @@ class Model_DotaTrackDatabase extends Model
 			$field = $requirementArray[0];
 			$operand = $requirementArray[1];
 			$value = $requirementArray[2];
-			
+
 			$query = $query->where($field, $operand, $value);
 		}
 		foreach($projection as $selected => $order){
 			$query->order_by($selected, $order);
-		}		
-		
+		}
+
 		$results = $query->find_all();
 		$results_array = array();
 		foreach($results as $result) {
@@ -104,8 +103,7 @@ class Model_DotaTrackDatabase extends Model
 		}
 		return $results_array;
 	}
-	
-	//
+
 	protected function internalSetMatchList($matchList){
 			foreach($matchList as $match){
 			$matches = ORM::factory('ORM_Match');

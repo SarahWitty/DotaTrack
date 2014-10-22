@@ -1,13 +1,38 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Test extends Controller_Template {
-
-	public $template = 'test';
+class Controller_Test extends Controller {
 
 	public function action_index()
 	{
-		$this->template->model = 'testing';
-		$this->template->output = array('testing', '1', '2', '3');
+		$view = View::factory('test');
+
+		$view->model = 'testing';
+		$view->output = array(1, 2, 3, 5, "I can count!");
+
+		$this->response->body($view->render());
+	}
+
+	public function action_input()
+	{
+		$view = View::factory('test/input');
+
+		$this->response->body($view->render());
+	}
+
+	public function action_submit()
+	{
+		$view = View::factory('test');
+
+		// Get the text from the input form
+		$testText = $this->request->post('testText');
+
+		// Json decode the input
+		$testJson = json_decode($testText, true);
+
+		$view->model = 'submit (<a href="'.URL::base().'Test/input">Hacks!</a>)';
+		$view->output = $testJson;
+
+		$this->response->body($view->render());
 	}
 
 }
