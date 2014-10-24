@@ -17,7 +17,7 @@ class Model_DotaTrackDatabase extends Model
 		return $match_array;
 	}
 	
-	public static function internalGetMatchList($criteria)
+	protected function internalGetMatchList($criteria)
 	{
 		$query = DB::select()->from('matches')
 			->join('performance')->on('matches.matchId', '=', 'performance.matchId' );
