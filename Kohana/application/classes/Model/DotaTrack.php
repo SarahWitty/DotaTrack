@@ -12,7 +12,7 @@ class Model_DotaTrack extends Model {
 	/**
 	 * Gets all the data for a single match.
 	 *
-	 * DON'T OVERRIDE THIS. Use the internalGetMatchData() function instead.
+	 * DON'T OVERRIDE THIS. Use the internal_get_match_data() function instead.
 	 * That will allow us to do security checking in these functions so you
 	 * don't have to worry about it.
 	 *
@@ -23,15 +23,15 @@ class Model_DotaTrack extends Model {
 	 * single match. The information that should be included here is indicated
 	 * in SRS 2.1.1.
 	 */
-	public function getMatchData($matchId)
+	public function get_match_data($matchId)
 	{
-		return $this->internalGetMatchData($matchId);
+		return $this->internal_get_match_data($matchId);
 	}
 
 	/**
 	 * Gets all the data for a list of matches meeting the given criteria.
 	 *
-	 * DON'T OVERRIDE THIS. Use the internalGetMatchData() function instead.
+	 * DON'T OVERRIDE THIS. Use the internal_get_match_data() function instead.
 	 * That will allow us to do security checking in these functions so you
 	 * don't have to worry about it.
 	 *
@@ -44,11 +44,11 @@ class Model_DotaTrack extends Model {
 	 * about each single match. The information included for each match is
 	 * indicated in SRS 2.1.1.
 	 */
-	public function getMatchList($criteria)
+	public function get_match_list($criteria)
 	{
-		$sanitizedCriteria = $this->whitelistMatchListCriteria($criteria);
+		$sanitizedCriteria = $this->whitelist_match_list_criteria($criteria);
 
-		return $this->internalGetMatchList($sanitizedCriteria);
+		return $this->internal_get_match_list($sanitizedCriteria);
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Model_DotaTrack extends Model {
 	 * Basically allows us to query specific statistics with specific criteria
 	 * without having to pass around massive amounts of excess data.
 	 *
-	 * DON'T OVERRIDE THIS. Use the internalGetMatchData() function instead.
+	 * DON'T OVERRIDE THIS. Use the internal_get_match_data() function instead.
 	 * That will allow us to do security checking in these functions so you
 	 * don't have to worry about it.
 	 *
@@ -77,12 +77,12 @@ class Model_DotaTrack extends Model {
 	 * specified by the projection array in the order specified by the ordering
 	 * array.
 	 */
-	public function getStatistics($projection, $criteria)
+	public function get_statistics($projection, $criteria)
 	{
-		$sanitizedProjection = $this->whitelistStatisticProjection($projection);
-		$sanitizedCriteria = $this->whitelistStatisticCriteria($criteria);
+		$sanitizedProjection = $this->whitelist_statistic_projection($projection);
+		$sanitizedCriteria = $this->whitelist_statistic_criteria($criteria);
 
-		return $this->internalGetStatistics(
+		return $this->internal_get_statistics(
 			$sanitizedProjection, $sanitizedCriteria);
 	}
 
@@ -100,11 +100,11 @@ class Model_DotaTrack extends Model {
 	 * @return An associative array of player information containing all the
 	 * information available about the player specified by the criteria.
 	 */
-	public function getPlayerData($criteria)
+	public function get_player_data($criteria)
 	{
-		$sanitizedCriteria = $this->whitelistPlayerCriteria($criteria);
+		$sanitizedCriteria = $this->whitelist_player_criteria($criteria);
 
-		return $this->internalGetPlayerData($sanitizedCriteria);
+		return $this->internal_get_player_data($sanitizedCriteria);
 	}
 
 	/**
@@ -116,15 +116,15 @@ class Model_DotaTrack extends Model {
 	 * player ids for any given performance data.
 	 *
 	 * @param $matchList An array of associative arrays containing match data. This
-	 * datastructure essentially looks like the return structure of getMatchList().
+	 * datastructure essentially looks like the return structure of get_match_list().
 	 *
 	 * @return A boolean indicating if the data was successfully inserted.
 	 */
-	public function addMatchList($matchList)
+	public function add_match_list($matchList)
 	{
-		$sanitizedMatchList = $this->whitelistMatchList($matchList);
+		$sanitizedMatchList = $this->whitelist_match_list($matchList);
 
-		return $this->internalAddMatchList($sanitizedMatchList);
+		return $this->internal_add_match_list($sanitizedMatchList);
 	}
 
 	/**
@@ -136,15 +136,15 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @param $playerData An associative array containing player data. This
 	 * datastructure essentially looks like the return structure of
-	 * getPlayerData().
+	 * get_player_data().
 	 *
 	 * @return A boolean indicating if the data was successfully inserted.
 	 */
-	public function addPlayerData($playerData)
+	public function add_player_data($playerData)
 	{
-		$sanitizedPlayerData = $this->whitelistPlayerData($playerData);
+		$sanitizedPlayerData = $this->whitelist_player_data($playerData);
 
-		return $this->internalAddPlayerData($sanitizedPlayerData);
+		return $this->internal_add_player_data($sanitizedPlayerData);
 	}
 
 	/**
@@ -157,14 +157,14 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @return A boolean indicating if the data was successfully updated.
 	 */
-	public function updateMatchData($matchId, $matchData)
+	public function update_match_data($matchId, $matchData)
 	{
-		$sanitizedMatchData = $this->whitelistMatchData($matchData);
+		$sanitizedMatchData = $this->whitelist_match_data($matchData);
 
-		return $this->internalUpdateMatchData($sanitizedCriteria, $sanitizedMatchData);
+		return $this->internal_update_match_data($sanitizedCriteria, $sanitizedMatchData);
 	}
 
- 	/**
+	/**
 	 * Updates a specific player with the given data.
 	 *
 	 * This function updates a player with the given data. Like addPlayerData(),
@@ -177,12 +177,12 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @return A boolean indicating if the data was successfully updated.
 	 */
-	public function updatePlayerData($criteria, $playerData)
+	public function update_player_data($criteria, $playerData)
 	{
-		$sanitizedCriteria = $this->whitelistPlayerCriteria($criteria);
-		$sanitizedPlayerData = $this->whitelistPlayerData($playerData);
+		$sanitizedCriteria = $this->whitelist_player_criteria($criteria);
+		$sanitizedPlayerData = $this->whitelist_player_data($playerData);
 
-		return $this->internalUpdatePlayerData($sanitizedCriteria, $sanitizedPlayerData);
+		return $this->internal_update_player_data($sanitizedCriteria, $sanitizedPlayerData);
 	}
 
 	/**
@@ -195,7 +195,7 @@ class Model_DotaTrack extends Model {
 	 * @return A refined version of the criteria containing only valid field
 	 * names and values.
 	 */
-	private function whitelistMatchListCriteria($criteria)
+	private function whitelist_match_list_criteria($criteria)
 	{
 		$sanitizedCriteria = array();
 
@@ -206,7 +206,7 @@ class Model_DotaTrack extends Model {
 	 * Whitelists criteria to prevent injection of invalid criteria into
 	 * queries.
 	 *
-	 * If this function ends up duplicating whitelistMatchListCriteria() too
+	 * If this function ends up duplicating whitelist_match_list_criteria() too
 	 * much, we should combine them.
 	 *
 	 * @param $criteria The raw associative array containing field names and
@@ -215,7 +215,7 @@ class Model_DotaTrack extends Model {
 	 * @return A refined version of the criteria containing only valid field
 	 * names and values.
 	 */
-	private function whitelistStatisticCriteria($criteria)
+	private function whitelist_statistic_criteria($criteria)
 	{
 		$sanitizedCriteria = array();
 
@@ -232,7 +232,7 @@ class Model_DotaTrack extends Model {
 	 * @return A refined version of the projection array containing only valid
 	 * field names.
 	 */
-	private function whitelistStatisticProjection($projection)
+	private function whitelist_statistic_projection($projection)
 	{
 		$sanitizedCriteria = array();
 
@@ -240,16 +240,16 @@ class Model_DotaTrack extends Model {
 	}
 
 	/**
-	* Whitelists the player criteria to prevent injection of invalid criteria into
-	* queries.
-	*
-	* @param $criteria The raw array containing field names, avlues, and ordering
-	* criteria which will be filtered for harmful input.
-	*
-	* @return A refined version of the ordering array containing only valid
-	* field names, values and ordering criteria.
-	*/
-	private function whitelistPlayerCriteria($criteria)
+	 * Whitelists the player criteria to prevent injection of invalid criteria into
+	 * queries.
+	 *
+	 * @param $criteria The raw array containing field names, avlues, and ordering
+	 * criteria which will be filtered for harmful input.
+	 *
+	 * @return A refined version of the ordering array containing only valid
+	 * field names, values and ordering criteria.
+	 */
+	private function whitelist_player_criteria($criteria)
 	{
 		$sanitizedCriteria = array();
 
@@ -257,26 +257,26 @@ class Model_DotaTrack extends Model {
 	}
 
 	/**
-	* Whitelists the match list to prevent injection of invalid data into
-	* queries.
-	*
-	* @param $criteria The raw array of arrays containing field names and corresponding values
-	* which will be filtered for harmful input.
-	*
-	* @return A refined version of the ordering array containing only valid
-	* field names and corresponding values.
-	*/
-	private function whitelistMatchList($matchList)
+	 * Whitelists the match list to prevent injection of invalid data into
+	 * queries.
+	 *
+	 * @param $criteria The raw array of arrays containing field names and corresponding values
+	 * which will be filtered for harmful input.
+	 *
+	 * @return A refined version of the ordering array containing only valid
+	 * field names and corresponding values.
+	 */
+	private function whitelist_match_list($matchList)
 	{
 		$sanitizedMatchList = array();
 
 		return $sanitizedMatchList;
 	}
-	
+
 	/**
-	 * Whitelists 
+	 * Whitelists
 	 */
-	private function whitelistMatchData($matchData)
+	private function whitelist_match_data($matchData)
 	{
 		$sanitizedMatchData = array();
 
@@ -293,7 +293,7 @@ class Model_DotaTrack extends Model {
 	 * @return A refined version of the ordering array containing only valid
 	 * field names and corresponding values.
 	 */
-	private function whitelistPlayerData($playerData)
+	private function whitelist_player_data($playerData)
 	{
 		$sanitizedPlayerData = array();
 
@@ -310,7 +310,7 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @return A sanitized input array as an associative array.
 	 */
-	private function whitelistGeneral($input, $whitelist)
+	private function whitelist_general($input, $whitelist)
 	{
 		$sanitizedInput = array();
 
@@ -355,7 +355,7 @@ class Model_DotaTrack extends Model {
 	 * single match. The information that should be included here is indicated
 	 * in SRS 2.1.1.
 	 */
-	protected function internalGetMatchData($matchId)
+	protected function internal_get_match_data($matchid)
 	{
 	return array("matchId" => string(9) "378075206"
 				"skillLevel" => string(1) "0"
@@ -587,7 +587,7 @@ class Model_DotaTrack extends Model {
 	 * about each single match. The information included for each match is
 	 * indicated in SRS 2.1.1.
 	 */
-	protected function internalGetMatchList($criteria)
+	protected function internal_get_match_list($criteria)
 	{
 		return array(
 			array("matchId" => string(9) "378075206"
@@ -1042,7 +1042,7 @@ class Model_DotaTrack extends Model {
 	 * specified by the projection array in the order specified by the ordering
 	 * array.
 	 */
-	protected function internalGetStatistics($projection, $criteria)
+	protected function internal_get_statistics($projection, $criteria)
 	{
 		return array(
 			array("2013-11-10 00:00:00", 22),
@@ -1070,7 +1070,7 @@ class Model_DotaTrack extends Model {
 	 * we need more player information in order to use the application. (Research
 	 * on SteamGuard API pending.)
 	 */
-	protected function internalGetPlayerData($criteria)
+	protected function internal_get_player_data($criteria)
 	{
 		return array(
 			"playerId" => 1234567890,
@@ -1086,13 +1086,13 @@ class Model_DotaTrack extends Model {
 	 * using null/default values to handle missing fields. Of course, match Ids and
 	 * player Ids will be specified.
 	 *
-	 * @param $matchList Essentially the same as the output from getMatchList().
+	 * @param $matchList Essentially the same as the output from get_match_list().
 	 * Note, however, that this associative array may be missing some fields as
 	 * mentioned above.
 	 *
 	 * @return A boolean indicating if the write was successful.
 	 */
-	protected function internalAddMatchList($matchList)
+	protected function internal_add_match_list($matchList)
 	{
 		// On failure
 		return false;
@@ -1103,11 +1103,11 @@ class Model_DotaTrack extends Model {
 	 *
 	 * OVERRIDE THIS
 	 *
-	 * @param $playerData Essentially the same as the output from getPlayerData().
+	 * @param $playerData Essentially the same as the output from get_player_data().
 	 *
 	 * @return A boolean indicating if the write was successful.
 	 */
-	protected function internalAddPlayerData($playerData)
+	protected function internal_add_player_data($playerData)
 	{
 		// On failure
 		return false;
@@ -1123,11 +1123,11 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @param $matchData An associative array of fields and the values which should
 	 * be stored in those fields. Essentially the same as the output from
-	 * getMatchData() except that most of the fields may be missing.
+	 * get_match_data() except that most of the fields may be missing.
 	 *
 	 * @return A boolean indicating if the write was successful.
 	 */
-	protected function internalUpdateMatchData($matchId, $matchData)
+	protected function internal_update_match_data($matchid, $matchdata)
 	{
 		// On failure
 		return false;
@@ -1145,11 +1145,11 @@ class Model_DotaTrack extends Model {
 	 *
 	 * @param $matchData An associative array of fields and the values which should
 	 * be stored in those fields. Essentially the same as the output from
-	 * getPlayerData() except that most of the fields may be missing.
+	 * get_player_data() except that most of the fields may be missing.
 	 *
-	 * @return A boolian indicating if the write was successful.
+	 * @return A boolean indicating if the write was successful.
 	 */
-	protected function internalUpdatePlayerData($criteria, $playerData)
+	protected function internal_update_player_data($criteria, $playerData)
 	{
 		// On failure
 		return false;
