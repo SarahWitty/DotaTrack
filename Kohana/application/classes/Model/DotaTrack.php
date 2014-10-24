@@ -161,7 +161,7 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedMatchData = $this->whitelist_match_data($matchData);
 
-		return $this->internal_update_match_data($sanitizedCriteria, $sanitizedMatchData);
+		return $this->internal_update_match_data($matchId, $sanitizedMatchData);
 	}
 
 	/**
