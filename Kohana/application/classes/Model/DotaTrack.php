@@ -3,7 +3,6 @@
 class Model_DotaTrack extends Model {
 
 	protected $matchListCriteriaWhitelist;
-
 	protected $matchDataWhitelist;
 	protected $performanceWhitelist;
 	protected $statisticsProjectionWhitelist;
@@ -442,14 +441,14 @@ class Model_DotaTrack extends Model {
 	 */
 	protected function internal_get_match_data($matchid)
 	{
-	return array("matchId" => string(9) "378075206"
-				"skillLevel" => string(1) "0"
-				"duration" => string(4) "2593"
-				"result" => string(1) "1" // Boolean
-				"gameMode" => string(1) "1"
-				"region" => string(1) "0"
-				"date" => string(10) "2013-11-10 00:00:00" // Date
-				"matchType" => string(1) "0"
+	return array("matchId" => "378075206",
+				"skillLevel" => "0",
+				"duration" => "2593",
+				"result" => "1", // Boolean
+				"gameMode" => "1",
+				"region" => "0",
+				"date" => "2013-11-10 00:00:00", // Date
+				"matchType" => "0",
 				"playerPerformance" => array(
 					array("performanceId" => 1,
 						"matchId" => 378075206,
@@ -591,7 +590,7 @@ class Model_DotaTrack extends Model {
 						"item2" => 125,
 						"item3" => 154,
 						"item4" => 0,
-						"item5" => 0)
+						"item5" => 0),
 					array("performanceId" => 8,
 						"matchId" => 378075206,
 						"playerId" => 85595353,
