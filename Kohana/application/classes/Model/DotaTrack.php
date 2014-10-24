@@ -3,7 +3,9 @@
 class Model_DotaTrack extends Model {
 
 	protected $matchListCriteriaWhitelist;
-	protected $matchListWhitelist;
+
+	protected $matchDataWhitelist;
+	protected $performanceWhitelist;
 	protected $statisticsProjectionWhitelist;
 	protected $statisticsCriteriaWhitelist;
 	protected $playerCriteriaWhitelist;
@@ -199,6 +201,8 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedCriteria = array();
 
+		$sanitizedCriteria = $this->whitelist_general_criteria($criteria, $this->$matchListCriteriaWhitelist);
+
 		return $sanitizedCriteria;
 	}
 
@@ -219,6 +223,8 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedCriteria = array();
 
+		$sanitizedCriteria = $this->whitelist_general_criteria($criteria, $this->$statisticsCriteriaWhitelist);
+
 		return $sanitizedCriteria;
 	}
 
@@ -226,7 +232,7 @@ class Model_DotaTrack extends Model {
 	 * Whitelists the projection array to prevent injection of invalid criteria
 	 * into queries.
 	 *
-	 * @param $criteria The raw array containing field names which will be
+	 * @param $projection The raw array containing field names which will be
 	 * filtered for harmful input.
 	 *
 	 * @return A refined version of the projection array containing only valid
@@ -234,7 +240,9 @@ class Model_DotaTrack extends Model {
 	 */
 	private function whitelist_statistic_projection($projection)
 	{
-		$sanitizedCriteria = array();
+		$sanitizedProjection = array();
+
+		$sanitizedProjection = $this->whitelist_general($projection, $this->$statisticsProjectionWhitelist);
 
 		return $sanitizedProjection;
 	}
@@ -253,6 +261,8 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedCriteria = array();
 
+		$sanitizedCriteria = $this->whitelist_general_criteria($criteria, playerCriteriaWhitelist);
+
 		return $sanitizedCriteria;
 	}
 
@@ -260,25 +270,51 @@ class Model_DotaTrack extends Model {
 	 * Whitelists the match list to prevent injection of invalid data into
 	 * queries.
 	 *
-	 * @param $criteria The raw array of arrays containing field names and corresponding values
+	 * @param $matchList The raw array of arrays containing field names and corresponding values
 	 * which will be filtered for harmful input.
 	 *
-	 * @return A refined version of the ordering array containing only valid
+	 * @return A refined version of the match list array containing only valid
 	 * field names and corresponding values.
 	 */
 	private function whitelist_match_list($matchList)
 	{
 		$sanitizedMatchList = array();
 
+		foreach($matchList as $match)
+		{
+			array_push($sanitizedMatchList, $this->whitelist_match_data($match));
+		}
+
 		return $sanitizedMatchList;
 	}
 
 	/**
-	 * Whitelists
+	 * Whitelists match data to prevent injection of invalid data into queries.
+	 *
+	 * @param $matchData The raw associative array containing field names and corresponding values
+	 * which will be filtered for harmful input.
+	 *
+	 * @return A refined version of the match data containing only valid field names
+	 * and corresponding values.
 	 */
 	private function whitelist_match_data($matchData)
 	{
 		$sanitizedMatchData = array();
+
+		// If the match data contains player performance information
+		if(array_key_exists('playerPerformance', $matchData))
+		{
+			$sanitizedMatchData['playerPerformance'] = array();
+
+			// Iterate through each performance record
+			foreach($matchData['playerPerformance'] as $performance)
+			{
+				// And add the sanitized version to the match data
+				array_push($sanitizedMatchData['playerPerformance'], $this->whitelist_general($performance, $this->$performanceWhitelist));
+			}
+		}
+
+		$sanitizedMatchData = $this->whitelist_general($matchData, $this->$matchDataWhitelist);
 
 		return $sanitizedMatchData;
 	}
@@ -296,6 +332,8 @@ class Model_DotaTrack extends Model {
 	private function whitelist_player_data($playerData)
 	{
 		$sanitizedPlayerData = array();
+
+		$sanitizedPlayerData = $this->whitelist_general($playerData, $this->$playerDataWhitelist);
 
 		return $sanitizedPlayerData;
 	}
