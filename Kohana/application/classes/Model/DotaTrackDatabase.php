@@ -16,7 +16,7 @@ class Model_DotaTrackDatabase extends Model
 
 		return $match_array;
 	}
-
+	
 	protected function internalGetMatchList($criteria)
 	{
 		$query = DB::select()->from('matches')
@@ -80,7 +80,8 @@ class Model_DotaTrackDatabase extends Model
 	//join Perfmance and matches on the id and filter results based on critera
 	protected function internalGetStatistics($projection, $criteria)
 	{
-		$query = $Performance;
+		$query = DB::select()->from('matches')
+			->join('performance')->on('matches.matchId', '=', 'performance.matchId' );
 		foreach($criteria as $requirementArray) {
 			$field = $requirementArray[0];
 			$operand = $requirementArray[1];
@@ -88,16 +89,19 @@ class Model_DotaTrackDatabase extends Model
 
 			$query = $query->where($field, $operand, $value);
 		}
+		
 		foreach($projection as $selected => $order){
 			$query->order_by($selected, $order);
 		}
-
-		$results = $query->find_all();
+		
+		$results = $query->execute()->as_array();
 		$results_array = array();
+		
 		foreach($results as $result) {
 			$record_array = array();
 			foreach($projection as $selected => $order){
-				$record_array[$selected] = $result->$selected;
+				//$record_array[$selected] = $result[$selected];
+				array_push($record_array, $result[$selected]);
 			}
 			array_push($results_array, $record_array);
 		}
