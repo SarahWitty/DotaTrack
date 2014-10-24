@@ -317,10 +317,10 @@ class Model_DotaTrack extends Model {
 		foreach($input as $key=>$value)
 		{
 			// Make sure the key is in the whitelist
-			if(isset($whitelist[$key]))
+			if(array_key_exists($whitelist[$key]))
 			{
 				// Make sure the value matches the whitelist criteria (if there is any)
-				if(isset($value) && $value != "" && preg_match($whitelist[$key], $value))
+				if(isset($whitelist[$key]) && $whitelist[$key] != '' && preg_match($whitelist[$key], $value))
 				{
 					// Add the value to the sanitized input
 					$sanitizedInput[$key] = $value;
@@ -339,6 +339,53 @@ class Model_DotaTrack extends Model {
 		}
 
 		return $sanitizedInput;
+	}
+
+	/**
+	* General whitelist function which filters criteria based on the given whitelist.
+	*
+	* @param $criteria The criteria array to be filtered by the whitelist. An array of arrays.
+	*
+	* @param $whiteList The whitelist array that will filter the input. Given as
+	* an associative array mapping fieldnames to an optional regex to verify input.
+	*
+	* @return A sanitized input array as an associative array.
+	*/
+	private function whitelist_general_criteria($criteria, $whitelist)
+	{
+		$sanitizedCriteria = array();
+
+		// Make sure the key is in the whitelist
+		foreach($criteria as $tuple)
+		{
+			// Used for code understandability
+			$field = $tuple[0];
+			$comparator = $tuple[1];
+			$value = $tuple[2];
+
+			// Make sure the key is in the whitelist
+			if(array_key_exists($whitelist[$field]))
+			{
+				// Make sure the value matches the whitelist criteria (if there is any)
+				if(isset($whitelist[$field]) && $whitelist[$field] != '' && preg_match($whitelist[$field]) == 1)
+				{
+					// Add the value to the sanitized input
+					array_push($sanitizedCriteria, $tuple);
+				}
+				// Value failed to meet input criteria
+				else
+				{
+					Log::instance()->add(Log::DEBUG, "Criteria value does not match whitelist criteria ('$key' => '$value').");
+				}
+			}
+			// Key is not a valid input
+			else
+			{
+				Log::instance()->add(Log::DEBUG, "Criteria key does not exist in the whitelist ('$key' => '$value').");
+			}
+		}
+
+		return $sanitizedCriteria;
 	}
 
 	/**
