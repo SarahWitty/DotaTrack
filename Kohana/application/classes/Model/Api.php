@@ -274,18 +274,14 @@ class Model_Api extends Model
 			}
 		}
 		
-		//echo "   end time: ";
-		//echo date("D M d, Y G:i a");
-		return $matchIds;
-		
 		// After we have all the match ids, request the data from them
 		foreach ($matchIds as $value) {
 			// this will be huge, ~500 matches
 			array_push ($matchHistory, $this->internal_get_match_data($value));
 		}
 		
-		echo "   end time: ";
-		echo date("D M d, Y G:i a");
+		//echo "   end time: ";
+		//echo date("D M d, Y G:i a");
 		return $matchHistory;
 	}
 	
