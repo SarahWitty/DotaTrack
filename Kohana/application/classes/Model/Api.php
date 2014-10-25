@@ -3,7 +3,6 @@
 class Model_Api extends Model
 {
 
-
 ///////////////////////////////////////REQUESTS////////////////////////////////////////////////////////////
 	
 	// Function: internal_get_match_data
@@ -20,9 +19,8 @@ class Model_Api extends Model
 	//
 	public function internal_get_match_data($matchId) {
 	
-		$requestAddress = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001" .
-		"/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&match_id=" . $matchId;
-		
+		$requestAddress = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001/" . 
+		"?key=448EF5FD8D44DDC1C6A6B07437D20FFE&match_id=" . $matchId;
 		$matchDetails = json_decode(file_get_contents($requestAddress),true);
 		return $this->parse_match_data($matchDetails['result']);
 	}
@@ -49,6 +47,28 @@ class Model_Api extends Model
 		
 		$heroes = json_decode(file_get_contents($requestAddress),true);
 		return $this->parse_hero_data($heroes['result']);
+	}
+	
+	// Function: get_player_summaries
+	// Purpose: Will return public data from any number of steam users' profiles
+	// Notes: This returns null at the moment. I'm assuming this is because the JSON doesn't
+	//        give types for the data. But I need to check to be sure.
+	// Input:  32-bit int SteamID, the user's steamID
+	// Output: playerSummary, the needed information from the player summary
+	//
+	//
+	// Request format:
+	// http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/ //Base URL
+	//   ?key=448EF5FD8D44DDC1C6A6B07437D20FFE                          //Key
+	//   &steamids=<steamID>                                            //SteamID
+	//
+	public function get_player_summaries($steamId) {
+		
+		$requestAddress = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/" .
+		"?key=448EF5FD8D44DDC1C6A6B07437D20FFE&steamids=" . $steamId;
+	
+		$playerSummary = json_decode(file_get_contents($requestAddress),true);
+		return $this->parse_player_summaries($playerSummary['response']);
 	}
 	
 	
@@ -105,7 +125,11 @@ class Model_Api extends Model
 		$parsedPlayerData = array();
 		
 		$parsedPlayerData["playerSlot"] = $rawPlayerData["player_slot"];
+		if (array_key_exists ('account_id', $rawPlayerData)) {
 		$parsedPlayerData["playerId"] = $rawPlayerData["account_id"];
+		} else {
+		$parsedPlayerData["playerId"] = 0;
+		}
 		$parsedPlayerData["level"] = $rawPlayerData["level"];
 		$parsedPlayerData["hero"] = $rawPlayerData["hero_id"];
 		$parsedPlayerData["kills"] = $rawPlayerData["kills"];
@@ -149,53 +173,178 @@ class Model_Api extends Model
 		return $heroInfo;
 	}
 	
-	// Will return the most recent 25 matches for a given player ID.
-	public function get_match_history($playerId) {
-	
-		//https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v001/ //Base URL
-		//?key=448EF5FD8D44DDC1C6A6B07437D20FFE                              //Key
-		//&player_id=<playerId>                                              //PlayerID
+	// Takes a json file of player summaries, gets them parsed, and then returns them
+	private function parse_player_summaries($rawPlayerSummaries) {
+		$playersArray = array();
 		
-		$requestAddress = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v001/" .
-		"?key=448EF5FD8D44DDC1C6A6B07437D20FFE&player_id=" . $playerId;
+		foreach($rawPlayerSummaries['players'] as $key => $value) {
+			array_push ($playersArray, $this->parse_summary($value));
+		}
+	}
+	
+	// Parses each player summary and returns the player's name and avatar address
+	private function parse_summary($rawPlayerData) {
+		$playerSummary = array();
 		
-		//$matchHistory = Request::factory($requestAddress);
-		$matchHistory = file_get_contents($requestAddress);
-		return $matchHistory;
-	}	
-	
-	// Will return public data from a single steam user's profile
-	public function get_player_summaries($steamId) {
-	
-		//http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/ //Base URL
-		//?key=448EF5FD8D44DDC1C6A6B07437D20FFE                            //Key
-		//&steamids=<steamID>                                              //SteamID
+		$playerSummary["nickname"] = $rawPlayerData["personaname"];
+		$playerSummary["avatar"] = $rawPlayerData["avatar"];
 		
-		$requestAddress = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/" .
-		"?key=448EF5FD8D44DDC1C6A6B07437D20FFE&steamids=" . $steamId;
-	
-		//$playerSummary = Request::factory($requestAddress);
-		$playerSummary = file_get_contents($requestAddress);
 		return $playerSummary;
 	}
 	
-	// Overloads get_player_summaries and will return public data from a given list of steam IDs
-	public function get_multiple_player_summaries($steamId) {
 	
-		//http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/ //Base URL
-		//?key=448EF5FD8D44DDC1C6A6B07437D20FFE                            //Key
-		//&steamids=<steamID>,<steamID>(,<steamID>)*                       //SteamID
+////////////////////////////NOT DONE YET///////////////////////////////////////////////////////////////////
 		
-		$requestAddress = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/" .
-		"?key=448EF5FD8D44DDC1C6A6B07437D20FFE&steamids=";
-		foreach ($steamId as &$id) {
-		$requestAddress .= $id;
-		}
+	// Function: get_match_history
+	// Purpose: Will return the most recent 500 matches for a given player ID.
+	//
+	// Input: criteria, an array of criteria in the form (type, operator, value)
+	//											e.g. ((playerId,=,114233641),(matchId,>,884421153)
+	//						    Note: The only supported criteria are of type playerId and matchId
+	// Output: Complete match details for all the requested matches
+	//          Note: This takes the following method:
+	//				   * Record list of matchIDs for first 100 matches
+	//				   * Get id of latest match
+	//				   * Call request again with modifier &start_at_match_id=(<latestMatchId> - 1)
+	//                 * Repeat until request returns empty (should be the 5th call unless player
+	//				        has less than 500 matches)
+	//				   * For all matches, run an internal_get_match_data
+	//				   * Store all the match data results in a hash
+	//				   * Return that metric ton of information and hope our server doesn't break
+	//
+	//
+	// Request format:
+	// https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v001/ //Base URL
+	//   ?key=448EF5FD8D44DDC1C6A6B07437D20FFE                            //Key
+	//   &player_id=<playerId>                                            //PlayerID
+	public function get_match_history($criteria) {
 	
-		//$playerSummary = Request::factory($requestAddress);
-		$playerSummary = file_get_contents($requestAddress);
-		return $playerSummary;
+		
+		// Variable instantiation
+		$matchIds = array();     // The list of matches we need to grab
+		$matchHistory = array(); // The eventual return. MASSIVE array :(
+		$playerId;				 // The criteria for playerId
+		$startingMatchId = -1;	 // The match ID at which to start the search Default: -1
+		$latestMatch = -1;		 // The most recent match that is stored in the database. Ignore
+								 //       all matches past this point. -1 if not necessary.
+		$newIds;				 // The return of each request. This will be sent to a search
+								 // 	  function that will make sure that we need these ids
+		
+		//echo "start time: ";
+		//echo date("D M d, Y G:i a");
+		
+		// Parse criteria
+		foreach( $criteria as $value) {
+			if ($value[0] == "playerId") {
+				$playerId = $value[2];
+			}
+			if ($value[0] == "matchId") {
+				$latestMatch = $value[2];
+			}
+		}
+		
+		for ($i = 0; $i < 6; $i++) {
+			
+			//Get list of new IDs
+			$newIds = $this->get_match_ids($playerId,$startingMatchId);
+			
+			
+			//If we are updating the database and don't necessarily need all the match IDs
+			if ($latestMatch != -1 && !empty($newIds)) {
+				// Check if we need to trash anything from this set of values
+				if ($newIds[0] < $latestMatch) { //if the beginning of the array is already an unneeded id (we've gone past the ones we need)
+					break;
+				}
+				else if (end($newIds) < $latestMatch) { //otherwise, if we do need at least some of the IDs, drop the unneeded ones
+					$newIds = $this->drop_useless_ids($newIds, $latestMatch);
+				}
+				//else, this set is fine
+			}
+			
+			// If $newIds isn't empty after we pull the matches
+			if (!empty($newIds)) {
+				// Add the new IDs
+				$matchIds = array_merge($matchIds, $newIds);
+				// Set the search to look for all matches starting at the last match we found
+				$startingMatchId = array_pop($matchIds);
+			}
+			else {
+			// Otherwise, break out of the for loop, we're done pulling matches
+				break;
+			}
+		}
+		
+		//echo "   end time: ";
+		//echo date("D M d, Y G:i a");
+		return $matchIds;
+		
+		// After we have all the match ids, request the data from them
+		foreach ($matchIds as $value) {
+			// this will be huge, ~500 matches
+			array_push ($matchHistory, $this->internal_get_match_data($value));
+		}
+		
+		echo "   end time: ";
+		echo date("D M d, Y G:i a");
+		return $matchHistory;
+	}
+	
+	
+	private function get_match_ids($playerId, $startingMatchId) {
+		$ids = array();
+	
+		// Set Request address
+		$requestAddress = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&account_id=" . $playerId;
+		
+		// Add the option for finding matches past the first page if necessary
+		if ($startingMatchId != -1) {
+			$requestAddress = $requestAddress . "&start_at_match_id=$startingMatchId";
+		}
+		
+		// Send request to parser
+		$rawData = json_decode(file_get_contents($requestAddress),true);
+		$ids = $this->parse_ids($rawData['result']);
+		return $ids;
+	}
+	
+	
+	private function parse_ids($rawData) {
+		$idList = array();
+		
+		// Grab the ids from the raw data
+		foreach($rawData['matches'] as $match) {
+			array_push ($idList, $match["match_id"]);
+		}
+		
+		return $idList;
+	}
+	
+	private function drop_useless_ids($idList, $latest) {
+	
+		//$lastGoodIdIndex = $this->find_last_good_id($idList, floor((count($idList)/2)), $latest); //more efficient but throws server errors.
+		
+		$lastGoodIdIndex = array_search($latest, $idList);
+		$idList = array_slice($idList, 0, $lastGoodIdIndex + 1);
+		
+		return $idList;
+	}
+	
+	//NOTE: This function currently throws a server error for some reason. Am I not allowed to make recursive
+	//       functions? I'll come back to this later.
+	private function find_last_good_id($ids, $spot, $latest) {
+		
+		if ($ids[$spot] > $latest) {
+			echo " right " . $spot . "| ";
+			return $this->find_last_good_id($ids, floor((count($ids) - $spot)/2) + $spot, $latest);
+		}
+		else if ($ids[$spot] < $latest) {
+			echo " left " . $spot . "| ";
+			return $this->find_last_good_id($ids, floor((count($ids) - $spot)/2), $latest);
+		}
+		else {
+			echo "correct";
+			return $spot;
+		}
 	}
 }
-
 ?>
