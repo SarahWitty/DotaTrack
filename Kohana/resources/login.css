@@ -1,0 +1,30 @@
+body {
+	background-color:black;
+}
+
+#logo {
+	background-image:url("DotaTrack.png");
+	background-repeat:no-repeat;
+	background-position:center;
+	width:90%;
+	margin-left:auto;
+	margin-right:auto;
+	height:500px;
+	top:0;
+}
+
+#appTitle p {
+	position:relative;
+	left:0px;
+	color: white;
+	font-size:150px;
+	text-align:center;
+	float:right;
+}
+
+#login p {
+	bottom:10px;
+	color: white;
+	text-align:center;
+	font-size:200%;
+}
