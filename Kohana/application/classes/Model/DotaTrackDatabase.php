@@ -3,7 +3,7 @@
 class Model_DotaTrackDatabase extends Model
 {
 	//join to performance table through matchId
-	protected function internalGetMatchData($matchId)
+	protected function internal_get_match_data($matchId)
 	{
 		$match = ORM::factory ('ORM_Match', $matchId);
 		$performances = $match->Performances->find_all()->as_array();
@@ -17,7 +17,7 @@ class Model_DotaTrackDatabase extends Model
 		return $match_array;
 	}
 	
-	protected function internalGetMatchList($criteria)
+	protected function internal_get_match_list($criteria)
 	{
 		$query = DB::select()->from('matches')
 			->join('performance')->on('matches.matchId', '=', 'performance.matchId' );
@@ -51,6 +51,7 @@ class Model_DotaTrackDatabase extends Model
 			$performance['item2'] = $result['item2'];
 			$performance['item3'] = $result['item3'];
 			$performance['item4'] = $result['item4'];
+			$performance['slot'] = $result['slot'];
 
 			if(array_key_exists($result['matchId'], $matches_array)){
 				$resultMatchId = $result['matchId'];
@@ -78,7 +79,7 @@ class Model_DotaTrackDatabase extends Model
 	}
 
 	//join Perfmance and matches on the id and filter results based on critera
-	protected function internalGetStatistics($projection, $criteria)
+	protected function internal_get_statistics($projection, $criteria)
 	{
 		$query = DB::select()->from('matches')
 			->join('performance')->on('matches.matchId', '=', 'performance.matchId' );
@@ -107,9 +108,24 @@ class Model_DotaTrackDatabase extends Model
 		}
 		return $results_array;
 	}
+	
+	protected function internal_get_player_data($criteria)
+	{
+		$query = DB::select()->from('player');
+		foreach($criteria as $requirementArray) {
+			$field = $requirementArray[0];
+			$operand = $requirementArray[1];
+			$value = $requirementArray[2];
 
-	protected function internalSetMatchList($matchList){
-			foreach($matchList as $match){
+			$query = $query->where($field, $operand, $value);
+		}		
+		$results = $query->execute()->as_array();
+
+		return $results;
+	}
+
+	protected function internal_add_match_list($matchList){
+		foreach($matchList as $match){
 			$matches = ORM::factory('ORM_Match');
 			$matches
 				->values($match, array('matchId','skillLevel','duration','result','gameMode','region','date','matchType'))
@@ -120,10 +136,56 @@ class Model_DotaTrackDatabase extends Model
 				
 				$performance
 					->values($perform)->create();
+				
+				//$player->values($perform);				
 				$player->playerId = $perform['playerId'];
 				$player->save();
 			}
 		}
+		return true;
+	}
+	
+	protected function internal_update_match_data($matchId, $matchData){
+		//takes $critera is the matchId and matchData is an array of things that need updated.
+		foreach($matchData as $matchInfo){
+			$matches = ORM::factory('ORM_Match')->where('matchId', '=', $matchId)->find();//, $matchId);
+			if($matchInfo == 'playerPerformance'){
+				foreach($matchData['playerPerformance'] as $selectedPerformance){
+					$performance = ORM::factory('ORM_Performance', $selectedPerformance['performanceId']);
+					if($performance->loaded()){
+						$performance->matchId = $matchId;
+						$performance
+							->values($selectedPerformance);
+						$performance->update();
+					} else {
+						Debug::vars('performance update failed');
+
+					}
+				}
+			}else{
+				if($matches->loaded()){
+					$matches->values($matchData);
+					$matches->update();
+				} else {
+					Debug::vars('match update fail');
+				}			
+			}
+		}
+		return true;
+	}
+	protected function internal_update_player_data($playerId, $playerData){
+		//takes $critera is the playerId and playerData is an array of things(the playerId) that need updated.
+		foreach($playerData as $playerInfo){
+			$player = ORM::factory('ORM_Player')->where('playerId', '=', $playerId)->find();
+			if($player->loaded()){
+				//$player->values($playerData);
+				$player->playerId = $playerInfo['playerId'];
+				$player->update();
+			}else {
+					Debug::vars('match update fail');
+			}
+		}
+		return true;
 	}
 }
 

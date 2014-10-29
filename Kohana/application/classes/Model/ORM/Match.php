@@ -20,7 +20,7 @@ class Model_ORM_Match extends ORM
 		'result' =>  array('type'=>'tinyint'),
 		'gameMode' =>  array('type'=>'int'),
 		'region' =>  array('type'=>'int'),
-		'date' =>  array('type'=>'date'),
+		'date' =>  array('type'=>'int'),
 		'matchType' =>  array('type'=>'int'),
 	);
 	
