@@ -6,11 +6,11 @@ Request Format for our API calls:
 //To get details from a single match. This will probably be our most common call. Example MatchID: 936109256
 GetMatchDetails  https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&match_id=<MatchID>
 
-//To get a list of the most recent matches played by a certain user. Example AccountID:4294967295
+//To get a list of the most recent matches played by a certain user. Example AccountID:124755068
 GetMatchHistory  https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&player_id=<AccountID>
 
 //To get an updated list of what numeric heroID refers to which in-game hero.
-GetHeroes                    https://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&language=en_us
+GetHeroes        https://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&language=en_us
 
 //To get user's steam avatar and name. Example 64bitSteamID: 76561198085020796
 GetPlayerSummaries           http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&steamids=<64bitSteamID>

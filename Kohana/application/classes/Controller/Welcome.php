@@ -5,6 +5,8 @@ class Controller_Welcome extends Controller {
 	public function action_index()
 	{
 		$this->response->body('hello, world!');
+		$api = Model::factory('Api');
+		
 	}
 
 } // End Welcome

@@ -3,7 +3,7 @@
 class Model_ORM_Performance extends ORM
 {
 	protected $_table_name = 'performance';
-	protected $_primary_key = 'perfomanceId';
+	protected $_primary_key = 'performanceId';
 	
 	protected $_has_one = array(
 		'Player' => array(
