@@ -1,0 +1,28 @@
+#modeMenu {
+	margin: 0 auto;
+	width: 30em;
+}
+
+#matchesMode {
+	float: left;
+}
+
+#statisticsMode {
+	float: right;
+}
+
+.modeButton {
+	width: 50%;
+	font-size: 2em;
+	font-weight: bold;
+	text-decoration: none;
+	color: white;
+}
+
+.modeButton:hover {
+	background-color: rgba(10,10,10,.5);
+}
+
+.spacer {
+	clear: both;
+}

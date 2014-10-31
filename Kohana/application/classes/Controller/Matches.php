@@ -1,7 +1,6 @@
 <?php  defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Matches extends Controller_Template {
-	public $template = "dotatrack_template";
+class Controller_Matches extends Controller_MainPage {
 
 	public function before()
 	{
@@ -15,7 +14,8 @@ class Controller_Matches extends Controller_Template {
 
         $generated_view = $view->render();
 
-        $this->template->body = $generated_view;
+		$this->add_header();
+        $this->template->body .= $generated_view;
 	}
 }
 

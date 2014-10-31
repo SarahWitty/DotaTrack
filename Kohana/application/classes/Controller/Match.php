@@ -1,7 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Match extends Controller_Template {
-	public $template = "dotatrack_template";
+class Controller_Match extends Controller_MainPage {
 
 	public function action_index()
 	{
@@ -9,7 +8,8 @@ class Controller_Match extends Controller_Template {
 
 		$generated_view = $view->render();
 
-		$this->template->body = $generated_view;
+		$this->add_header();
+		$this->template->body .= $generated_view;
 	}
 	public function action_json(){
 		$view = View::Factory('match/index');
@@ -21,7 +21,10 @@ class Controller_Match extends Controller_Template {
 		//die(Debug::vars($result));
 
 		$view->output = $result;
-		$this->template->body = $view->render();
+		$view->performance = $result['playerPerformance'];
+
+		$this->add_header();
+		$this->template->body .= $view->render();
 	}
 }
 
