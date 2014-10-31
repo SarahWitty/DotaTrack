@@ -1,0 +1,16 @@
+body {
+	background-color: black;
+	color: white;
+	margin: 0 auto; /* margin: top/bottom left/right */
+	text-align: center;
+}
+
+#logo {
+	background-image:url("DotaTrack.png");
+	background-repeat:no-repeat;
+	background-position:center;
+	width:90%;
+	margin-left:auto;
+	margin-right:auto;
+	height:500px;
+}
