@@ -7,7 +7,7 @@ class Controller_Test extends Controller {
 		$view = View::factory('test');
 
 		$view->model = 'testing';
-		$view->output = array(1, 2, 3, 5, "I can count!");
+		$view->output = Model::factory('DotaTrackDatabase')->get_match_list(array("test"=>"value"));
 
 		$this->response->body($view->render());
 	}
