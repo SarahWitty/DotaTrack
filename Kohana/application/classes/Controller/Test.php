@@ -8,7 +8,11 @@ class Controller_Test extends Controller {
 
 		$view->model = 'testing';
 		$view->output = Model::factory('DotaTrackDatabase')->get_match_list(array("test"=>"value"));
-
+		
+		ini_set("display_errors", true);
+		error_reporting(E_ALL);
+		
+		//$view->output = $hero_array;
 		$this->response->body($view->render());
 	}
 

@@ -2,16 +2,8 @@
 
 class Controller_Match extends Controller_DotaTrack {
 
-	public function action_index()
-	{
-		$view = View::Factory('match/index');
+	public function action_index(){
 
-		$generated_view = $view->render();
-
-		$this->add_header();
-		$this->add_view_content($generated_view);
-	}
-	public function action_json(){
 		$view = View::Factory('match/index');
 		//$generated_view = $view->render();
 
@@ -22,6 +14,9 @@ class Controller_Match extends Controller_DotaTrack {
 
 		$view->output = $result;
 		$view->performance = $result['playerPerformance'];
+
+		unset($result['playerPerformance']);
+		$view->match = $result;
 
 		$this->add_header();
 		$this->add_view_content($view->render());
