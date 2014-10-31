@@ -1,4 +1,4 @@
-<link rel='stylesheet' href="<?php echo URL::base() ?>resources/login.css">
+<link rel='stylesheet' href="<?php echo URL::base() ?>resources/styles/login.css">
 <div id='appTitle'>
 	<p>DOTA<br />TRACK</p>
 </div>

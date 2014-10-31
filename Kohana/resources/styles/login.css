@@ -3,7 +3,7 @@ body {
 }
 
 #logo {
-	background-image:url("DotaTrack.png");
+	background-image:url("../images/DotaTrack.png");
 	background-repeat:no-repeat;
 	background-position:center;
 	width:90%;

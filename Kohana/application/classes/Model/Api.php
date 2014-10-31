@@ -93,7 +93,97 @@ class Model_Api extends Model
 		return $SteamID64;
 	}
 	
-
+	
+	
+	// Function: get_match_history
+	// Purpose: Will return the most recent 500 matches for a given player ID.
+	//
+	// Input: criteria, an array of criteria in the form (type, operator, value)
+	//											e.g. ((playerId,=,114233641),(matchId,>,884421153)
+	//						    Note: The only supported criteria are of type playerId and matchId
+	// Output: Complete match details for all the requested matches
+	//          Note: This takes the following method:
+	//				   * Record list of matchIDs for first 100 matches
+	//				   * Get id of latest match
+	//				   * Call request again with modifier &start_at_match_id=(<latestMatchId> - 1)
+	//                 * Repeat until request returns empty (should be the 5th call unless player
+	//				        has less than 500 matches)
+	//				   * For all matches, run an internal_get_match_data
+	//				   * Store all the match data results in a hash
+	//				   * Return that metric ton of information and hope our server doesn't break
+	//
+	//
+	// Request format:
+	// https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v001/ //Base URL
+	//   ?key=448EF5FD8D44DDC1C6A6B07437D20FFE                            //Key
+	//   &player_id=<playerId>                                            //PlayerID
+	public function get_match_history($criteria) {
+	
+		
+		// Variable instantiation
+		$matchIds = array();     // The list of matches we need to grab
+		$matchHistory = array(); // The eventual return. MASSIVE array :(
+		$playerId;				 // The criteria for playerId
+		$startingMatchId = -1;	 // The match ID at which to start the search Default: -1
+		$latestMatch = -1;		 // The most recent match that is stored in the database. Ignore
+								 //       all matches past this point. -1 if not necessary.
+		$newIds;				 // The return of each request. This will be sent to a search
+								 // 	  function that will make sure that we need these ids
+		
+		//echo "start time: ";
+		//echo date("D M d, Y G:i a");
+		
+		// Parse criteria
+		foreach( $criteria as $value) {
+			if ($value[0] == "playerId") {
+				$playerId = $value[2];
+			}
+			if ($value[0] == "matchId") {
+				$latestMatch = $value[2];
+			}
+		}
+		
+		for ($i = 0; $i < 6; $i++) {
+			
+			//Get list of new IDs
+			$newIds = $this->get_match_ids($playerId,$startingMatchId);
+			//If we are updating the database and don't necessarily need all the match IDs
+			if ($latestMatch != -1 && !empty($newIds)) {
+				// Check if we need to trash anything from this set of values
+				if ($newIds[0] < $latestMatch) { //if the beginning of the array is already an unneeded id (we've gone past the ones we need)
+					break;
+				}
+				else if (end($newIds) < $latestMatch) { //otherwise, if we do need at least some of the IDs, drop the unneeded ones
+					$newIds = $this->drop_useless_ids($newIds, $latestMatch);
+				}
+				//else, this set is fine
+			}
+			
+			// If $newIds isn't empty after we pull the matches
+			if (!empty($newIds)) {
+				// Add the new IDs
+				$matchIds = array_merge($matchIds, $newIds);
+				// Set the search to look for all matches starting at the last match we found
+				$startingMatchId = array_pop($matchIds);
+			}
+			else {
+			// Otherwise, break out of the for loop, we're done pulling matches
+				break;
+			}
+		}
+		
+		// After we have all the match ids, request the data from them
+		foreach ($matchIds as $value) {
+			// this will be huge, ~500 matches
+			array_push ($matchHistory, $this->internal_get_match_data($value));
+		}
+		
+		//echo "   end time: ";
+		//echo date("D M d, Y G:i a");
+		return $matchHistory;
+	}
+	
+	
 ///////////////////////////////////////PARSING API DATA////////////////////////////////////////////////////
 	
 	// Should call parse_player_performance 10 times (once for each player in the match)
@@ -190,99 +280,6 @@ class Model_Api extends Model
 		$playerSummary["avatar"] = $rawPlayerData["avatar"];
 		
 		return $playerSummary;
-	}
-	
-	
-////////////////////////////NOT DONE YET///////////////////////////////////////////////////////////////////
-		
-	// Function: get_match_history
-	// Purpose: Will return the most recent 500 matches for a given player ID.
-	//
-	// Input: criteria, an array of criteria in the form (type, operator, value)
-	//											e.g. ((playerId,=,114233641),(matchId,>,884421153)
-	//						    Note: The only supported criteria are of type playerId and matchId
-	// Output: Complete match details for all the requested matches
-	//          Note: This takes the following method:
-	//				   * Record list of matchIDs for first 100 matches
-	//				   * Get id of latest match
-	//				   * Call request again with modifier &start_at_match_id=(<latestMatchId> - 1)
-	//                 * Repeat until request returns empty (should be the 5th call unless player
-	//				        has less than 500 matches)
-	//				   * For all matches, run an internal_get_match_data
-	//				   * Store all the match data results in a hash
-	//				   * Return that metric ton of information and hope our server doesn't break
-	//
-	//
-	// Request format:
-	// https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v001/ //Base URL
-	//   ?key=448EF5FD8D44DDC1C6A6B07437D20FFE                            //Key
-	//   &player_id=<playerId>                                            //PlayerID
-	public function get_match_history($criteria) {
-	
-		
-		// Variable instantiation
-		$matchIds = array();     // The list of matches we need to grab
-		$matchHistory = array(); // The eventual return. MASSIVE array :(
-		$playerId;				 // The criteria for playerId
-		$startingMatchId = -1;	 // The match ID at which to start the search Default: -1
-		$latestMatch = -1;		 // The most recent match that is stored in the database. Ignore
-								 //       all matches past this point. -1 if not necessary.
-		$newIds;				 // The return of each request. This will be sent to a search
-								 // 	  function that will make sure that we need these ids
-		
-		//echo "start time: ";
-		//echo date("D M d, Y G:i a");
-		
-		// Parse criteria
-		foreach( $criteria as $value) {
-			if ($value[0] == "playerId") {
-				$playerId = $value[2];
-			}
-			if ($value[0] == "matchId") {
-				$latestMatch = $value[2];
-			}
-		}
-		
-		for ($i = 0; $i < 6; $i++) {
-			
-			//Get list of new IDs
-			$newIds = $this->get_match_ids($playerId,$startingMatchId);
-			
-			
-			//If we are updating the database and don't necessarily need all the match IDs
-			if ($latestMatch != -1 && !empty($newIds)) {
-				// Check if we need to trash anything from this set of values
-				if ($newIds[0] < $latestMatch) { //if the beginning of the array is already an unneeded id (we've gone past the ones we need)
-					break;
-				}
-				else if (end($newIds) < $latestMatch) { //otherwise, if we do need at least some of the IDs, drop the unneeded ones
-					$newIds = $this->drop_useless_ids($newIds, $latestMatch);
-				}
-				//else, this set is fine
-			}
-			
-			// If $newIds isn't empty after we pull the matches
-			if (!empty($newIds)) {
-				// Add the new IDs
-				$matchIds = array_merge($matchIds, $newIds);
-				// Set the search to look for all matches starting at the last match we found
-				$startingMatchId = array_pop($matchIds);
-			}
-			else {
-			// Otherwise, break out of the for loop, we're done pulling matches
-				break;
-			}
-		}
-		
-		// After we have all the match ids, request the data from them
-		foreach ($matchIds as $value) {
-			// this will be huge, ~500 matches
-			array_push ($matchHistory, $this->internal_get_match_data($value));
-		}
-		
-		//echo "   end time: ";
-		//echo date("D M d, Y G:i a");
-		return $matchHistory;
 	}
 	
 	

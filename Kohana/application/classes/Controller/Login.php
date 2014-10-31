@@ -20,7 +20,7 @@ class Controller_Login extends Controller_DotaTrack {
 		if ($this->request->post('pid')) {
 			$view->has_pid = true;
 			$view->pid = $this->request->post('pid');
-			$view->output = Model::factory('Api')->get_match_history(array(array("playerId","=",$view->pid),array("matchId",">","973740011")));
+			$view->output = Model::factory('Api')->get_match_history(array(array("playerId","=",$view->pid),array("matchId",">","907491716")));
 		}
 		else {
 			$view->has_pid = false;
