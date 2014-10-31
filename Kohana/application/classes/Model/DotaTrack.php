@@ -149,6 +149,9 @@ class Model_DotaTrack extends Model {
 	 */
 	public function get_match_data($matchId)
 	{
+		if(!$matchId){
+			return null;
+		}
 		return $this->internal_get_match_data($matchId);
 	}
 	/**
@@ -167,6 +170,9 @@ class Model_DotaTrack extends Model {
 	*/
 	public function get_hero_data($heroId)
 	{
+		if(!$heroId){
+			return null;
+		}
 		return $this->internal_get_hero_data($heroId);
 	}
 	/**
