@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_DotaTrackDatabase extends Model
+class Model_DotaTrackDatabase extends Model_DotaTrack
 {
 	//join to performance table through matchId
 	protected function internal_get_match_data($matchId)
@@ -137,8 +137,8 @@ class Model_DotaTrackDatabase extends Model
 				$performance
 					->values($perform)->create();
 				
-				//$player->values($perform);				
-				$player->playerId = $perform['playerId'];
+				$player->values($perform);				
+				//$player->playerId = $perform['playerId'];
 				$player->save();
 			}
 		}
@@ -178,8 +178,8 @@ class Model_DotaTrackDatabase extends Model
 		foreach($playerData as $playerInfo){
 			$player = ORM::factory('ORM_Player')->where('playerId', '=', $playerId)->find();
 			if($player->loaded()){
-				//$player->values($playerData);
-				$player->playerId = $playerInfo['playerId'];
+				$player->values($playerData);
+				//$player->playerId = $playerInfo['playerId'];
 				$player->update();
 			}else {
 					Debug::vars('match update fail');
