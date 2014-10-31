@@ -2,13 +2,136 @@
 
 class Model_DotaTrack extends Model {
 
-	protected $matchListCriteriaWhitelist;
-	protected $matchDataWhitelist;
-	protected $performanceWhitelist;
-	protected $statisticsProjectionWhitelist;
-	protected $statisticsCriteriaWhitelist;
-	protected $playerCriteriaWhitelist;
-	protected $playerDataWhitelist;
+	protected $matchListCriteriaWhitelist = array(
+		"matchId" => "/[1-9][0-9]*/",
+		"duration" => "",
+		"result" => "",
+		"gameMode" => "",
+		"date" => "",
+		"matchType" => "",
+		"performanceId" => "",
+		"playerId" => "",
+		"level" => "",
+		"hero" => "",
+		"kills" => "",
+		"deaths" => "",
+		"assists" => "",
+		"lastHits" => "",
+		"denies" => "",
+		"xpm" => "",
+		"gpm" => "",
+		"heroDamage" => "",
+		"towerDamage" => "",
+		"item0" => "",
+		"item1" => "",
+		"item2" => "",
+		"item3" => "",
+		"item4" => "",
+		"item5" => "",
+		"position" => "",
+		"tag" => ""
+	);
+
+	protected $matchDataWhitelist = array(
+		"matchId" => "",
+		"duration" => "",
+		"result" => "",
+		"gameMode" => "",
+		"date" => "",
+		"matchType" => ""
+	);
+
+	protected $performanceWhitelist = array(
+		"performanceId" => "",
+		"playerId" => "",
+		"level" => "",
+		"hero" => "",
+		"kills" => "",
+		"deaths" => "",
+		"assists" => "",
+		"lastHits" => "",
+		"denies" => "",
+		"xpm" => "",
+		"gpm" => "",
+		"heroDamage" => "",
+		"towerDamage" => "",
+		"item0" => "",
+		"item1" => "",
+		"item2" => "",
+		"item3" => "",
+		"item4" => "",
+		"item5" => "",
+		"slot" => "",
+		"tag" => ""
+	);
+
+	protected $statisticsProjectionWhitelist = array(
+		"matchId" => "(Asc|Desc)",
+		"duration" => "/(Asc|Desc)/",
+		"result" => "(Asc|Desc)",
+		"gameMode" => "(Asc|Desc)",
+		"date" => "(Asc|Desc)",
+		"matchType" => "(Asc|Desc)",
+		"performanceId" => "(Asc|Desc)",
+		"playerId" => "(Asc|Desc)",
+		"level" => "(Asc|Desc)",
+		"hero" => "(Asc|Desc)",
+		"kills" => "(Asc|Desc)",
+		"deaths" => "(Asc|Desc)",
+		"assists" => "(Asc|Desc)",
+		"lastHits" => "(Asc|Desc)",
+		"denies" => "(Asc|Desc)",
+		"xpm" => "(Asc|Desc)",
+		"gpm" => "(Asc|Desc)",
+		"heroDamage" => "(Asc|Desc)",
+		"towerDamage" => "(Asc|Desc)",
+		"item0" => "(Asc|Desc)",
+		"item1" => "(Asc|Desc)",
+		"item2" => "(Asc|Desc)",
+		"item3" => "(Asc|Desc)",
+		"item4" => "(Asc|Desc)",
+		"item5" => "(Asc|Desc)",
+		"position" => "(Asc|Desc)",
+		"tag" => "(Asc|Desc)"
+	);
+
+	protected $statisticsCriteriaWhitelist = array(
+		"matchId" => "",
+		"duration" => "",
+		"result" => "",
+		"gameMode" => "",
+		"date" => "",
+		"matchType" => "",
+		"performanceId" => "",
+		"playerId" => "",
+		"level" => "",
+		"hero" => "",
+		"kills" => "",
+		"deaths" => "",
+		"assists" => "",
+		"lastHits" => "",
+		"denies" => "",
+		"xpm" => "",
+		"gpm" => "",
+		"heroDamage" => "",
+		"towerDamage" => "",
+		"item0" => "",
+		"item1" => "",
+		"item2" => "",
+		"item3" => "",
+		"item4" => "",
+		"item5" => "",
+		"position" => "",
+		"tag" => ""
+	);
+
+	protected $playerCriteriaWhitelist = array(
+		"playerId" => ""
+	);
+
+	protected $playerDataWhitelist = array(
+		"playerId" => ""
+	);
 
 	/**
 	 * Gets all the data for a single match.
@@ -217,7 +340,7 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedCriteria = array();
 
-		$sanitizedCriteria = $this->whitelist_general_criteria($criteria, $this->$matchListCriteriaWhitelist);
+		$sanitizedCriteria = $this->whitelist_general_criteria($criteria, $this->matchListCriteriaWhitelist);
 
 		return $sanitizedCriteria;
 	}
@@ -239,7 +362,7 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedCriteria = array();
 
-		$sanitizedCriteria = $this->whitelist_general_criteria($criteria, $this->$statisticsCriteriaWhitelist);
+		$sanitizedCriteria = $this->whitelist_general_criteria($criteria, $this->statisticsCriteriaWhitelist);
 
 		return $sanitizedCriteria;
 	}
@@ -258,7 +381,7 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedProjection = array();
 
-		$sanitizedProjection = $this->whitelist_general($projection, $this->$statisticsProjectionWhitelist);
+		$sanitizedProjection = $this->whitelist_general($projection, $this->statisticsProjectionWhitelist);
 
 		return $sanitizedProjection;
 	}
@@ -326,11 +449,11 @@ class Model_DotaTrack extends Model {
 			foreach($matchData['playerPerformance'] as $performance)
 			{
 				// And add the sanitized version to the match data
-				array_push($sanitizedMatchData['playerPerformance'], $this->whitelist_general($performance, $this->$performanceWhitelist));
+				array_push($sanitizedMatchData['playerPerformance'], $this->whitelist_general($performance, $this->performanceWhitelist));
 			}
 		}
 
-		$sanitizedMatchData = $this->whitelist_general($matchData, $this->$matchDataWhitelist);
+		$sanitizedMatchData = $this->whitelist_general($matchData, $this->matchDataWhitelist);
 
 		return $sanitizedMatchData;
 	}
@@ -349,7 +472,7 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedPlayerData = array();
 
-		$sanitizedPlayerData = $this->whitelist_general($playerData, $this->$playerDataWhitelist);
+		$sanitizedPlayerData = $this->whitelist_general($playerData, $this->playerDataWhitelist);
 
 		return $sanitizedPlayerData;
 	}
@@ -371,7 +494,7 @@ class Model_DotaTrack extends Model {
 		foreach($input as $key=>$value)
 		{
 			// Make sure the key is in the whitelist
-			if(array_key_exists($whitelist[$key]))
+			if(array_key_exists($key, $whitelist))
 			{
 				// Make sure the value matches the whitelist criteria (if there is any)
 				if(isset($whitelist[$key]) && $whitelist[$key] != '' && preg_match($whitelist[$key], $value))
@@ -418,7 +541,7 @@ class Model_DotaTrack extends Model {
 			$value = $tuple[2];
 
 			// Make sure the key is in the whitelist
-			if(array_key_exists($whitelist[$field]))
+			if(array_key_exists($field, $whitelist))
 			{
 				// Make sure the value matches the whitelist criteria (if there is any)
 				if(isset($whitelist[$field]) && $whitelist[$field] != '' && preg_match($whitelist[$field]) == 1)
@@ -429,13 +552,13 @@ class Model_DotaTrack extends Model {
 				// Value failed to meet input criteria
 				else
 				{
-					Log::instance()->add(Log::DEBUG, "Criteria value does not match whitelist criteria ('$key' => '$value').");
+					Log::instance()->add(Log::DEBUG, "Criteria value does not match whitelist criteria ('$field' '$comparator' '$value').");
 				}
 			}
 			// Key is not a valid input
 			else
 			{
-				Log::instance()->add(Log::DEBUG, "Criteria key does not exist in the whitelist ('$key' => '$value').");
+				Log::instance()->add(Log::DEBUG, "Criteria key does not exist in the whitelist ('$field' '$comparator' '$value').");
 			}
 		}
 
@@ -459,11 +582,11 @@ class Model_DotaTrack extends Model {
 	protected function internal_get_match_data($matchid)
 	{
 	return array("matchId" => "378075206",
-				"skillLevel" => "0",
+				"skillLevel" => "0", //
 				"duration" => "2593",
 				"result" => "1", // Boolean
 				"gameMode" => "1",
-				"region" => "0",
+				"region" => "0", //
 				"date" => "2013-11-10 00:00:00", // Date
 				"matchType" => "0",
 				"playerPerformance" => array(
