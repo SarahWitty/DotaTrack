@@ -137,9 +137,9 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 				$performance
 					->values($perform)->create();
 				
-				$player->values($perform);				
+				$player->values($perform)->create();				
 				//$player->playerId = $perform['playerId'];
-				$player->save();
+				//$player->save();
 			}
 		}
 		return true;
