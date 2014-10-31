@@ -15,16 +15,20 @@ body {
 
 #appTitle p {
 	position:relative;
-	left:0px;
 	color: white;
+	top:150px;
+	margin-bottom:50px;
 	font-size:150px;
 	text-align:center;
-	float:right;
+}
+
+#login {
+	text-align:center;
 }
 
 #login p {
-	bottom:10px;
 	color: white;
 	text-align:center;
 	font-size:200%;
+	padding-top:150px;
 }
