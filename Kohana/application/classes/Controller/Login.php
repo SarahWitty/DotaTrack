@@ -1,21 +1,23 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Login extends Controller {
+class Controller_Login extends Controller_Template {
+	public $template = "dotatrack_template";
+
 	public function action_index()
 	{
-		$view = View::Factory('login');
+		$view = View::Factory('login/login');
 
 		$generated_view = $view->render();
 
 		$stuff = Debug::dump($generated_view);
 
-		$this->response->body($generated_view);
+		$this->template->body = $generated_view;
 	}
-	
+
 	public function action_potato()
 	{
-		$view = View::Factory('login2');
-		
+		$view = View::Factory('login/login2');
+
 		if ($this->request->post('pid')) {
 			$view->has_pid = true;
 			$view->pid = $this->request->post('pid');
@@ -25,16 +27,16 @@ class Controller_Login extends Controller {
 			$view->has_pid = false;
 			$view->output = "Please log in first.";
 		}
-		
-		
+
+
 		$view->request = $this->request->post('pid');
-		
+
 		$generated_view = $view->render();
 
 		$stuff = Debug::dump($generated_view);
 
-		$this->response->body($generated_view);
-		
+		$this->template->body = $generated_view;
+
 	}
 }
 ?>
