@@ -1,17 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Match extends Controller_Template {
-	public $template = "dotatrack_template";
+class Controller_Match extends Controller_DotaTrack {
 
-	/*public function action_index()
-	{
-		$view = View::Factory('match/index');
-
-		$generated_view = $view->render();
-
-		$this->template->body = $generated_view;
-	}*/
 	public function action_index(){
+
 		$view = View::Factory('match/index');
 		//$generated_view = $view->render();
 
@@ -22,9 +14,12 @@ class Controller_Match extends Controller_Template {
 
 		$view->output = $result;
 		$view->performance = $result['playerPerformance'];
+
 		unset($result['playerPerformance']);
 		$view->match = $result;
-		$this->template->body = $view->render();
+
+		$this->add_header();
+		$this->add_view_content($view->render());
 	}
 }
 
