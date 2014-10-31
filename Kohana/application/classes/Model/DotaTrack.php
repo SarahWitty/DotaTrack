@@ -28,7 +28,24 @@ class Model_DotaTrack extends Model {
 	{
 		return $this->internal_get_match_data($matchId);
 	}
-
+	/**
+	* Gets all the data for a single hero.
+	*
+	* DONT OVERRIDE THIS. Use the interna;_get_hero_data() function instead.
+	* That will allow us to do security checking in these functions so you
+	* don't have to worry about it.
+	*
+	* @param $heroId The integer ID of the hero which should be retunred.
+	* Note that this might be zero
+	*
+	*@return An associative array containing all teh information about this single hero.
+	* The information that should be included here is indicated in 
+	* SRS 2.1.1.
+	*/
+	public function get_hero_data($heroId)
+	{
+		return $this->internal_get_hero_data($heroId);
+	}
 	/**
 	 * Gets all the data for a list of matches meeting the given criteria.
 	 *

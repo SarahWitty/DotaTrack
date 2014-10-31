@@ -16,6 +16,14 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 
 		return $match_array;
 	}
+	protected function internal_get_hero_data($heroId)
+	{
+		$hero = ORM::factory('ORM_Hero', $heroId);
+		$hero_array = array();
+		$hero_array = $hero->as_array();
+		
+		return $hero_array;
+	}
 	
 	protected function internal_get_match_list($criteria)
 	{
