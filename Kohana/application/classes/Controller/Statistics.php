@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Statistics extends Controller_MainPage {
+class Controller_Statistics extends Controller_DotaTrack {
 
 	public function action_index()
 	{

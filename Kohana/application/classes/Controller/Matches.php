@@ -1,6 +1,6 @@
 <?php  defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Matches extends Controller_MainPage {
+class Controller_Matches extends Controller_DotaTrack {
 
 	public function before()
 	{

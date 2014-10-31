@@ -1,7 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Login extends Controller_Template {
-	public $template = "dotatrack_template";
+class Controller_Login extends Controller_DotaTrack {
 
 	public function action_index()
 	{
