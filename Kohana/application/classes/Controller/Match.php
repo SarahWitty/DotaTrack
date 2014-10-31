@@ -3,15 +3,15 @@
 class Controller_Match extends Controller_Template {
 	public $template = "dotatrack_template";
 
-	public function action_index()
+	/*public function action_index()
 	{
 		$view = View::Factory('match/index');
 
 		$generated_view = $view->render();
 
 		$this->template->body = $generated_view;
-	}
-	public function action_json(){
+	}*/
+	public function action_index(){
 		$view = View::Factory('match/index');
 		//$generated_view = $view->render();
 
@@ -21,6 +21,9 @@ class Controller_Match extends Controller_Template {
 		//die(Debug::vars($result));
 
 		$view->output = $result;
+		$view->performance = $result['playerPerformance'];
+		unset($result['playerPerformance']);
+		$view->match = $result;
 		$this->template->body = $view->render();
 	}
 }

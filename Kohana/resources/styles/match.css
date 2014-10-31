@@ -1,0 +1,53 @@
+.matchTable {
+	border: 1px solid white;
+	margin: 0 auto;
+}
+
+.mHeader {
+	text-align: left;
+	
+	background-color: grey;
+	
+	padding: 3px 7px 2px 7px;
+	
+	border: 1px;
+	border-color: white;
+	border-left-style: solid;
+}
+
+.mValue{
+	text-align: left;
+	
+	padding: 3px 7px 2px 7px;
+	
+	border: 1px;
+	border-color: white;
+	border-left-style: solid;
+}
+
+.performanceTable {
+	border: 1px solid white;
+	margin: 0 auto;
+}
+
+.pHeader{
+	text-align: left;
+	
+	background-color: grey;
+	
+	padding: 3px 7px 2px 7px;
+	
+	border: 1px;
+	border-color: white;
+	border-left-style: solid;
+}
+
+.pValue{
+	text-align: left;
+	
+	padding: 3px 7px 2px 7px;
+	
+	border: 1px;
+	border-color: white;
+	border-left-style: solid;
+}
