@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2014 at 02:58 AM
+-- Generation Time: Oct 31, 2014 at 03:08 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -19,6 +19,17 @@ SET time_zone = "+00:00";
 --
 -- Database: `dotatrack`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hero`
+--
+
+CREATE TABLE IF NOT EXISTS `hero` (
+  `heroId` int(11) NOT NULL,
+  `heroName` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -97,21 +108,29 @@ INSERT INTO `performance` (`performanceId`, `matchId`, `playerId`, `level`, `her
 --
 
 CREATE TABLE IF NOT EXISTS `player` (
-  `playerId` int(11) NOT NULL
+  `playerId` int(11) NOT NULL,
+  `profileName` varchar(30) DEFAULT NULL,
+  `avatarUrl` varchar(55) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `player`
 --
 
-INSERT INTO `player` (`playerId`) VALUES
-(83414088),
-(85595353),
-(2147483647);
+INSERT INTO `player` (`playerId`, `profileName`, `avatarUrl`) VALUES
+(83414088, 'classic™', 'fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg'),
+(85595353, 'leyarotheconquerer', 'c0/c0646af67a3795fcdd68ab2c86db0df9315b1cb8.jpg'),
+(2147483647, NULL, NULL);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `hero`
+--
+ALTER TABLE `hero`
+ ADD PRIMARY KEY (`heroId`);
 
 --
 -- Indexes for table `matches`
