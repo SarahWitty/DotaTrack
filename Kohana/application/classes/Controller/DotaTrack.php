@@ -13,13 +13,23 @@ class Controller_DotaTrack extends Controller_Template {
 
 		$header = $header->render();
 
+		$this->add_view_content($header);
+	}
+
+	/**
+	 * Adds the given content to the body of the template.
+	 *
+	 * @param $content A string containing the content to add to the template body.
+	 */
+	protected function add_view_content($content)
+	{
 		if(isset($this->template->body))
 		{
-			$this->template->body .= $header;
+			$this->template->body .= $content;
 		}
 		else
 		{
-			$this->template->body = $header;
+			$this->template->body = $content;
 		}
 	}
 

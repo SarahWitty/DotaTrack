@@ -9,7 +9,7 @@ class Controller_Statistics extends Controller_DotaTrack {
 		$generated_view = $view->render();
 
 		$this->add_header();
-		$this->template->body .= $generated_view;
+		$this->add_view_content($generated_view);
 	}
 }
 
