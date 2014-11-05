@@ -11,10 +11,19 @@ class Controller_Matches extends Controller_DotaTrack {
 	public function action_index()
 	{
         $view = View::Factory('matches/index');
+		$api = Model::Factory('Api');
+		$db = Model::Factory('DotaTrackDatabase');
 		
 		$session = Session::instance();
 		
-		$view->output = "UserID: " . $session->get('userId');
+		$criteria = array(array("playerId","=",$session->get('userId')));
+		$matchData = $api->get_match_history($criteria);
+		
+		$db->add_match_list($matchData);	
+		
+		$out = "<p>[" . implode("][",$db->get_match_list($criteria)) . "]</p>";
+		
+		$view->output = $out;
 		
         $generated_view = $view->render();
 
