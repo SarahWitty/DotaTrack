@@ -144,9 +144,9 @@ class Model_Api extends Model
 		}
 		
 		for ($i = 0; $i < 6; $i++) {
-			
 			//Get list of new IDs
 			$newIds = $this->get_match_ids($playerId,$startingMatchId);
+			
 			//If we are updating the database and don't necessarily need all the match IDs
 			if ($latestMatch != -1 && !empty($newIds)) {
 				// Check if we need to trash anything from this set of values
@@ -154,7 +154,7 @@ class Model_Api extends Model
 					break;
 				}
 				else if (end($newIds) < $latestMatch) { //otherwise, if we do need at least some of the IDs, drop the unneeded ones
-					$newIds = $this->drop_useless_ids($newIds, $latestMatch);
+					//$newIds = $this->drop_useless_ids($newIds, $latestMatch);
 				}
 				//else, this set is fine
 			}
@@ -171,6 +171,8 @@ class Model_Api extends Model
 				break;
 			}
 		}
+		
+		return $matchIds;
 		
 		// After we have all the match ids, request the data from them
 		foreach ($matchIds as $value) {
@@ -288,7 +290,6 @@ class Model_Api extends Model
 	
 		// Set Request address
 		$requestAddress = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&account_id=" . $playerId;
-		
 		// Add the option for finding matches past the first page if necessary
 		if ($startingMatchId != -1) {
 			$requestAddress = $requestAddress . "&start_at_match_id=$startingMatchId";

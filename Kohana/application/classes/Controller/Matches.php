@@ -19,9 +19,11 @@ class Controller_Matches extends Controller_DotaTrack {
 		$criteria = array(array("playerId","=",$session->get('userId')));
 		$matchData = $api->get_match_history($criteria);
 		
-		$db->add_match_list($matchData);	
+		$out = "<p>" . implode("</p><p>",$matchData) . "</p>";
 		
-		$out = "<p>[" . implode("][",$db->get_match_list($criteria)) . "]</p>";
+		//$db->add_match_list($matchData);	
+		
+		//$out = "<p>[" . implode("][",$db->get_match_list($criteria)) . "]</p>";
 		
 		$view->output = $out;
 		
