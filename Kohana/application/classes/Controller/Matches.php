@@ -11,7 +11,11 @@ class Controller_Matches extends Controller_DotaTrack {
 	public function action_index()
 	{
         $view = View::Factory('matches/index');
-
+		
+		$session = Session::instance();
+		
+		$view->output = "UserID: " . $session->get('userId');
+		
         $generated_view = $view->render();
 
 		$this->add_header();

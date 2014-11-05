@@ -8,7 +8,7 @@
 		<input type='submit' value="Login" name='submit' />
 	<?php if ($has_pid):?>
 		<p>Welcome, <?=$pid ?></p>
-		<p><?php echo Debug::dump($output) ?></p>
+		<p></p>
 	<?php endif;?>
 	<p><?php  ?></p>
 	</form>

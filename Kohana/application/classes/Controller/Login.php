@@ -6,12 +6,16 @@ class Controller_Login extends Controller_DotaTrack {
 	{
 		$view = View::Factory('login/login');
 		
-		session_start();
+		$session = Session::instance();
+		
+		
+		$view->output = "UserID: " . $session->get('userId');
 		
 		if ($this->request->post('pid')) {
 			$view->has_pid = true;
-			$_SESSION["userId"] = $this->request->post('pid');
+			$session->set('userId', $this->request->post('pid'));
 			$view->output = "Redirecting...";
+			$this->redirect("Matches");
 		}
 		else {
 			$view->has_pid = false;
@@ -25,6 +29,12 @@ class Controller_Login extends Controller_DotaTrack {
 		$stuff = Debug::dump($generated_view);
 
 		$this->add_view_content($generated_view);
+	}
+	
+	public function action_logout()
+	{
+		Session::instance()->destroy();
+		$this->redirect("Login");
 	}
 }
 ?>
