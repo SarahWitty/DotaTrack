@@ -37,6 +37,7 @@ class Model_ORM_Performance extends ORM
 		'item3' =>  array('type'=>'int'),
 		'item4' =>  array('type'=>'int'),
 		'item5' =>  array('type'=>'int'),
+		'slot' => array('type'=>'int'),
 	);
 	
 	public function rules(){

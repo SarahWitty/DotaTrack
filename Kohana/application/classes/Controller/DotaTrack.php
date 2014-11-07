@@ -46,7 +46,7 @@ class Controller_DotaTrack extends Controller_Template {
 	protected function nicify_match_data($matchData)
 	{
 		$db = Model::Factory('DotaTrackDatabase');	
-		$matchData['hero'] = $db->get_hero_data($matchData['hero']);
+		//$matchData['hero'] = $db->get_hero_data($matchData['hero']);
 		return $matchData;
 	}
 }
