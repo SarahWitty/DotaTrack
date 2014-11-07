@@ -177,6 +177,25 @@ class Model_DotaTrack extends Model {
 		return $this->internal_get_hero_data($heroId);
 	}
 	/**
+	* Gets all the data for gameMode.
+	*
+	* DONT OVERRIDE THIS. Use the internal_get_hero_data() function instead.
+	* That will allow us to do security checking in these functions so you
+	* don't have to worry about it.
+	*
+	* @param $modeId The integer ID of the mode which should be returned.
+	* Note that this might be zero
+	*
+	*@return An associative array containing all the information about this single hero.
+	*/
+	public function get_mode_data($modeId)
+	{
+		if(!$modeId){
+			return null;
+		}
+		return $this->internal_get_mode_data($modeId);
+	}
+	/**
 	 * Gets all the data for a list of matches meeting the given criteria.
 	 *
 	 * DON'T OVERRIDE THIS. Use the internal_get_match_data() function instead.

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 31, 2014 at 03:49 AM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Host: localhost
+-- Generation Time: Nov 06, 2014 at 11:03 PM
+-- Server version: 5.5.40-0ubuntu0.14.04.1-log
+-- PHP Version: 5.5.9-1ubuntu4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,7 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `hero` (
   `heroId` int(11) NOT NULL,
-  `heroName` varchar(30) NOT NULL
+  `heroName` varchar(30) NOT NULL,
+  PRIMARY KEY (`heroId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -159,7 +160,8 @@ CREATE TABLE IF NOT EXISTS `matches` (
   `gameMode` int(2) NOT NULL,
   `region` int(3) NOT NULL,
   `date` int(11) NOT NULL,
-  `matchType` int(1) NOT NULL
+  `matchType` int(1) NOT NULL,
+  PRIMARY KEY (`matchId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -172,11 +174,51 @@ INSERT INTO `matches` (`matchId`, `skillLevel`, `duration`, `result`, `gameMode`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mode`
+--
+
+CREATE TABLE IF NOT EXISTS `mode` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mode`
+--
+
+INSERT INTO `mode` (`id`, `name`) VALUES
+(0, 'Unknown'),
+(1, 'Allpick'),
+(2, 'Captains Mode'),
+(3, 'Random Draft'),
+(4, 'Single Draft'),
+(5, 'All Random'),
+(6, '?? INTRO/DEATH ??'),
+(7, 'The Diretide'),
+(8, 'Reverse Captains Mode'),
+(9, 'Greeviling'),
+(10, 'Tutorial'),
+(11, 'Mid Only'),
+(12, 'Least Played'),
+(13, 'New Player Pool'),
+(14, 'Compendium Matchmaking'),
+(15, 'Custom'),
+(16, 'Captains Draft'),
+(17, 'Balanced Draft'),
+(18, 'Ability Draft'),
+(19, '?? Event ??'),
+(20, 'All Random Death Match'),
+(21, '1vs1 Solo Mid');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `performance`
 --
 
 CREATE TABLE IF NOT EXISTS `performance` (
-`performanceId` int(11) NOT NULL,
+  `performanceId` int(11) NOT NULL AUTO_INCREMENT,
   `matchId` int(11) NOT NULL,
   `playerId` int(11) NOT NULL,
   `level` int(11) NOT NULL DEFAULT '0',
@@ -196,7 +238,8 @@ CREATE TABLE IF NOT EXISTS `performance` (
   `item3` int(11) DEFAULT NULL,
   `item4` int(11) DEFAULT NULL,
   `item5` int(11) DEFAULT NULL,
-  `slot` int(11) NOT NULL
+  `slot` int(11) NOT NULL,
+  PRIMARY KEY (`performanceId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
@@ -224,7 +267,8 @@ INSERT INTO `performance` (`performanceId`, `matchId`, `playerId`, `level`, `her
 CREATE TABLE IF NOT EXISTS `player` (
   `playerId` int(11) NOT NULL,
   `profileName` varchar(30) DEFAULT NULL,
-  `avatarUrl` varchar(55) DEFAULT NULL
+  `avatarUrl` varchar(55) DEFAULT NULL,
+  PRIMARY KEY (`playerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -236,43 +280,6 @@ INSERT INTO `player` (`playerId`, `profileName`, `avatarUrl`) VALUES
 (85595353, 'leyarotheconquerer', 'c0/c0646af67a3795fcdd68ab2c86db0df9315b1cb8.jpg'),
 (2147483647, NULL, NULL);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `hero`
---
-ALTER TABLE `hero`
- ADD PRIMARY KEY (`heroId`);
-
---
--- Indexes for table `matches`
---
-ALTER TABLE `matches`
- ADD PRIMARY KEY (`matchId`);
-
---
--- Indexes for table `performance`
---
-ALTER TABLE `performance`
- ADD PRIMARY KEY (`performanceId`);
-
---
--- Indexes for table `player`
---
-ALTER TABLE `player`
- ADD PRIMARY KEY (`playerId`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `performance`
---
-ALTER TABLE `performance`
-MODIFY `performanceId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

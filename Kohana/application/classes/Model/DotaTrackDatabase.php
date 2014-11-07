@@ -16,6 +16,7 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 
 		return $match_array;
 	}
+	
 	protected function internal_get_hero_data($heroId)
 	{
 		$hero = ORM::factory('ORM_Hero', $heroId);
@@ -23,6 +24,15 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		$hero_array = $hero->as_array();
 		
 		return $hero_array;
+	}
+	
+	protected function internal_get_mode_data($modeId)
+	{
+		$mode = ORM::factory('ORM_Mode', $modeId);
+		$mode_array = array();
+		$mode_array = $mode->as_array();
+		
+		return $mode_array;
 	}
 	
 	protected function internal_get_match_list($criteria)
