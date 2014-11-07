@@ -13,6 +13,7 @@ class Controller_Matches extends Controller_DotaTrack {
 
 		$session = Session::instance();
 		$log = Log::instance();
+
 		$log->add(Log::DEBUG, "Summit: I got to the Matches page!");
 		$log->write();
 
@@ -46,8 +47,8 @@ class Controller_Matches extends Controller_DotaTrack {
 
 		$view->output = $out;
 
-		add_javascript("playerId", $session->get('userId'));
-		add_javascript("lastMatchId", $matchData[$matchData.length-1]['matchId']);
+		$this->add_javascript("playerId", $session->get('userId'));
+		$this->add_javascript("lastMatchId", $matchData[count($matchData)-1]['matchId']);
 
         $generated_view = $view->render();
 		$this->add_header();
