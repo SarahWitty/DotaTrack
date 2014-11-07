@@ -143,7 +143,7 @@ class Model_Api extends Model
 			}
 		}
 		
-		for ($i = 0; $i < 6; $i++) {
+		for ($i = 0; $i < 1; $i++) {
 			//Get list of new IDs
 			$newIds = $this->get_match_ids($playerId,$startingMatchId);
 			
@@ -171,8 +171,6 @@ class Model_Api extends Model
 				break;
 			}
 		}
-		
-		return $matchIds;
 		
 		// After we have all the match ids, request the data from them
 		foreach ($matchIds as $value) {
@@ -216,7 +214,7 @@ class Model_Api extends Model
 	private function parse_player_performance($rawPlayerData) {
 		$parsedPlayerData = array();
 		
-		$parsedPlayerData["playerSlot"] = $rawPlayerData["player_slot"];
+		$parsedPlayerData["slot"] = $rawPlayerData["player_slot"];
 		if (array_key_exists ('account_id', $rawPlayerData)) {
 		$parsedPlayerData["playerId"] = $rawPlayerData["account_id"];
 		} else {
