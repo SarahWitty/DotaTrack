@@ -12,10 +12,11 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 			array_push($performances_array, $performance->as_array());
 		}
 		$match_array = $match->as_array();
-		$match_array['performances'] = $performances_array;
+		$match_array['playerPerformance'] = $performances_array;
 
 		return $match_array;
 	}
+	
 	protected function internal_get_hero_data($heroId)
 	{
 		$hero = ORM::factory('ORM_Hero', $heroId);
@@ -23,6 +24,15 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		$hero_array = $hero->as_array();
 		
 		return $hero_array;
+	}
+	
+	protected function internal_get_mode_data($modeId)
+	{
+		$mode = ORM::factory('ORM_Mode', $modeId);
+		$mode_array = array();
+		$mode_array = $mode->as_array();
+		
+		return $mode_array;
 	}
 	
 	protected function internal_get_match_list($criteria)
@@ -100,7 +110,8 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		}
 		
 		foreach($projection as $selected => $order){
-			$query->order_by($selected, $order);
+			if($order != 'Not')
+				$query->order_by($selected, $order);
 		}
 		
 		$results = $query->execute()->as_array();
@@ -135,19 +146,28 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 	protected function internal_add_match_list($matchList){
 		foreach($matchList as $match){
 			$matches = ORM::factory('ORM_Match');
-			$matches
-				->values($match, array('matchId','skillLevel','duration','result','gameMode','region','date','matchType'))
-				->create();
+			if($matches->loaded()){
+				$matches
+					->values($match, array('matchId','skillLevel','duration','result','gameMode','region','date','matchType'))
+					->create();
+			}
 			foreach($match['playerPerformance'] as $perform){	
 				$performance = ORM::factory('ORM_Performance');
-				$player = ORM::factory('ORM_Player');				
+				$player = ORM::factory('ORM_Player', $perform['playerId']);	
+			
+				if($performance->loaded()){
+					$performance->matchId = $matches->matchId;
+					
+					$performance
+						->values($perform)->create();
+				}
 				
-				$performance
-					->values($perform)->create();
-				
-				$player->values($perform)->create();				
-				//$player->playerId = $perform['playerId'];
-				//$player->save();
+				if($player->loaded()){
+					$player->playerId = $perform['playerId'];
+					$player->save();
+				}
+				//$player->values($perform)->create();				
+
 			}
 		}
 		return true;

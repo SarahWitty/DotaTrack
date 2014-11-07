@@ -195,7 +195,12 @@ class Model_Api extends Model
 		
 		$parsedMatchData["matchId"] = $rawMatchData['match_id'];
 		$parsedMatchData["duration"] = $rawMatchData['duration'];
-		$parsedMatchData["result"] = $rawMatchData['radiant_win'];
+		if ($rawMatchData['radiant_win']) {
+			$parsedMatchData["result"] = 1;
+		}
+		else {
+			$parsedMatchData["result"] = 0;
+		}		
 		$parsedMatchData["gameMode"] = $rawMatchData['game_mode'];
 		$parsedMatchData["date"] = $rawMatchData['start_time'];
 		$parsedMatchData["matchType"] = $rawMatchData['lobby_type'];

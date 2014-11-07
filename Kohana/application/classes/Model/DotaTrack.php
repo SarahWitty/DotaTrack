@@ -68,33 +68,33 @@ class Model_DotaTrack extends Model {
 	);
 
 	protected $statisticsProjectionWhitelist = array(
-		"matchId" => "(Asc|Desc)",
-		"duration" => "/(Asc|Desc)/",
-		"result" => "(Asc|Desc)",
-		"gameMode" => "(Asc|Desc)",
-		"date" => "(Asc|Desc)",
-		"matchType" => "(Asc|Desc)",
-		"performanceId" => "(Asc|Desc)",
-		"playerId" => "(Asc|Desc)",
-		"level" => "(Asc|Desc)",
-		"hero" => "(Asc|Desc)",
-		"kills" => "(Asc|Desc)",
-		"deaths" => "(Asc|Desc)",
-		"assists" => "(Asc|Desc)",
-		"lastHits" => "(Asc|Desc)",
-		"denies" => "(Asc|Desc)",
-		"xpm" => "(Asc|Desc)",
-		"gpm" => "(Asc|Desc)",
-		"heroDamage" => "(Asc|Desc)",
-		"towerDamage" => "(Asc|Desc)",
-		"item0" => "(Asc|Desc)",
-		"item1" => "(Asc|Desc)",
-		"item2" => "(Asc|Desc)",
-		"item3" => "(Asc|Desc)",
-		"item4" => "(Asc|Desc)",
-		"item5" => "(Asc|Desc)",
-		"position" => "(Asc|Desc)",
-		"tag" => "(Asc|Desc)"
+		"matchId" => "(Asc|Desc|Not)",
+		"duration" => "(Asc|Desc|Not)",
+		"result" => "(Asc|Desc|Not)",
+		"gameMode" => "(Asc|Desc|Not)",
+		"date" => "(Asc|Desc|Not)",
+		"matchType" => "(Asc|Desc|Not)",
+		"performanceId" => "(Asc|Desc|Not)",
+		"playerId" => "(Asc|Desc|Not)",
+		"level" => "(Asc|Desc|Not)",
+		"hero" => "(Asc|Desc|Not)",
+		"kills" => "(Asc|Desc|Not)",
+		"deaths" => "(Asc|Desc|Not)",
+		"assists" => "(Asc|Desc|Not)",
+		"lastHits" => "(Asc|Desc|Not)",
+		"denies" => "(Asc|Desc|Not)",
+		"xpm" => "(Asc|Desc|Not)",
+		"gpm" => "(Asc|Desc|Not)",
+		"heroDamage" => "(Asc|Desc|Not)",
+		"towerDamage" => "(Asc|Desc|Not)",
+		"item0" => "(Asc|Desc|Not)",
+		"item1" => "(Asc|Desc|Not)",
+		"item2" => "(Asc|Desc|Not)",
+		"item3" => "(Asc|Desc|Not)",
+		"item4" => "(Asc|Desc|Not)",
+		"item5" => "(Asc|Desc|Not)",
+		"position" => "(Asc|Desc|Not)",
+		"tag" => "(Asc|Desc|Not)"
 	);
 
 	protected $statisticsCriteriaWhitelist = array(
@@ -167,7 +167,7 @@ class Model_DotaTrack extends Model {
 	* Note that this might be zero
 	*
 	*@return An associative array containing all teh information about this single hero.
-	* The information that should be included here is indicated in 
+	* The information that should be included here is indicated in
 	* SRS 2.1.1.
 	*/
 	public function get_hero_data($heroId)
@@ -176,6 +176,25 @@ class Model_DotaTrack extends Model {
 			return null;
 		}
 		return $this->internal_get_hero_data($heroId);
+	}
+	/**
+	* Gets all the data for gameMode.
+	*
+	* DONT OVERRIDE THIS. Use the internal_get_hero_data() function instead.
+	* That will allow us to do security checking in these functions so you
+	* don't have to worry about it.
+	*
+	* @param $modeId The integer ID of the mode which should be returned.
+	* Note that this might be zero
+	*
+	*@return An associative array containing all the information about this single hero.
+	*/
+	public function get_mode_data($modeId)
+	{
+		if(!$modeId){
+			return null;
+		}
+		return $this->internal_get_mode_data($modeId);
 	}
 	/**
 	 * Gets all the data for a list of matches meeting the given criteria.
@@ -273,7 +292,7 @@ class Model_DotaTrack extends Model {
 	{
 		$sanitizedMatchList = $this->whitelist_match_list($matchList);
 
-		return $this->internal_add_match_list($sanitizedMatchList);
+		return $this->internal_add_match_list($matchList);
 	}
 
 	/**
