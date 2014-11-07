@@ -136,19 +136,28 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 	protected function internal_add_match_list($matchList){
 		foreach($matchList as $match){
 			$matches = ORM::factory('ORM_Match');
-			$matches
-				->values($match, array('matchId','skillLevel','duration','result','gameMode','region','date','matchType'))
-				->create();
+			if($matches->loaded()){
+				$matches
+					->values($match, array('matchId','skillLevel','duration','result','gameMode','region','date','matchType'))
+					->create();
+			}
 			foreach($match['playerPerformance'] as $perform){	
 				$performance = ORM::factory('ORM_Performance');
-				$player = ORM::factory('ORM_Player');				
+				$player = ORM::factory('ORM_Player', $perform['playerId']);	
+			
+				if($performance->loaded()){
+					$performance->matchId = $matches->matchId;
+					
+					$performance
+						->values($perform)->create();
+				}
 				
-				$performance
-					->values($perform)->create();
-				
-				$player->values($perform)->create();				
-				//$player->playerId = $perform['playerId'];
-				//$player->save();
+				if($player->loaded()){
+					$player->playerId = $perform['playerId'];
+					$player->save();
+				}
+				//$player->values($perform)->create();				
+
 			}
 		}
 		return true;
