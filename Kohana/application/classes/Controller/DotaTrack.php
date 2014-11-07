@@ -3,8 +3,6 @@
 class Controller_DotaTrack extends Controller_Template {
 	public $template = "dotatrack_template";
 
-	public $playerName = "";
-
 	protected function add_header()
 	{
 		$header = View::Factory('mainpage_header');
@@ -31,6 +29,21 @@ class Controller_DotaTrack extends Controller_Template {
 		{
 			$this->template->body = $content;
 		}
+	}
+
+	protected function add_javascript($key, $value)
+	{
+		$javascriptVars = Session::instance()->get('javascriptVariables', array());
+
+		$javascriptVars[$key] = $value;
+
+		Session::instance()->set('javascriptVariables', $javascriptVars);
+	}
+
+	protected function write_javascript()
+	{
+		$javascriptVars = Session::instance()->get('javascriptVariables', array());
+		$this->javascript = "var server = ".json_encode($javascriptVars).";";
 	}
 
 	/**

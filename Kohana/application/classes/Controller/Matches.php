@@ -24,18 +24,21 @@ class Controller_Matches extends Controller_DotaTrack {
 		$log->write();
 		$criteria = array(array("playerId","=",$session->get('userId')));
 		$matchData = $api->get_match_history($criteria);
-		
+
 		$log->add(Log::DEBUG, "Summit: I got Match History!");
 		$log->write();
 		//$out = "<p>" . implode("</p><p>",$matchData) . "</p>";
-		
+
 		$db->add_match_list($matchData);
 		$log->add(Log::DEBUG, "Summit: I added the Match History to the database!");
 		$log->write();
 		$out = "<p>[" . implode("][",$db->get_match_list($criteria)) . "]</p>";
-		
+
+		add_javascript("playerId", $session->get('userId'));
+		add_javascript("lastMatchId", $matchData[$matchData.length-1]['matchId']);
+
 		$view->output = $out;
-		
+
         $generated_view = $view->render();
 
 		$this->add_header();
