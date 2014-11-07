@@ -7,8 +7,10 @@ class Controller_Match extends Controller_DotaTrack {
 		$view = View::Factory('match/index');
 		//$generated_view = $view->render();
 
-		$matchId = $this->request->param('matchId');
-		$model = Model::Factory('DotaTrack');
+		$matchId = $this->request->param('id');
+		$model = Model::Factory('DotaTrackDatabase');
+		
+		//die(Debug::vars($matchId));
 		
 		$result = $model->get_match_data($matchId);
 		
