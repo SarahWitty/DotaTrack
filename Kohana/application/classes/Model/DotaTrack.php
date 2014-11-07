@@ -67,33 +67,33 @@ class Model_DotaTrack extends Model {
 	);
 
 	protected $statisticsProjectionWhitelist = array(
-		"matchId" => "(Asc|Desc)",
-		"duration" => "/(Asc|Desc)/",
-		"result" => "(Asc|Desc)",
-		"gameMode" => "(Asc|Desc)",
-		"date" => "(Asc|Desc)",
-		"matchType" => "(Asc|Desc)",
-		"performanceId" => "(Asc|Desc)",
-		"playerId" => "(Asc|Desc)",
-		"level" => "(Asc|Desc)",
-		"hero" => "(Asc|Desc)",
-		"kills" => "(Asc|Desc)",
-		"deaths" => "(Asc|Desc)",
-		"assists" => "(Asc|Desc)",
-		"lastHits" => "(Asc|Desc)",
-		"denies" => "(Asc|Desc)",
-		"xpm" => "(Asc|Desc)",
-		"gpm" => "(Asc|Desc)",
-		"heroDamage" => "(Asc|Desc)",
-		"towerDamage" => "(Asc|Desc)",
-		"item0" => "(Asc|Desc)",
-		"item1" => "(Asc|Desc)",
-		"item2" => "(Asc|Desc)",
-		"item3" => "(Asc|Desc)",
-		"item4" => "(Asc|Desc)",
-		"item5" => "(Asc|Desc)",
-		"position" => "(Asc|Desc)",
-		"tag" => "(Asc|Desc)"
+		"matchId" => "(Asc|Desc|Not)",
+		"duration" => "(Asc|Desc|Not)",
+		"result" => "(Asc|Desc|Not)",
+		"gameMode" => "(Asc|Desc|Not)",
+		"date" => "(Asc|Desc|Not)",
+		"matchType" => "(Asc|Desc|Not)",
+		"performanceId" => "(Asc|Desc|Not)",
+		"playerId" => "(Asc|Desc|Not)",
+		"level" => "(Asc|Desc|Not)",
+		"hero" => "(Asc|Desc|Not)",
+		"kills" => "(Asc|Desc|Not)",
+		"deaths" => "(Asc|Desc|Not)",
+		"assists" => "(Asc|Desc|Not)",
+		"lastHits" => "(Asc|Desc|Not)",
+		"denies" => "(Asc|Desc|Not)",
+		"xpm" => "(Asc|Desc|Not)",
+		"gpm" => "(Asc|Desc|Not)",
+		"heroDamage" => "(Asc|Desc|Not)",
+		"towerDamage" => "(Asc|Desc|Not)",
+		"item0" => "(Asc|Desc|Not)",
+		"item1" => "(Asc|Desc|Not)",
+		"item2" => "(Asc|Desc|Not)",
+		"item3" => "(Asc|Desc|Not)",
+		"item4" => "(Asc|Desc|Not)",
+		"item5" => "(Asc|Desc|Not)",
+		"position" => "(Asc|Desc|Not)",
+		"tag" => "(Asc|Desc|Not)"
 	);
 
 	protected $statisticsCriteriaWhitelist = array(
@@ -504,7 +504,7 @@ class Model_DotaTrack extends Model {
 			if(array_key_exists($key, $whitelist))
 			{
 				// Make sure the value matches the whitelist criteria (if there is any)
-				if(isset($whitelist[$key]) && $whitelist[$key] != '' && preg_match($whitelist[$key], $value))
+				if(isset($whitelist[$key]) && ($whitelist[$key] == '' || preg_match($whitelist[$key], $value)))
 				{
 					// Add the value to the sanitized input
 					$sanitizedInput[$key] = $value;
@@ -551,7 +551,7 @@ class Model_DotaTrack extends Model {
 			if(array_key_exists($field, $whitelist))
 			{
 				// Make sure the value matches the whitelist criteria (if there is any)
-				if(isset($whitelist[$field]) && $whitelist[$field] != '' && preg_match($whitelist[$field]) == 1)
+				if(isset($whitelist[$field]) && ($whitelist[$field] == '' || preg_match($whitelist[$field]) == 1))
 				{
 					// Add the value to the sanitized input
 					array_push($sanitizedCriteria, $tuple);

@@ -7,10 +7,9 @@ class Controller_Matches extends Controller_DotaTrack {
 		// Get the match data
 		parent::before();
 	}
-
-	public function action_index()
-	{
-        $view = View::Factory('matches/index');
+	
+	public function action_apiCall(){
+		$view = View::Factory('matches/index');
 		
 		$session = Session::instance();
 		$log = Log::instance();
@@ -36,6 +35,60 @@ class Controller_Matches extends Controller_DotaTrack {
 		
 		$view->output = $out;
 		
+        $generated_view = $view->render();
+		$this->add_header();
+        $this->add_view_content($generated_view);
+	}
+
+
+	public function action_index()
+	{
+		$view = View::Factory('matches/index');
+		
+		//take 32 bit id (PlayerId) out of Session::instance()->set("key","value") 
+		$session = Session::instance();
+		$playerId = $session->get('userId');
+		//die(Debug::vars($playerId));
+		
+		//$playerId = "83414088";
+		//die(Debug::vars($playerId));
+		
+		//query for the database (get match List) takes criteria. Where playerId = session
+		$model = Model::Factory('DotaTrackDatabase');	
+		
+		$criteria = array(array('playerId', "=", $playerId));
+		$projection = 
+		array(
+			'matchId' => 'Not',
+			'date' => 'Desc',
+			'result' => 'Not',
+			'hero' => 'Not',
+			'kills' =>'Not',
+			'deaths' =>'Not',
+			'assists' => 'Not',			
+		);
+		$titles = array(
+			'matchId',
+			'date',
+			'result',
+			'hero',
+			'kills',
+			'deaths',
+			'assists',
+		);
+		//die(Debug::vars($criteria));
+		
+		$result = $model->get_statistics($projection, $criteria);
+		//die(Debug::vars($result));
+		
+		$view->statistics = $result;
+		$view->titles = $titles;
+		
+		//MatchList to MatchesPage fun table output 
+		
+
+		//as clickable links to Match page DotaTrack/Match/index/id#	url::base()	
+
         $generated_view = $view->render();
 
 		$this->add_header();

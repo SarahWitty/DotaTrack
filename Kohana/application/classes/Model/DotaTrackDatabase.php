@@ -12,7 +12,7 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 			array_push($performances_array, $performance->as_array());
 		}
 		$match_array = $match->as_array();
-		$match_array['performances'] = $performances_array;
+		$match_array['playerPerformance'] = $performances_array;
 
 		return $match_array;
 	}
@@ -100,7 +100,8 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		}
 		
 		foreach($projection as $selected => $order){
-			$query->order_by($selected, $order);
+			if($order != 'Not')
+				$query->order_by($selected, $order);
 		}
 		
 		$results = $query->execute()->as_array();
