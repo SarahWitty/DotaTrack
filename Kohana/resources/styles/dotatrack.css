@@ -5,6 +5,18 @@ body {
 	text-align: center;
 }
 
+a {
+	color: white;
+}
+
+a:hover {
+	color: red;
+}
+
+a:visited {
+	color: grey;
+}
+
 #logo {
 	background-image:url("../images/DotaTrack.png");
 	background-repeat:no-repeat;

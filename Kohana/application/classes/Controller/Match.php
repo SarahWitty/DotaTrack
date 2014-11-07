@@ -9,15 +9,13 @@ class Controller_Match extends Controller_DotaTrack {
 
 		$matchId = $this->request->param('id');
 		$model = Model::Factory('DotaTrackDatabase');
-		
-		//die(Debug::vars($matchId));
-		
+
 		$result = $model->get_match_data($matchId);
-		
+
 		if(!$result){
 			$view->performance = array(array());
 			$view->match = array();
-		
+
 		}else{
 			//die(Debug::vars($result));
 

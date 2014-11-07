@@ -39,7 +39,8 @@ class Model_DotaTrack extends Model {
 		"result" => "",
 		"gameMode" => "",
 		"date" => "",
-		"matchType" => ""
+		"matchType" => "",
+		"playerPerformance" => ""
 	);
 
 	protected $performanceWhitelist = array(
@@ -166,7 +167,7 @@ class Model_DotaTrack extends Model {
 	* Note that this might be zero
 	*
 	*@return An associative array containing all teh information about this single hero.
-	* The information that should be included here is indicated in 
+	* The information that should be included here is indicated in
 	* SRS 2.1.1.
 	*/
 	public function get_hero_data($heroId)
@@ -531,13 +532,25 @@ class Model_DotaTrack extends Model {
 				// Value failed to meet input criteria
 				else
 				{
-					Log::instance()->add(Log::DEBUG, "Input value does not match whitelist criteria (" . Debug::vars($key) . " => " . Debug::vars($value) . ").");
+					$message = "Input value does not match whitelist criteria ";
+					$message .= "(" . Debug::vars($key) . " => " . Debug::vars($value) . ").";
+					foreach(Debug::trace() as $functionFrame)
+					{
+						$message .= "\n    " . $functionFrame['function'] . "(".$functionFrame['line'].")";
+					}
+					Log::instance()->add(Log::DEBUG, $message);
 				}
 			}
 			// Key is not a valid input
 			else
 			{
-				Log::instance()->add(Log::DEBUG, "Input key does not exist in the whitelist (" . Debug::vars($key) . " => " . Debug::vars($value) . ").");
+				$message = "Input key does not exist in the whitelist ";
+				$message .= "(" . Debug::vars($key) . " => " . Debug::vars($value) . ").";
+				foreach(Debug::trace() as $functionFrame)
+				{
+					$message .= " " . $functionFrame['function'];
+				}
+				Log::instance()->add(Log::DEBUG, $message);
 			}
 		}
 
