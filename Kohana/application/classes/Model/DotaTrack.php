@@ -39,7 +39,8 @@ class Model_DotaTrack extends Model {
 		"result" => "",
 		"gameMode" => "",
 		"date" => "",
-		"matchType" => ""
+		"matchType" => "",
+		"playerPerformance" => ""
 	);
 
 	protected $performanceWhitelist = array(
@@ -504,7 +505,7 @@ class Model_DotaTrack extends Model {
 			if(array_key_exists($key, $whitelist))
 			{
 				// Make sure the value matches the whitelist criteria (if there is any)
-				if(isset($whitelist[$key]) && $whitelist[$key] != '' && preg_match($whitelist[$key], $value))
+				if(isset($whitelist[$key]) && ($whitelist[$key] == '' || preg_match($whitelist[$key], $value)))
 				{
 					// Add the value to the sanitized input
 					$sanitizedInput[$key] = $value;
@@ -512,13 +513,25 @@ class Model_DotaTrack extends Model {
 				// Value failed to meet input criteria
 				else
 				{
-					Log::instance()->add(Log::DEBUG, "Input value does not match whitelist criteria (" . Debug::vars($key) . " => " . Debug::vars($value) . ")." . implode("||",Debug::trace())    );
+					$message = "Input value does not match whitelist criteria ";
+					$message .= "(" . Debug::vars($key) . " => " . Debug::vars($value) . ").";
+					foreach(Debug::trace() as $functionFrame)
+					{
+						$message .= "\n    " . $functionFrame['function'] . "(".$functionFrame['line'].")";
+					}
+					Log::instance()->add(Log::DEBUG, $message);
 				}
 			}
 			// Key is not a valid input
 			else
 			{
-				Log::instance()->add(Log::DEBUG, "Input key does not exist in the whitelist (" . Debug::vars($key) . " => " . Debug::vars($value) . ")." . implode("||",Debug::trace())      );
+				$message = "Input key does not exist in the whitelist ";
+				$message .= "(" . Debug::vars($key) . " => " . Debug::vars($value) . ").";
+				foreach(Debug::trace() as $functionFrame)
+				{
+					$message .= " " . $functionFrame['function'];
+				}
+				Log::instance()->add(Log::DEBUG, $message);
 			}
 		}
 
@@ -551,7 +564,7 @@ class Model_DotaTrack extends Model {
 			if(array_key_exists($field, $whitelist))
 			{
 				// Make sure the value matches the whitelist criteria (if there is any)
-				if(isset($whitelist[$field]) && $whitelist[$field] != '' && preg_match($whitelist[$field]) == 1)
+				if(isset($whitelist[$field]) && ($whitelist[$field] == '' || preg_match($whitelist[$field]) == 1))
 				{
 					// Add the value to the sanitized input
 					array_push($sanitizedCriteria, $tuple);
