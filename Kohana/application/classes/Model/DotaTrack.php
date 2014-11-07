@@ -10,6 +10,7 @@ class Model_DotaTrack extends Model {
 		"date" => "",
 		"matchType" => "",
 		"performanceId" => "",
+		"slot" => "",
 		"playerId" => "",
 		"level" => "",
 		"hero" => "",
@@ -511,13 +512,13 @@ class Model_DotaTrack extends Model {
 				// Value failed to meet input criteria
 				else
 				{
-					Log::instance()->add(Log::DEBUG, "Input value does not match whitelist criteria ('$key' => '$value').");
+					Log::instance()->add(Log::DEBUG, "Input value does not match whitelist criteria (" . Debug::vars($key) . " => " . Debug::vars($value) . ")." . implode("||",Debug::trace())    );
 				}
 			}
 			// Key is not a valid input
 			else
 			{
-				Log::instance()->add(Log::DEBUG, "Input key does not exist in the whitelist ('$key' => '$value').");
+				Log::instance()->add(Log::DEBUG, "Input key does not exist in the whitelist (" . Debug::vars($key) . " => " . Debug::vars($value) . ")." . implode("||",Debug::trace())      );
 			}
 		}
 
