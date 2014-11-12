@@ -90,7 +90,7 @@ class Controller_Matches extends Controller_DotaTrack {
 		//as clickable links to Match page DotaTrack/Match/index/id#	url::base()
 
 		$this->add_javascript("playerId", $session->get('userId'));
-		//$this->add_javascript("lastMatchId", $matchData[count($matchData)-1]['matchId']);
+		$this->add_javascript("lastMatchId", count($result)? $result[count($result)-1][0]: 0);
 
         $generated_view = $view->render();
 
