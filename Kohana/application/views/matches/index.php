@@ -1,4 +1,5 @@
 <link rel="stylesheet" type="text/class" href="<?php echo URL::base(); ?>resources/styles/match.css" />
+<script type="text/javascript" src="<?php echo URL::base() ?>resources/scripts/matches.js"></script>
 <h1>Matches page</h1>
 <p>Normally, this would tell you useful information about matches.</p>
 <table class="matchTable">
@@ -15,6 +16,7 @@
 	<?php
 	foreach($statistics as $static) {
 		$counter = 0;
+		?><tr><?php
 		foreach($static as $property=>$value){
 			if($counter == 0){
 				?> 
@@ -29,7 +31,9 @@
 	<?php
 			}
 		}
+	?></tr><?php
 	}
 	?>
 	</tr>
 </table>
+<div id="ourTest"></div>

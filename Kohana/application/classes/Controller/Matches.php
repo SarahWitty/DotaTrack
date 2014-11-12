@@ -22,6 +22,14 @@ class Controller_Matches extends Controller_DotaTrack {
 
 		//$criteria = array(array("playerId","=",$session->get('userId')));
 		$criteria = array(array("playerId","=","16373900"));
+		
+		//$matchDetails = file_get_contents("https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&match_id=378075206");
+		//die(print_r($matchDetails));
+		//for($i=0; $i<15; $i++){
+			//$jsonDetails = json_decode(file_get_contents("https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001/?key=448EF5FD8D44DDC1C6A6B07437D20FFE&match_id=330015481"), true); 
+		//}
+		//die(print_r($jsonDetails));
+		
 		$matchData = $api->get_match_history($criteria);
 		//$matchData = $db->get_match_list($criteria);
 

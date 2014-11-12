@@ -18,7 +18,10 @@ class Model_Api extends Model
 	//   &match_id=<MatchID>                                              //MatchID
 	//
 	public function internal_get_match_data($matchId) {
-	
+		$log = Log::instance();
+		//die( print_r($matchId));
+		//$matchId = "378075206";
+		$log->add(Log::DEBUG, $matchId ."This is the matchId for Sarah");
 		$requestAddress = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001/" . 
 		"?key=448EF5FD8D44DDC1C6A6B07437D20FFE&match_id=" . $matchId;
 		$matchDetails = json_decode(file_get_contents($requestAddress),true);
