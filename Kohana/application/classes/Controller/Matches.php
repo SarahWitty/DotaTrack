@@ -19,40 +19,25 @@ class Controller_Matches extends Controller_DotaTrack {
 
 		$api = Model::Factory('Api');
 		$db = Model::Factory('DotaTrackDatabase');
-		$log->add(Log::DEBUG, "Summit: I created the Model Factory for API and DotaTrackDatabase!");
-		$log->write();
 
 		$criteria = array(array("playerId","=",$session->get('userId')));
 		$matchData = $api->get_match_history($criteria);
+		//$matchData = $db->get_match_list($criteria);
 
-		$log->add(Log::DEBUG, "Summit: I got Match History!");
-		$log->write();
-		//$out = "<p>" . implode("</p><p>",$matchData) . "</p>";
+		$log->add(Log::DEBUG, "Summit: I got the match list!");
 
-		//$db->add_match_list($matchData);
+		$db->add_match_list($matchData);
+
+		$log->add(Log::DEBUG, "Summit: I added the match list!");
 		//$log->add(Log::DEBUG, "Summit: I added the Match History to the database!");
 		//$log->write();
-		//$out = "<p>[" . implode("][",$db->get_match_list($criteria)) . "]</p>";
 
-
-
-		for ($i = 0; $i < count($matchData); $i++) {
-				$matchData[$i] = $this->nicify_match_data($matchData[$i]);
+		foreach($matchData as $key => $value) {
+		//for ($i = 0; $i < count($matchData); $i++) {
+				$matchData[$key] = $this->nicify_match_data($value);
 		}
 
-		$log->add(Log::DEBUG, "Summit: I nicified!");
-		$log->write();
-
-		$out = $matchData;
-
-		$view->output = $out;
-
-		$this->add_javascript("playerId", $session->get('userId'));
-		$this->add_javascript("lastMatchId", $matchData[count($matchData)-1]['matchId']);
-
-        $generated_view = $view->render();
-		$this->add_header();
-        $this->add_view_content($generated_view);
+		$this->response->body(json_encode($matchData));
 	}
 
 
@@ -100,9 +85,10 @@ class Controller_Matches extends Controller_DotaTrack {
 		$view->titles = $titles;
 
 		//MatchList to MatchesPage fun table output
-
-
 		//as clickable links to Match page DotaTrack/Match/index/id#	url::base()
+
+		$this->add_javascript("playerId", $session->get('userId'));
+		//$this->add_javascript("lastMatchId", $matchData[count($matchData)-1]['matchId']);
 
         $generated_view = $view->render();
 

@@ -480,6 +480,8 @@ class Model_DotaTrack extends Model {
 			}
 		}
 
+
+
 		$sanitizedMatchData = $this->whitelist_general($matchData, $this->matchDataWhitelist);
 
 		return $sanitizedMatchData;
