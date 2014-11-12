@@ -153,7 +153,7 @@ INSERT INTO `hero` (`heroId`, `heroName`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `matches` (
-  `matchId` int(10) NOT NULL,
+  `matchId` bigint(10) NOT NULL,
   `skillLevel` int(1) NOT NULL,
   `duration` int(1) NOT NULL,
   `result` tinyint(1) NOT NULL,
@@ -219,8 +219,8 @@ INSERT INTO `mode` (`id`, `name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `performance` (
   `performanceId` int(11) NOT NULL AUTO_INCREMENT,
-  `matchId` int(11) NOT NULL,
-  `playerId` int(11) NOT NULL,
+  `matchId` bigint(11) NOT NULL,
+  `playerId` bigint(11) NOT NULL,
   `level` int(11) NOT NULL DEFAULT '0',
   `hero` int(11) NOT NULL DEFAULT '0',
   `kills` int(11) DEFAULT NULL,
@@ -265,7 +265,7 @@ INSERT INTO `performance` (`performanceId`, `matchId`, `playerId`, `level`, `her
 --
 
 CREATE TABLE IF NOT EXISTS `player` (
-  `playerId` int(11) NOT NULL,
+  `playerId` bigint(11) NOT NULL,
   `profileName` varchar(30) DEFAULT NULL,
   `avatarUrl` varchar(55) DEFAULT NULL,
   PRIMARY KEY (`playerId`)
