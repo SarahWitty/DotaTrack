@@ -38,6 +38,7 @@ class Controller_Matches extends Controller_DotaTrack {
 				$matchData[$key] = $this->nicify_match_data($value);
 		}
 
+		$this->response->headers(array("Content-Type" => "application/json"));
 		$this->response->body(json_encode($matchData));
 	}
 
