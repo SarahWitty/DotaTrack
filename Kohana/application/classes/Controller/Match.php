@@ -28,6 +28,7 @@ class Controller_Match extends Controller_DotaTrack {
 
 		$this->add_header();
 		$this->add_view_content($view->render());
+		$this->render_template();
 	}
 }
 
