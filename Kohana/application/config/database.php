@@ -18,10 +18,11 @@ return array
 			 *
 			 * Ports and sockets may be appended to the hostname.
 			 */
+			'dsn'        => 'mysql:host=localhost;dbname=dotatrack',
 			'hostname'   => 'localhost',
 			'database'   => 'dotatrack',
-			'username'   => 'username', //Put your own username here.
-			'password'   => 'password', //Put your own password here.
+			'username'   => 'michaeleaton', //Put your own username here.
+			'password'   => 'Eaton9472', //Put your own password here.
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',
@@ -39,7 +40,7 @@ return array
 			 * string   password    database password
 			 * boolean  persistent  use persistent connections?
 			 */
-			'dsn'        => 'mysql:host=localhost;dbname=kohana',
+			'dsn'        => 'mysql:host=localhost;dbname=dotatrack',
 			'username'   => 'root',
 			'password'   => 'r00tdb',
 			'persistent' => FALSE,
