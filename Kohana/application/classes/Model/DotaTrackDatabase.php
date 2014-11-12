@@ -147,30 +147,28 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		$log = Log::instance();
 		foreach($matchList as $match){
 			$log->add(Log::DEBUG, "Sarah: Adding match (".$match['matchId'].")");
-			$matches = ORM::factory('ORM_Match');
-			if($matches->loaded()){
+			$matches = ORM::factory('ORM_Match',$match['matchId']);
+			if(!$matches->loaded())
+			{
 				$matches
 					->values($match, array('matchId','skillLevel','duration','result','gameMode','region','date','matchType'))
 					->create();
-			}
-			foreach($match['playerPerformance'] as $perform){
-				$log->add(Log::DEBUG, "Sarah:     Adding performance (".$perform['playerId'].")");
-				$performance = ORM::factory('ORM_Performance');
-				$player = ORM::factory('ORM_Player', $perform['playerId']);
+				foreach($match['playerPerformance'] as $perform){
+					$performance = ORM::factory('ORM_Performance');
+					$player = ORM::factory('ORM_Player', $perform['playerId']);
 
-				if($performance->loaded()){
 					$performance->matchId = $matches->matchId;
 
 					$performance
 						->values($perform)->create();
-				}
 
-				if($player->loaded()){
-					$player->playerId = $perform['playerId'];
-					$player->save();
+					if(!$player->loaded())
+					{
+						$player->playerId = $perform['playerId'];
+						$player->save();
+						//$player->values($perform)->create();
+					}
 				}
-				//$player->values($perform)->create();
-
 			}
 		}
 		return true;

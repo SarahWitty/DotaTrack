@@ -4,7 +4,7 @@ class Model_ORM_Performance extends ORM
 {
 	protected $_table_name = 'performance';
 	protected $_primary_key = 'performanceId';
-	
+
 	protected $_has_one = array(
 		'Player' => array(
 			'model' => 'ORM_Player',
@@ -14,8 +14,8 @@ class Model_ORM_Performance extends ORM
 			'model' => 'ORM_Match',
 			'foreign_key' => 'matchId',
 		),
-	);	
-	
+	);
+
 	protected $_table_columns = array(
 		'performanceId' => array('type'=>'int'),
 		'matchId' =>  array('type'=>'int'),
@@ -39,12 +39,12 @@ class Model_ORM_Performance extends ORM
 		'item5' =>  array('type'=>'int'),
 		'slot' => array('type'=>'int'),
 	);
-	
+
 	public function rules(){
 		return array(
-			'performanceId' => array(
+			/*'performanceId' => array(
 				array('not_empty'),
-			),
+			),*/
 			'matchId' => array(
 				array('not_empty'),
 				array('min_length', array(':value', 1)),
@@ -73,7 +73,7 @@ class Model_ORM_Performance extends ORM
 			),
 			'denies' => array(
 				array('not_empty'),
-			),	
+			),
 			'xpm' => array(
 				array('not_empty'),
 			),
@@ -91,19 +91,19 @@ class Model_ORM_Performance extends ORM
 			),
 			'item1' => array(
 				array('not_empty'),
-			),	
+			),
 			'item2' => array(
 				array('not_empty'),
-			),	
+			),
 			'item3' => array(
 				array('not_empty'),
-			),	
+			),
 			'item4' => array(
 				array('not_empty'),
 			),
 			'item5' => array(
 				array('not_empty'),
-			),				
+			),
 		);
 	}
 }
