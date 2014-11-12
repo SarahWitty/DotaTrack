@@ -22,9 +22,13 @@ class Controller_Matches extends Controller_DotaTrack {
 		$log->add(Log::DEBUG, "Summit: I created the Model Factory for API and DotaTrackDatabase!");
 		$log->write();
 
-		$criteria = array(array("playerId","=",$session->get('userId')));
+		//$criteria = array(array("playerId","=",$session->get('userId')));
+		$criteria = array(array("playerId","=","16373900"));
 		$matchData = $api->get_match_history($criteria);
-
+		
+		//$criteria = array(array("playerId","=","16373900"));
+		//$matchData = $db->get_match_list($criteria);
+		
 		$log->add(Log::DEBUG, "Summit: I got Match History!");
 		$log->write();
 		//$out = "<p>" . implode("</p><p>",$matchData) . "</p>";
@@ -37,6 +41,8 @@ class Controller_Matches extends Controller_DotaTrack {
 
 
 		for ($i = 0; $i < count($matchData); $i++) {
+		//foreach($matchData as $key => $value) {
+				//$matchData[$key] = $this->nicify_match_data($matchData[$key]);
 				$matchData[$i] = $this->nicify_match_data($matchData[$i]);
 		}
 
@@ -48,7 +54,7 @@ class Controller_Matches extends Controller_DotaTrack {
 		$view->output = $out;
 
 		$this->add_javascript("playerId", $session->get('userId'));
-		$this->add_javascript("lastMatchId", $matchData[count($matchData)-1]['matchId']);
+		//$this->add_javascript("lastMatchId", $matchData[count($matchData)-1]['matchId']);
 
         $generated_view = $view->render();
 		$this->add_header();

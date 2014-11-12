@@ -35,6 +35,15 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		return $mode_array;
 	}
 	
+	protected function internal_get_lobby_data($lobbyId)
+	{
+		$lobby = ORM::factory('ORM_Lobby', $lobbyId);
+		$lobby_array = array();
+		$lobby_array = $lobby->as_array();
+		
+		return $lobby_array;
+	}
+	
 	protected function internal_get_match_list($criteria)
 	{
 		$query = DB::select()->from('matches')

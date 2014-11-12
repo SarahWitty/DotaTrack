@@ -61,6 +61,16 @@ class Controller_DotaTrack extends Controller_Template {
 		
 		$db = Model::Factory('DotaTrackDatabase');
 		$matchData['gameMode'] = $db->get_mode_data($matchData['gameMode'])['name'];
+		$matchData['matchType'] = $db->get_lobby_data($matchData['matchType'])['name'];
+		$matchData['date'] = date("j M Y G:i:s", $matchData['date']);
+		if ($matchData['duration'] >= 3600) {
+			$matchData['duration'] = gmdate("H:i:s", $matchData['duration']);
+		}
+		else {
+			$matchData['duration'] = gmdate("i:s", $matchData['duration']);
+		}
+		// DD MON YEAR HR:MI:SE
+		
 		//$matchData['hero'] = $db->get_hero_data($matchData['hero']);
 		return $matchData;
 	}
