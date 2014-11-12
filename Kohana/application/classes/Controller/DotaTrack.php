@@ -1,7 +1,7 @@
 <?php  defined('SYSPATH') or die('No direct script access.');
 
-class Controller_DotaTrack extends Controller_Template {
-	public $template = "dotatrack_template";
+class Controller_DotaTrack extends Controller {
+	public $template;
 
 	protected function add_header()
 	{
@@ -21,14 +21,22 @@ class Controller_DotaTrack extends Controller_Template {
 	 */
 	protected function add_view_content($content)
 	{
-		if(isset($this->template->body))
+		if(isset($this->template))
 		{
 			$this->template->body .= $content;
 		}
 		else
 		{
+			$this->template = View::factory('dotatrack_template');
 			$this->template->body = $content;
 		}
+	}
+
+	protected function render_template()
+	{
+		$rendered = $this->template->render();
+
+		$this->response->body($rendered);
 	}
 
 	protected function add_javascript($key, $value)
@@ -58,7 +66,6 @@ class Controller_DotaTrack extends Controller_Template {
 	 */
 	protected function nicify_match_data($matchData)
 	{
-		
 		$db = Model::Factory('DotaTrackDatabase');
 		$matchData['gameMode'] = $db->get_mode_data($matchData['gameMode'])['name'];
 		//$matchData['hero'] = $db->get_hero_data($matchData['hero']);

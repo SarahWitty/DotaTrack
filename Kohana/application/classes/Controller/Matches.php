@@ -108,6 +108,7 @@ class Controller_Matches extends Controller_DotaTrack {
 
 		$this->add_header();
         $this->add_view_content($generated_view);
+		$this->render_template();
 	}
 }
 
