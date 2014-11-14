@@ -70,43 +70,82 @@ class Controller_DotaTrack extends Controller {
 	{
 		$db = Model::Factory('DotaTrackDatabase');
 		
-		if ($matchData['result'] === 0) {
-			$matchData['result'] = "Radiant Victory";
-		}
-		else {
-			$matchData['result'] = "Dire Victory";
+		// Nicify Result
+		if (isset($matchData['result'])) {
+			if ($matchData['result'] === 0) {
+				$matchData['result'] = "Radiant Victory";
+			}
+			else {
+				$matchData['result'] = "Dire Victory";
+			}
 		}
 		
 		// Nicify Game Mode
-		$matchData['gameMode'] = $db->get_mode_data($matchData['gameMode'])['name'];
-		
+		if (isset($matchData['gameMode'])) {
+			$matchData['gameMode'] = $db->get_mode_data($matchData['gameMode'])['name'];
+		}
+			
 		// Nicify Match Type
-		$matchData['matchType'] = $db->get_lobby_data($matchData['matchType'])['name'];
+		if (isset($matchData['matchType'])) {
+			$matchData['matchType'] = $db->get_lobby_data($matchData['matchType'])['name'];
+		}
 		
 		// Nicify Date
-		$matchData['date'] = date("j M Y G:i:s", $matchData['date']);
+		if (isset($matchData['date'])) {
+			$matchData['date'] = date("j M Y G:i:s", $matchData['date']);
+		}
 		
 		// Nicify Duration
-		if ($matchData['duration'] >= 3600) {
-			$matchData['duration'] = gmdate("H:i:s", $matchData['duration']);
-		}
-		else {
-			$matchData['duration'] = gmdate("i:s", $matchData['duration']);
+		if (isset($matchData['duration'])) {
+			if ($matchData['duration'] >= 3600) {
+				$matchData['duration'] = gmdate("H:i:s", $matchData['duration']);
+			}
+			else {
+				$matchData['duration'] = gmdate("i:s", $matchData['duration']);
+			}
 		}
 		
 		// Nicify Performance
-		foreach ($matchData['playerPerformance'] as $key => $value) {
-			// Nicify Items
-			$matchData['playerPerformance'][$key]['item0'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item0'] . ".png' alt='" . $db->get_item_data($value['item0'])['name'] . "\'></div>";
-			$matchData['playerPerformance'][$key]['item1'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item1'] . ".png' alt='" . $db->get_item_data($value['item1'])['name'] . "\'></div>";
-			$matchData['playerPerformance'][$key]['item2'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item2'] . ".png' alt='" . $db->get_item_data($value['item2'])['name'] . "\'></div>";
-			$matchData['playerPerformance'][$key]['item3'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item3'] . ".png' alt='" . $db->get_item_data($value['item3'])['name'] . "\'></div>";
-			$matchData['playerPerformance'][$key]['item4'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item4'] . ".png' alt='" . $db->get_item_data($value['item4'])['name'] . "\'></div>";
-			$matchData['playerPerformance'][$key]['item5'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item5'] . ".png' alt='" . $db->get_item_data($value['item5'])['name'] . "\'></div>";
-			
-			// Nicify Heroes
-			
-			$matchData['playerPerformance'][$key]['hero'] = "<div class='hero'><img src='" . URL::base() . "resources/images/heroIcons/" . $value['hero'] . ".png' alt='" . $db->get_hero_data($value['hero'])['heroName'] . "\'></div>";
+		if (isset($matchData['playerPerformance'])) {
+			foreach ($matchData['playerPerformance'] as $key => $value) {
+				// Nicify Items 0-5
+				$matchData['playerPerformance'][$key]['item0'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item0'] . ".png' alt='" . $db->get_item_data($value['item0'])['name'] . "\'></div>";
+				$matchData['playerPerformance'][$key]['item1'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item1'] . ".png' alt='" . $db->get_item_data($value['item1'])['name'] . "\'></div>";
+				$matchData['playerPerformance'][$key]['item2'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item2'] . ".png' alt='" . $db->get_item_data($value['item2'])['name'] . "\'></div>";
+				$matchData['playerPerformance'][$key]['item3'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item3'] . ".png' alt='" . $db->get_item_data($value['item3'])['name'] . "\'></div>";
+				$matchData['playerPerformance'][$key]['item4'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item4'] . ".png' alt='" . $db->get_item_data($value['item4'])['name'] . "\'></div>";
+				$matchData['playerPerformance'][$key]['item5'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item5'] . ".png' alt='" . $db->get_item_data($value['item5'])['name'] . "\'></div>";
+				
+				// Nicify Heroes
+				
+				$matchData['playerPerformance'][$key]['hero'] = "<div class='hero'><img src='" . URL::base() . "resources/images/heroIcons/" . $value['hero'] . ".png' alt='" . $db->get_hero_data($value['hero'])['heroName'] . "\'></div>";
+			}
+		}
+		
+		
+		// Nicify Items 0-5 (if outside of playerPerformance context)
+		if (isset($matchData['item0'])) {
+			$matchData['item0'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $matchData['item0'] . ".png' alt='" . $db->get_item_data($matchData['item0'])['name'] . "\'></div>";
+		}
+		if (isset($matchData['item1'])) {
+			$matchData['item1'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $matchData['item1'] . ".png' alt='" . $db->get_item_data($matchData['item1'])['name'] . "\'></div>";
+		}
+		if (isset($matchData['item2'])) {
+			$matchData['item2'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $matchData['item2'] . ".png' alt='" . $db->get_item_data($matchData['item2'])['name'] . "\'></div>";
+		}
+		if (isset($matchData['item3'])) {
+			$matchData['item3'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $matchData['item3'] . ".png' alt='" . $db->get_item_data($matchData['item3'])['name'] . "\'></div>";
+		}
+		if (isset($matchData['item4'])) {
+			$matchData['item4'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $matchData['item4'] . ".png' alt='" . $db->get_item_data($matchData['item4'])['name'] . "\'></div>";
+		}
+		if (isset($matchData['item5'])) {
+			$matchData['item5'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $matchData['item5'] . ".png' alt='" . $db->get_item_data($matchData['item5'])['name'] . "\'></div>";
+		}
+		
+		// Nicify Heroes (if outside of playerPerformance context)
+		if (isset($matchData['hero'])) {
+			$matchData['hero'] = "<div class='hero'><img src='" . URL::base() . "resources/images/heroIcons/" . $matchData['hero'] . ".png' alt='" . $db->get_hero_data($matchData['hero'])['heroName'] . "\'></div>";
 		}
 		
 		return $matchData;
