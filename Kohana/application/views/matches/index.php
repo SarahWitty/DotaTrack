@@ -12,7 +12,11 @@
 	}
 	?>
 	</tr>
-	<tr>
+	<tr id="loading">
+		<td colspan="7">
+			<div>Loading...</div>
+		</td>
+	</tr>
 	<?php
 	foreach($statistics as $static) {
 		$counter = 0;
@@ -34,6 +38,5 @@
 	?></tr><?php
 	}
 	?>
-	</tr>
 </table>
 <div id="ourTest"></div>
