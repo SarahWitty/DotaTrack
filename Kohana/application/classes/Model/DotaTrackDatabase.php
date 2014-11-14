@@ -44,6 +44,15 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		return $lobby_array;
 	}
 
+	protected function internal_get_item_data($itemId)
+	{
+		$item = ORM::factory('ORM_Item', $itemId);
+		$item_array = array();
+		$item_array = $item->as_array();
+
+		return $item_array;
+	}
+	
 	protected function internal_get_match_list($criteria)
 	{
 		$query = DB::select()->from('matches')

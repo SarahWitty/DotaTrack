@@ -15,6 +15,7 @@
 	<?php
 	foreach($statistics as $static) {
 		$counter = 0;
+		echo "<tr>";
 		foreach($static as $property=>$value){
 			if($counter == 0){
 				?> 
@@ -29,6 +30,7 @@
 	<?php
 			}
 		}
+		echo "</tr>";
 	}
 	?>
 	</tr>

@@ -67,18 +67,51 @@ class Controller_DotaTrack extends Controller {
 	protected function nicify_match_data($matchData)
 	{
 		$db = Model::Factory('DotaTrackDatabase');
+		
+		if ($matchData['result'] === 0) {
+			$matchData['result'] = "Radiant Victory";
+		}
+		else {
+			$matchData['result'] = "Dire Victory";
+		}
+		
+		// Nicify Game Mode
 		$matchData['gameMode'] = $db->get_mode_data($matchData['gameMode'])['name'];
-		//$matchData['matchType'] = $db->get_lobby_data($matchData['matchType'])['name'];
+		
+		// Nicify Match Type
+		$matchData['matchType'] = $db->get_lobby_data($matchData['matchType'])['name'];
+		
+		// Nicify Date
 		$matchData['date'] = date("j M Y G:i:s", $matchData['date']);
+		
+		// Nicify Duration
 		if ($matchData['duration'] >= 3600) {
 			$matchData['duration'] = gmdate("H:i:s", $matchData['duration']);
 		}
 		else {
 			$matchData['duration'] = gmdate("i:s", $matchData['duration']);
 		}
-		// DD MON YEAR HR:MI:SE
-
-		//$matchData['hero'] = $db->get_hero_data($matchData['hero']);
+		
+		// Nicify Performance
+		foreach ($matchData['playerPerformance'] as $key => $value) {
+			// Nicify Items
+			$matchData['playerPerformance'][$key]['item0'] = $db->get_item_data($value['item0'])['name'];
+			$matchData['playerPerformance'][$key]['item1'] = $db->get_item_data($value['item1'])['name'];
+			$matchData['playerPerformance'][$key]['item2'] = $db->get_item_data($value['item2'])['name'];
+			$matchData['playerPerformance'][$key]['item3'] = $db->get_item_data($value['item3'])['name'];
+			$matchData['playerPerformance'][$key]['item4'] = $db->get_item_data($value['item4'])['name'];
+			$matchData['playerPerformance'][$key]['item5'] = $db->get_item_data($value['item5'])['name'];
+			
+			// $key['item1'] = $db->get_item_data($key['item1'])['name'];
+			// $key['item2'] = $db->get_item_data($key['item2'])['name'];
+			// $key['item3'] = $db->get_item_data($key['item3'])['name'];
+			// $key['item4'] = $db->get_item_data($key['item4'])['name'];
+			// $key['item5'] = $db->get_item_data($key['item5'])['name'];
+			
+			// Nicify Heroes
+			$matchData['playerPerformance'][$key]['hero'] = $db->get_hero_data($value['hero'])['heroName'];
+		}
+		
 		return $matchData;
 	}
 }

@@ -216,6 +216,24 @@ class Model_DotaTrack extends Model {
 		return $this->internal_get_lobby_data($lobbyId);
 	}
 	/**
+	* Gets all the data for item0-item5.
+	*
+	* DONT OVERRIDE THIS. Use the internal_get_item_data() function instead.
+	* That will allow us to do security checking in these functions so you
+	* don't have to worry about it.
+	*
+	* @param $itemId The integer ID of the item which should be returned.
+	*
+	*@return An associative array containing all the information about this item.
+	*/
+	public function get_item_data($itemId)
+	{
+		if(!$itemId){
+			return null;
+		}
+		return $this->internal_get_item_data($itemId);
+	}
+	/**
 	 * Gets all the data for a list of matches meeting the given criteria.
 	 *
 	 * DON'T OVERRIDE THIS. Use the internal_get_match_data() function instead.

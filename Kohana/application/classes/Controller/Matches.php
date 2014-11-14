@@ -20,8 +20,8 @@ class Controller_Matches extends Controller_DotaTrack {
 		$api = Model::Factory('Api');
 		$db = Model::Factory('DotaTrackDatabase');
 
-		//$criteria = array(array("playerId","=",$session->get('userId')));
-		$criteria = array(array("playerId","=","16373900"));
+		$criteria = array(array("playerId","=",$session->get('userId')));
+		//$criteria = array(array("playerId","=","16373900"));
 		$matchData = $api->get_match_history($criteria);
 		//$matchData = $db->get_match_list($criteria);
 
@@ -34,8 +34,7 @@ class Controller_Matches extends Controller_DotaTrack {
 		//$log->write();
 
 		foreach($matchData as $key => $value) {
-		//for ($i = 0; $i < count($matchData); $i++) {
-				$matchData[$key] = $this->nicify_match_data($value);
+			$matchData[$key] = $this->nicify_match_data($value);
 		}
 
 		$this->response->headers(array("Content-Type" => "application/json"));

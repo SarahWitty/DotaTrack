@@ -143,7 +143,7 @@ class Model_Api extends Model
 			}
 		}
 		
-		for ($i = 0; $i < 1; $i++) {
+		for ($i = 0; $i < 6; $i++) {
 			//Get list of new IDs
 			$newIds = $this->get_match_ids($playerId,$startingMatchId);
 			
