@@ -1347,9 +1347,12 @@ class Model_DotaTrack extends Model {
 	protected function internal_get_statistics($projection, $criteria)
 	{
 		return array(
-			array("2013-11-10 00:00:00", 22),
-			array("2013-11-10 02:06:00", 18),
-			array("2013-11-10 03:42:00", 30)
+			array("date" => "2013-11-10 00:00:00",
+					"kills" => 22),
+			array("date" => "2013-11-10 02:06:00",
+					"kills" => 18),
+			array("date" => "2013-11-10 03:42:00", 
+					"kills" => 30)
 			);
 	}
 

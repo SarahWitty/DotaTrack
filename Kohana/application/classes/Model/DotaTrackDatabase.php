@@ -2,6 +2,8 @@
 
 class Model_DotaTrackDatabase extends Model_DotaTrack
 {
+	private $ambiguousFields = array('matchId');
+
 	//join to performance table through matchId
 	protected function internal_get_match_data($matchId)
 	{
@@ -61,6 +63,11 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 			$field = $requirementArray[0];
 			$operand = $requirementArray[1];
 			$value = $requirementArray[2];
+	
+			if(in_array($field, $this->ambiguousFields))
+			{
+				$field = "matches.$field";
+			}
 
 			$query = $query->where($field, $operand, $value);
 		}
@@ -124,6 +131,11 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 			$operand = $requirementArray[1];
 			$value = $requirementArray[2];
 
+			if(in_array($field, $this->ambiguousFields))
+			{
+				$field = "matches.$field";
+			}
+
 			$query = $query->where($field, $operand, $value);
 		}
 
@@ -138,8 +150,8 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		foreach($results as $result) {
 			$record_array = array();
 			foreach($projection as $selected => $order){
-				//$record_array[$selected] = $result[$selected];
-				array_push($record_array, $result[$selected]);
+				$record_array[$selected] = $result[$selected];
+				//array_push($record_array, $result[$selected]);
 			}
 			array_push($results_array, $record_array);
 		}
