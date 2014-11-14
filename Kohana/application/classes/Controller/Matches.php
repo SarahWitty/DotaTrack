@@ -12,26 +12,17 @@ class Controller_Matches extends Controller_DotaTrack {
 		$view = View::Factory('matches/index1');
 
 		$session = Session::instance();
-		$log = Log::instance();
-
-		$log->add(Log::DEBUG, "Summit: I got to the Matches page!");
-		$log->write();
 
 		$api = Model::Factory('Api');
 		$db = Model::Factory('DotaTrackDatabase');
 
 		$criteria = array(array("playerId","=",$session->get('userId')));
-		//$criteria = array(array("playerId","=","16373900"));
+
 		$matchData = $api->get_match_history($criteria);
 		//$matchData = $db->get_match_list($criteria);
 
-		$log->add(Log::DEBUG, "Summit: I got the match list!");
 
 		$db->add_match_list($matchData);
-
-		$log->add(Log::DEBUG, "Summit: I added the match list!");
-		//$log->add(Log::DEBUG, "Summit: I added the Match History to the database!");
-		//$log->write();
 
 		foreach($matchData as $key => $value) {
 			$matchData[$key] = $this->nicify_match_data($value);
@@ -89,7 +80,7 @@ class Controller_Matches extends Controller_DotaTrack {
 		//as clickable links to Match page DotaTrack/Match/index/id#	url::base()
 
 		$this->add_javascript("playerId", $session->get('userId'));
-		//$this->add_javascript("lastMatchId", $matchData[count($matchData)-1]['matchId']);
+		$this->add_javascript("lastMatchId", count($result)? $result[count($result)-1][0]: 0);
 
         $generated_view = $view->render();
 

@@ -34,6 +34,7 @@ class Controller_DotaTrack extends Controller {
 
 	protected function render_template()
 	{
+		$this->write_javascript();
 		$rendered = $this->template->render();
 
 		$this->response->body($rendered);
@@ -51,7 +52,7 @@ class Controller_DotaTrack extends Controller {
 	protected function write_javascript()
 	{
 		$javascriptVars = Session::instance()->get('javascriptVariables', array());
-		$this->javascript = "var server = ".json_encode($javascriptVars).";";
+		$this->template->javascript = "var server = ".json_encode($javascriptVars).";";
 	}
 
 	/**
