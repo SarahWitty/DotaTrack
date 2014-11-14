@@ -23,6 +23,12 @@ a:visited {
 	overflow: hidden;
 }
 
+.hero {
+	height: 72px;
+	width: 128px;
+	overflow: hidden;
+}
+
 #logo {
 	background-image:url("../images/DotaTrack.png");
 	background-repeat:no-repeat;

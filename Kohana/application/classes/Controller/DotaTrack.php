@@ -105,7 +105,8 @@ class Controller_DotaTrack extends Controller {
 			$matchData['playerPerformance'][$key]['item5'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item5'] . ".png' alt='" . $db->get_item_data($value['item5'])['name'] . "\'></div>";
 			
 			// Nicify Heroes
-			$matchData['playerPerformance'][$key]['hero'] = $db->get_hero_data($value['hero'])['heroName'];
+			
+			$matchData['playerPerformance'][$key]['hero'] = "<div class='hero'><img src='" . URL::base() . "resources/images/heroIcons/" . $value['hero'] . ".png' alt='" . $db->get_hero_data($value['hero'])['heroName'] . "\'></div>";
 		}
 		
 		return $matchData;
