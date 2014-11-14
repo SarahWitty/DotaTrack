@@ -228,7 +228,7 @@ class Model_DotaTrack extends Model {
 	*/
 	public function get_item_data($itemId)
 	{
-		if(!$itemId){
+		if($itemId < 0){
 			return null;
 		}
 		return $this->internal_get_item_data($itemId);

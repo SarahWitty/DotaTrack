@@ -17,6 +17,12 @@ a:visited {
 	color: grey;
 }
 
+.item {
+	height: 62px;
+	width: 88px;
+	overflow: hidden;
+}
+
 #logo {
 	background-image:url("../images/DotaTrack.png");
 	background-repeat:no-repeat;
