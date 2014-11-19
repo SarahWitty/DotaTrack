@@ -192,12 +192,12 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 					$performance
 						->values($perform)->create();
 
-					if(!$player->loaded())
-					{
-						$player->playerId = $perform['playerId'];
-						$player->save();
-						//$player->values($perform)->create();
-					}
+					// if(!$player->loaded())
+					// {
+						// $player->playerId = $perform['playerId'];
+						// $player->save();
+						// $player->values($perform)->create();
+					// }
 				}
 			}
 		}

@@ -20,7 +20,7 @@
 	<?php
 	foreach($statistics as $static) {
 		$counter = 0;
-		?><tr><?php
+		?><tr onclick="window.location = '<?php echo URL::base() ?>Match/index/<?=$static['matchId']?>'"><?php
 		foreach($static as $property=>$value){
 			if($counter == 0){
 				?> 

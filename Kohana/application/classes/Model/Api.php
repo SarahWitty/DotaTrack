@@ -120,6 +120,7 @@ class Model_Api extends Model
 	// https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v001/ //Base URL
 	//   ?key=448EF5FD8D44DDC1C6A6B07437D20FFE                            //Key
 	//   &player_id=<playerId>                                            //PlayerID
+	//	 &matches_requested=<num_matches>								  //Number of Matches requested
 	public function get_match_history($criteria) {
 	
 		
@@ -130,25 +131,31 @@ class Model_Api extends Model
 		$startingMatchId = -1;	 // The match ID at which to start the search Default: -1
 		$latestMatch = -1;		 // The most recent match that is stored in the database. Ignore
 								 //       all matches past this point. -1 if not necessary.
-		$newIds;				 // The return of each request. This will be sent to a search
+		$newIds = 1;			 // The return of each request. This will be sent to a search
 								 // 	  function that will make sure that we need these ids
+								 //		  Default: 1 so it passes into the while loop. This will
+								 //		  be overwritten.
+		$matchesRequested = -1;  // The number of matches we should ask for in each request
 		
 		//echo "start time: ";
 		//echo date("D M d, Y G:i a");
 		
 		// Parse criteria
 		foreach( $criteria as $value) {
-			if ($value[0] == "playerId") {
+			if ($value[0] === "playerId") {
 				$playerId = $value[2];
 			}
-			if ($value[0] == "matchId") {
+			if ($value[0] === "matchId") {
 				$latestMatch = $value[2];
+			}
+			if ($value[0] === "matchesRequested") {
+				$matchesRequested = $value[2];
 			}
 		}
 		
-		for ($i = 0; $i < 6; $i++) {
+		while (!empty($newIds)) {
 			//Get list of new IDs
-			$newIds = $this->get_match_ids($playerId,$startingMatchId);
+			$newIds = $this->get_match_ids($playerId,$startingMatchId, $matchesRequested);
 			
 			//If we are updating the database and don't necessarily need all the match IDs
 			if ($latestMatch != -1 && !empty($newIds)) {
@@ -291,7 +298,7 @@ class Model_Api extends Model
 	}
 	
 	
-	private function get_match_ids($playerId, $startingMatchId) {
+	private function get_match_ids($playerId, $startingMatchId, $matchesRequested) {
 		$ids = array();
 	
 		// Set Request address
@@ -299,6 +306,9 @@ class Model_Api extends Model
 		// Add the option for finding matches past the first page if necessary
 		if ($startingMatchId != -1) {
 			$requestAddress = $requestAddress . "&start_at_match_id=$startingMatchId";
+		}
+		if ($matchesRequested != -1) {
+			$requestAddress = $requestAddress . "&matches_requested=$matchesRequested";
 		}
 		
 		// Send request to parser

@@ -22,8 +22,23 @@ class Controller_Matches extends Controller_DotaTrack {
 		);
 
 		$matchData = $api->get_match_history($criteria);
-		//$matchData = $db->get_match_list($criteria);
-
+		
+		
+		// Add player tuples to the databases
+		foreach($matchData as $match) {
+			if (isset($match['playerPerformance'])) {
+				foreach($match['playerPerformance'] as $perform) {
+					$player = ORM::factory('ORM_Player', $perform['playerId']);
+					
+					if(!$player->loaded())
+					{
+						$player->playerId = $perform['playerId'];
+						$player->save();
+						//$player->values($perform)->create();
+					}
+				}
+			}
+		}
 
 		$db->add_match_list($matchData);
 
@@ -87,6 +102,10 @@ class Controller_Matches extends Controller_DotaTrack {
 		//die(Debug::vars($criteria));
 
 		$result = $model->get_statistics($projection, $criteria);
+		
+		foreach($result as $key => $value) {
+			$result[$key] = $this->nicify_match_data($value);
+		}
 		//die(Debug::vars($result));
 
 		$view->statistics = $result;
