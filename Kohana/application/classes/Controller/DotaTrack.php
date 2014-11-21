@@ -72,7 +72,7 @@ class Controller_DotaTrack extends Controller {
 		
 		// Nicify Result
 		if (isset($matchData['result'])) {
-			if ($matchData['result'] === 0) {
+			if ($matchData['result'] == 0) {
 				$matchData['result'] = "Radiant Victory";
 			}
 			else {
@@ -150,6 +150,8 @@ class Controller_DotaTrack extends Controller {
 		
 		return $matchData;
 	}
+	
+	
 }
 
 ?>

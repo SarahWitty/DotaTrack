@@ -122,7 +122,7 @@ class Model_Api extends Model
 	//   &player_id=<playerId>                                            //PlayerID
 	//	 &matches_requested=<num_matches>								  //Number of Matches requested
 	public function get_match_history($criteria) {
-	
+		$log = Log::instance();
 		
 		// Variable instantiation
 		$matchIds = array();     // The list of matches we need to grab
@@ -142,29 +142,36 @@ class Model_Api extends Model
 		
 		// Parse criteria
 		foreach( $criteria as $value) {
-			if ($value[0] === "playerId") {
+			if ($value[0] == "playerId") {
 				$playerId = $value[2];
 			}
-			if ($value[0] === "matchId") {
+			if ($value[0] == "matchId") {
 				$latestMatch = $value[2];
 			}
-			if ($value[0] === "matchesRequested") {
+			if ($value[0] == "matchesRequested") {
 				$matchesRequested = $value[2];
 			}
 		}
+		
+		$log->add(Log::DEBUG, "API: Criteria loaded.");
+		$log->write();
 		
 		while (!empty($newIds)) {
 			//Get list of new IDs
 			$newIds = $this->get_match_ids($playerId,$startingMatchId, $matchesRequested);
 			
+			$log->add(Log::DEBUG, "API: Just got a set of matchIds.");
+			$log->write();
+			
 			//If we are updating the database and don't necessarily need all the match IDs
 			if ($latestMatch != -1 && !empty($newIds)) {
+				
 				// Check if we need to trash anything from this set of values
 				if ($newIds[0] < $latestMatch) { //if the beginning of the array is already an unneeded id (we've gone past the ones we need)
 					break;
 				}
 				else if (end($newIds) < $latestMatch) { //otherwise, if we do need at least some of the IDs, drop the unneeded ones
-					//$newIds = $this->drop_useless_ids($newIds, $latestMatch);
+					$newIds = $this->drop_useless_ids($newIds, $latestMatch);
 				}
 				//else, this set is fine
 			}
@@ -174,7 +181,18 @@ class Model_Api extends Model
 				// Add the new IDs
 				$matchIds = array_merge($matchIds, $newIds);
 				// Set the search to look for all matches starting at the last match we found
-				$startingMatchId = array_pop($matchIds);
+				
+				$newStartingId = array_pop($matchIds);
+				
+				$log->add(Log::DEBUG, "API: StartingID: " . $startingMatchId . " newStartingID: " . $newStartingId);
+				$log->write();
+				
+				if ($startingMatchId != $newStartingId) {
+					$startingMatchId = $newStartingId;
+				}
+				else {
+					break;
+				}
 			}
 			else {
 			// Otherwise, break out of the for loop, we're done pulling matches
@@ -299,6 +317,7 @@ class Model_Api extends Model
 	
 	
 	private function get_match_ids($playerId, $startingMatchId, $matchesRequested) {
+		$log = Log::instance();
 		$ids = array();
 	
 		// Set Request address
@@ -311,9 +330,20 @@ class Model_Api extends Model
 			$requestAddress = $requestAddress . "&matches_requested=$matchesRequested";
 		}
 		
+		$log->add(Log::DEBUG, "API: Request Address Set:" . $requestAddress);
+		$log->write();
+		
 		// Send request to parser
 		$rawData = json_decode(file_get_contents($requestAddress),true);
+		
+		$log->add(Log::DEBUG, "API: rawData loaded.");
+		$log->write();
+		
 		$ids = $this->parse_ids($rawData['result']);
+		
+		$log->add(Log::DEBUG, "API: rawData parsed.");
+		$log->write();
+		
 		return $ids;
 	}
 	
