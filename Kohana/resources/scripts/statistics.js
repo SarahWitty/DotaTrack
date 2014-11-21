@@ -1,11 +1,11 @@
 $(document).ready(function() {
-	var example = [
+	/*var example = [
 		{matchId: 012345, kills: 50},
 		{matchId: 012346, kills: 13},
 		{matchId: 012347, kills: 1}
 	];
 	var data = transformData(example, "kills");
-	constructGraph("#cows", data);
+	constructGraph("#cows", data);*/
 	
 	//issuing ajax request and putting info in div tags
 	//create date(timestamp) for 6 months ago
@@ -20,10 +20,13 @@ $(document).ready(function() {
 				'projection':{'matchId': 'asc','kills': 'not'},
 				'criteria':[['date', '>', timestamp],['playerId', '=', server['playerId']],['matchType', '!=', '4']]
 			},
-			'method': 'POST'
+			'method': 'POST',
+			dataType: 'json'
 		})
 		.done(function(responce){
 			alert(responce);
+			var data = transformData(responce, "kills");
+			constructGraph("#cows", data);
 			//console.log(responce);
 		})
 		.fail(function(){
