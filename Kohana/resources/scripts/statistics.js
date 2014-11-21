@@ -6,6 +6,29 @@ $(document).ready(function() {
 	];
 	var data = transformData(example, "kills");
 	constructGraph("#cows", data);
+	
+	//issuing ajax request and putting info in div tags
+	//create date(timestamp) for 6 months ago
+	var timestamp = new Date();
+	timestamp.setMonth(timestamp.getMonth() - 6);
+	timestamp = Math.round(timestamp/1000);
+	
+	$.ajax("statistics/populateGraphs",
+		{
+			'data':
+			{
+				'projection':{'matchId': 'asc','kills': 'not'},
+				'criteria':[['date', '>', timestamp],['playerId', '=', server['playerId']],['matchType', '!=', '4']]
+			},
+			'method': 'POST'
+		})
+		.done(function(responce){
+			alert(responce);
+			//console.log(responce);
+		})
+		.fail(function(){
+			
+		});
 });
 
 /**

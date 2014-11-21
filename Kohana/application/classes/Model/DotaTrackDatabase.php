@@ -140,13 +140,20 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 		}
 
 		foreach($projection as $selected => $order){
-			if($order != 'Not')
+			if(in_array($selected, $this->ambiguousFields))
+			{
+				$selected = "matches.$field";
+			}
+		
+			if($order != 'not' && $order != 'Not')
 				$query->order_by($selected, $order);
 		}
-
+		//die(Debug::vars($db->last_query));
+		//die(print_r($query, true));
+		
 		$results = $query->execute()->as_array();
 		$results_array = array();
-
+		
 		foreach($results as $result) {
 			$record_array = array();
 			foreach($projection as $selected => $order){
