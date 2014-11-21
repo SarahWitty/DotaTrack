@@ -12,7 +12,7 @@
 		</script>
 	</head>
 	<body>
-		<div id="logo">
+		<div id="wrapper">
 			<?=$body?>
 		</div>
 	</body>

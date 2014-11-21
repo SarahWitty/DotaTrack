@@ -1,3 +1,5 @@
+/* Mode Menu Styling */
+
 #modeMenu {
 	margin: 0 auto;
 	width: 30em;
@@ -25,4 +27,22 @@
 
 .spacer {
 	clear: both;
+}
+
+/* Player Title Styling */
+
+#playerImage {
+	display: inline;
+}
+
+#playerName {
+	display: inline;
+}
+
+#logoutButton {
+	float: right;
+}
+
+#playerTitle {
+	background-color: rgba(66,66,66, .75);
 }

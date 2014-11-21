@@ -1,7 +1,10 @@
 <link rel="stylesheet" type="text/css" href="<?php echo URL::base(); ?>resources/styles/mainpage.css" />
-<div id="playerTitle">
-	<h1><?=$playerName ?></h1>
+<div id="logoutButton">
 	<a href="<?php echo URL::base(); ?>Login/logout">Logout</a>
+</div>
+<div id="playerTitle">
+	<img id="playerImage" src="<?=$playerImage ?>" alt="Player Image"></img>
+	<h1 id="playerName"><?=$playerName ?></h1>
 </div>
 <div id="modeMenu">
 	<a id="matchesMode" class="modeButton" href="<?php echo URL::base(); ?>matches">
