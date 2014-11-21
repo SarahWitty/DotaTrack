@@ -1,37 +1,41 @@
 $(document).ready(function() {
-	/*var example = [
-		{matchId: 012345, kills: 50},
-		{matchId: 012346, kills: 13},
-		{matchId: 012347, kills: 1}
-	];
-	var data = transformData(example, "kills");
-	constructGraph("#cows", data);*/
-	
 	//issuing ajax request and putting info in div tags
 	//create date(timestamp) for 6 months ago
 	var timestamp = new Date();
 	timestamp.setMonth(timestamp.getMonth() - 6);
 	timestamp = Math.round(timestamp/1000);
-	
-	$.ajax("statistics/populateGraphs",
-		{
-			'data':
+
+	var matchGraph = function(column, selector) {
+		var dataObject = {
+			'projection':{'matchId': 'asc'},
+			'criteria':[['date', '>', timestamp],['playerId', '=', server['playerId']],['matchType', '!=', '4']]
+		};
+		dataObject.projection[column] = 'not'; // Hack to add custom column to projection
+		$.ajax("statistics/populateGraphs",
 			{
-				'projection':{'matchId': 'asc','kills': 'not'},
-				'criteria':[['date', '>', timestamp],['playerId', '=', server['playerId']],['matchType', '!=', '4']]
-			},
-			'method': 'POST',
-			dataType: 'json'
-		})
-		.done(function(responce){
-			alert(responce);
-			var data = transformData(responce, "kills");
-			constructGraph("#cows", data);
-			//console.log(responce);
-		})
-		.fail(function(){
-			
-		});
+				'data': dataObject,
+				'method': 'POST',
+				dataType: 'json'
+			})
+			.done(function(response){
+				console.log(column + ": ");
+				console.log(response);
+				var data = transformData(response, column);
+				constructGraph(selector, data);
+				//console.log(responce);
+			})
+			.fail(function(){
+				console.log("Failed to fetch " + column);
+			});
+	};
+
+	matchGraph("kills", "#kills");
+	matchGraph("deaths", "#deaths");
+	matchGraph("assists", "#assists");
+	matchGraph("lastHits", "#lastHits");
+	matchGraph("denies", "#denies");
+	matchGraph("xpm", "#xpm");
+	matchGraph("gpm", "#gpm");
 });
 
 /**
