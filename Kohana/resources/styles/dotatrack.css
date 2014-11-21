@@ -38,3 +38,7 @@ a:visited {
 	margin-right:auto;
 	height:500px;
 }
+
+.nv-axis text, .nv-legend text {
+	stroke: grey;
+}
