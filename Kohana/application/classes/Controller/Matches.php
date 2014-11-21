@@ -10,24 +10,34 @@ class Controller_Matches extends Controller_DotaTrack {
 
 	public function action_apiCall(){
 		$view = View::Factory('matches/index1');
-
+		$log = Log::instance();
+		
 		$session = Session::instance();
 
 		$api = Model::Factory('Api');
 		$db = Model::Factory('DotaTrackDatabase');
-
+		
+		$log->add(Log::DEBUG, "Summit: Added the models.");
+		$log->write();
+		
 		$criteria = array(
 			array("playerId","=",$session->get('userId')),
 			array("matchId",">",$this->request->param('id', 0))
 		);
-
+		
+		$log->add(Log::DEBUG, "Summit: Set criteria: " . $this->request->param('id', 0));
+		$log->write();
+		
 		$matchData = $api->get_match_history($criteria);
 		
+		$log->add(Log::DEBUG, "Summit: Got matchData.");
+		$log->write();
 		
-		// Add player tuples to the databases
+		// Add player rows to the databases
 		foreach($matchData as $match) {
 			if (isset($match['playerPerformance'])) {
 				foreach($match['playerPerformance'] as $perform) {
+					$log->add(Log::DEBUG, "Summit: Adding player:" . $perform['playerId']);
 					$player = ORM::factory('ORM_Player', $perform['playerId']);
 					
 					if(!$player->loaded())
@@ -40,11 +50,10 @@ class Controller_Matches extends Controller_DotaTrack {
 			}
 		}
 
+		$log->add(Log::DEBUG, "Summit: Added players to database.");
+		$log->write();
+		
 		$db->add_match_list($matchData);
-
-		foreach($matchData as $key => $value) {
-			$matchData[$key] = $this->nicify_match_data($value);
-		}
 
 		$projection =
 		array(
@@ -58,6 +67,10 @@ class Controller_Matches extends Controller_DotaTrack {
 		);
 
 		$results = $db->get_statistics($projection,$criteria);
+		
+		foreach($results as $key => $value) {
+			$results[$key] = $this->nicify_match_data($value);
+		}
 
 		$this->response->headers(array("Content-Type" => "application/json"));
 		$this->response->body(json_encode($results));
@@ -106,6 +119,7 @@ class Controller_Matches extends Controller_DotaTrack {
 		foreach($result as $key => $value) {
 			$result[$key] = $this->nicify_match_data($value);
 		}
+		
 		//die(Debug::vars($result));
 
 		$view->statistics = $result;
