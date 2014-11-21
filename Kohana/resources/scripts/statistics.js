@@ -24,7 +24,7 @@ $(document).ready(function() {
 			dataType: 'json'
 		})
 		.done(function(responce){
-			alert(responce);
+			//alert(responce);
 			var data = transformData(responce, "kills");
 			constructGraph("#cows", data);
 			//console.log(responce);
@@ -97,9 +97,12 @@ function constructGraph(selector, data)
 {
 	nv.addGraph(function() {
 		var chart = nv.models.lineChart();
+		chart.yDomain([0,40]);
 
 		chart.xAxis
 			.axisLabel("Matches");
+			
+		chart.useInteractiveGuideline(true);
 
 		chart.yAxis
 			.axisLabel(data[0].key)

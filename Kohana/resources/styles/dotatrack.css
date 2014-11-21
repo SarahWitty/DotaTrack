@@ -41,4 +41,11 @@ a:visited {
 
 .nv-axis text, .nv-legend text {
 	stroke: grey;
+	
+}
+.nvtooltip {
+	background-color: black;
+}
+.graph{
+	padding: 50px 25px;
 }
