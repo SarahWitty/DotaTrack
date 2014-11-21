@@ -108,6 +108,7 @@ class Controller_DotaTrack extends Controller {
 		// Nicify Performance
 		if (isset($matchData['playerPerformance'])) {
 			foreach ($matchData['playerPerformance'] as $key => $value) {
+			
 				// Nicify Items 0-5
 				$matchData['playerPerformance'][$key]['item0'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item0'] . ".png' alt='" . $db->get_item_data($value['item0'])['name'] . "'></div>";
 				$matchData['playerPerformance'][$key]['item1'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item1'] . ".png' alt='" . $db->get_item_data($value['item1'])['name'] . "'></div>";
@@ -151,7 +152,29 @@ class Controller_DotaTrack extends Controller {
 		return $matchData;
 	}
 	
-	
+	/**
+	 * Takes a playerId, makes an API call for the player's steam profile info, and adds the info to the database
+	 *
+	 * @param $playerId the playerId to add to the database
+	 *
+	 * @return Nothing.
+	 */
+	protected function add_player($playerId)
+	{
+		$player = ORM::Factory('ORM_Player',$playerId);
+		$api = Model::Factory('Api');
+		
+		$playerId64 = gmp_strval(gmp_add(strval($playerId), strval("76561197960265728")));
+		$playerInfo = $api -> get_player_summaries($playerId64);
+		
+		if(!$player->loaded())
+		{
+			$player->playerId = $playerId;
+			$player->profileName = $playerInfo['nickname'];
+			$player->avatarURL = $playerInfo['avatar'];
+			$player->save();
+		}
+	}
 }
 
 ?>
