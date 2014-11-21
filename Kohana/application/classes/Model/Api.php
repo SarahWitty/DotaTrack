@@ -54,8 +54,6 @@ class Model_Api extends Model
 	
 	// Function: get_player_summaries
 	// Purpose: Will return public data from any number of steam users' profiles
-	// Notes: This returns null at the moment. I'm assuming this is because the JSON doesn't
-	//        give types for the data. But I need to check to be sure.
 	// Input:  32-bit int SteamID, the user's steamID
 	// Output: playerSummary, the needed information from the player summary
 	//
@@ -298,19 +296,20 @@ class Model_Api extends Model
 	
 	// Takes a json file of player summaries, gets them parsed, and then returns them
 	private function parse_player_summaries($rawPlayerSummaries) {
-		$playersArray = array();
+		$playerData = array();
 		
-		foreach($rawPlayerSummaries['players'] as $key => $value) {
-			array_push ($playersArray, $this->parse_summary($value));
+		foreach ($rawPlayerSummaries["players"] as $player) {
+			$playerData['nickname'] = $player['personaname'];
+			$playerData['avatar'] = $player['avatar'];
 		}
+		
+		return $playerData;
 	}
 	
 	// Parses each player summary and returns the player's name and avatar address
 	private function parse_summary($rawPlayerData) {
 		$playerSummary = array();
 		
-		$playerSummary["nickname"] = $rawPlayerData["personaname"];
-		$playerSummary["avatar"] = $rawPlayerData["avatar"];
 		
 		return $playerSummary;
 	}

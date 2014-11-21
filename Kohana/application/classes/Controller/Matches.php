@@ -8,6 +8,13 @@ class Controller_Matches extends Controller_DotaTrack {
 		parent::before();
 	}
 
+	public function action_test() {
+		$results1 = $this->add_player(124755068);
+		
+		$this->response->headers(array("Content-Type" => "application/json"));
+		$this->response->body(json_encode($results1));
+	}
+	
 	public function action_apiCall(){
 		$view = View::Factory('matches/index1');
 		$log = Log::instance();
@@ -37,15 +44,7 @@ class Controller_Matches extends Controller_DotaTrack {
 		foreach($matchData as $match) {
 			if (isset($match['playerPerformance'])) {
 				foreach($match['playerPerformance'] as $perform) {
-					$log->add(Log::DEBUG, "Summit: Adding player:" . $perform['playerId']);
-					$player = ORM::factory('ORM_Player', $perform['playerId']);
-					
-					if(!$player->loaded())
-					{
-						$player->playerId = $perform['playerId'];
-						$player->save();
-						//$player->values($perform)->create();
-					}
+					$this->add_player($perform['playerId']);
 				}
 			}
 		}
