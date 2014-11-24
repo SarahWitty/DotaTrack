@@ -27,6 +27,15 @@ class Model_DotaTrackDatabase extends Model_DotaTrack
 
 		return $hero_array;
 	}
+	
+	protected function internal_get_player_info($playerId)
+	{
+		$player = ORM::factory('ORM_Player', $playerId);
+		$player_array = array();
+		$player_array = $player->as_array();
+
+		return $player_array;
+	}
 
 	protected function internal_get_mode_data($modeId)
 	{

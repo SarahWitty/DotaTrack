@@ -109,6 +109,9 @@ class Controller_DotaTrack extends Controller {
 		if (isset($matchData['playerPerformance'])) {
 			foreach ($matchData['playerPerformance'] as $key => $value) {
 			
+				// Nicify Player Name
+				$matchData['playerPerformance'][$key]['playerId'] = $db->get_player_info($value['playerId'])['profileName'];
+			
 				// Nicify Items 0-5
 				$matchData['playerPerformance'][$key]['item0'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item0'] . ".png' alt='" . $db->get_item_data($value['item0'])['name'] . "'></div>";
 				$matchData['playerPerformance'][$key]['item1'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item1'] . ".png' alt='" . $db->get_item_data($value['item1'])['name'] . "'></div>";

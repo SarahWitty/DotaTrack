@@ -159,11 +159,11 @@ class Model_DotaTrack extends Model {
 	/**
 	* Gets all the data for a single hero.
 	*
-	* DONT OVERRIDE THIS. Use the interna;_get_hero_data() function instead.
+	* DONT OVERRIDE THIS. Use the internal_get_hero_data() function instead.
 	* That will allow us to do security checking in these functions so you
 	* don't have to worry about it.
 	*
-	* @param $heroId The integer ID of the hero which should be retunred.
+	* @param $heroId The integer ID of the hero which should be returned.
 	* Note that this might be zero
 	*
 	*@return An associative array containing all teh information about this single hero.
@@ -176,6 +176,27 @@ class Model_DotaTrack extends Model {
 			return null;
 		}
 		return $this->internal_get_hero_data($heroId);
+	}
+	/**
+	* Gets all the data for a single player.
+	*
+	* DONT OVERRIDE THIS. Use the internal_get_player_info() function instead.
+	* That will allow us to do security checking in these functions so you
+	* don't have to worry about it.
+	*
+	* @param $playerId The integer ID of the player which should be returned.
+	* Note that this might be zero
+	*
+	*@return An associative array containing all the information about this player.
+	* The information that should be included here is indicated in
+	* SRS 2.1.1.
+	*/
+	public function get_player_info($playerId)
+	{
+		if($playerId < 0){
+			return null;
+		}
+		return $this->internal_get_player_info($playerId);
 	}
 	/**
 	* Gets all the data for gameMode.
