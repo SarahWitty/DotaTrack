@@ -6,7 +6,7 @@
 	<?php
 	foreach($match as $property=>$value) {
 	?>
-		<th class="<?=$property?>Header mHeader"><?=$property?></th>
+		<th class="<?=$property?>Header header"><?=$property?></th>
 	<?php
 	}
 	?>
@@ -15,18 +15,19 @@
 	<?php
 	foreach($match as $property=>$value) {
 	?>
-		<td class="<?=$value?>Value mValue"><?=$value?></td>
+		<td class="<?=$value?>Value value"><?=$value?></td>
 	
 	<?php
 	} ?>
 	</tr>
 </table>
+<br />
 <table class="performanceTable">
 	<tr>
 	<?php 
 	foreach($performance[0] as $property=>$value) {
 	?>
-			<th class="<?=$property?>Header pHeader"><?=$property?></th>
+			<th class="<?=$property?>Header header"><?=$property?></th>
 	<?php 
 	}
 	?>
@@ -38,7 +39,7 @@
 	<?php
 		foreach($performanceInfo as $property=>$value) {
 	?>
-			<td class="<?=$value?>Value pValue"><?=$value?></td>	
+			<td class="<?=$value?>Value value"><?=$value?></td>	
 	<?php
 		} 
 	?>

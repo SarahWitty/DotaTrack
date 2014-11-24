@@ -7,7 +7,7 @@
 	<?php
 	foreach($titles as $title) {
 	?>
-		<th class="<?=$title?>Header mHeader"><?=$title?></th>
+		<th class="<?=$title?>Header header"><?=$title?></th>
 	<?php
 	}
 	?>
@@ -24,14 +24,14 @@
 		foreach($static as $property=>$value){
 			if($counter == 0){
 				?> 
-				<td class="<?=$value?>Value mValue"">
+				<td class="<?=$value?>Value value"">
 					<a href="<?php echo URL::base() ?>Match/index/<?=$value?>"><?=$value?></a>
 				</td> 
 				<?php
 				$counter++;
 			} else{
 	?>
-			<td class="<?=$value?>Value mValue""><?=$value?></td>
+			<td class="<?=$value?>Value value""><?=$value?></td>
 	<?php
 			}
 		}
