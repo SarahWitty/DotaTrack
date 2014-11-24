@@ -29,7 +29,7 @@ a:visited {
 	overflow: hidden;
 }
 
-#logo {
+#wrapper {
 	background-image:url("../images/DotaTrack.png");
 	background-repeat:no-repeat;
 	background-position:center;
@@ -41,7 +41,7 @@ a:visited {
 
 .nv-axis text, .nv-legend text {
 	stroke: grey;
-	
+
 }
 .nvtooltip {
 	background-color: black;

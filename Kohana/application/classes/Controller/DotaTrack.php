@@ -8,6 +8,7 @@ class Controller_DotaTrack extends Controller {
 		$header = View::Factory('mainpage_header');
 
 		$header->playerName = Session::instance()->get('playerName', 'No Name');
+		$header->playerImage = Session::instance()->get('playerImage', '#');
 
 		$header = $header->render();
 
@@ -69,7 +70,7 @@ class Controller_DotaTrack extends Controller {
 	protected function nicify_match_data($matchData)
 	{
 		$db = Model::Factory('DotaTrackDatabase');
-		
+
 		// Nicify Result
 		if (isset($matchData['result'])) {
 			if ($matchData['result'] == 0) {
@@ -79,22 +80,22 @@ class Controller_DotaTrack extends Controller {
 				$matchData['result'] = "Dire Victory";
 			}
 		}
-		
+
 		// Nicify Game Mode
 		if (isset($matchData['gameMode'])) {
 			$matchData['gameMode'] = $db->get_mode_data($matchData['gameMode'])['name'];
 		}
-			
+
 		// Nicify Match Type
 		if (isset($matchData['matchType'])) {
 			$matchData['matchType'] = $db->get_lobby_data($matchData['matchType'])['name'];
 		}
-		
+
 		// Nicify Date
 		if (isset($matchData['date'])) {
 			$matchData['date'] = date("j M Y G:i:s", $matchData['date']);
 		}
-		
+
 		// Nicify Duration
 		if (isset($matchData['duration'])) {
 			if ($matchData['duration'] >= 3600) {
@@ -104,7 +105,7 @@ class Controller_DotaTrack extends Controller {
 				$matchData['duration'] = gmdate("i:s", $matchData['duration']);
 			}
 		}
-		
+
 		// Nicify Performance
 		if (isset($matchData['playerPerformance'])) {
 			foreach ($matchData['playerPerformance'] as $key => $value) {
@@ -119,14 +120,14 @@ class Controller_DotaTrack extends Controller {
 				$matchData['playerPerformance'][$key]['item3'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item3'] . ".png' alt='" . $db->get_item_data($value['item3'])['name'] . "'></div>";
 				$matchData['playerPerformance'][$key]['item4'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item4'] . ".png' alt='" . $db->get_item_data($value['item4'])['name'] . "'></div>";
 				$matchData['playerPerformance'][$key]['item5'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $value['item5'] . ".png' alt='" . $db->get_item_data($value['item5'])['name'] . "'></div>";
-				
+
 				// Nicify Heroes
-				
+
 				$matchData['playerPerformance'][$key]['hero'] = "<div class='hero'><img src='" . URL::base() . "resources/images/heroIcons/" . $value['hero'] . ".png' alt='" . $db->get_hero_data($value['hero'])['heroName'] . "'></div>";
 			}
 		}
-		
-		
+
+
 		// Nicify Items 0-5 (if outside of playerPerformance context)
 		if (isset($matchData['item0'])) {
 			$matchData['item0'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $matchData['item0'] . ".png' alt='" . $db->get_item_data($matchData['item0'])['name'] . "'></div>";
@@ -146,12 +147,12 @@ class Controller_DotaTrack extends Controller {
 		if (isset($matchData['item5'])) {
 			$matchData['item5'] = "<div class='item'><img src='" . URL::base() . "resources/images/itemIcons/" . $matchData['item5'] . ".png' alt='" . $db->get_item_data($matchData['item5'])['name'] . "'></div>";
 		}
-		
+
 		// Nicify Heroes (if outside of playerPerformance context)
 		if (isset($matchData['hero'])) {
 			$matchData['hero'] = "<div class='hero'><img src='" . URL::base() . "resources/images/heroIcons/" . $matchData['hero'] . ".png' alt='" . $db->get_hero_data($matchData['hero'])['heroName'] . "'></div>";
 		}
-		
+
 		return $matchData;
 	}
 	

@@ -18,8 +18,8 @@ $(document).ready(function() {
 				dataType: 'json'
 			})
 			.done(function(response){
-				console.log(column + ": ");
-				console.log(response);
+				//console.log(column + ": ");
+				//console.log(response);
 				var data = transformData(response, column);
 				constructGraph(selector, data);
 				//console.log(responce);
@@ -61,7 +61,7 @@ function transformData(data, yColumn, xColumn)
 			// If this is the field we've designated as the y values or if we haven't designated a y value field
 			if((yColumn && yColumn == name) || !yColumn)
 			{
-				valueArray[valueArray.length-1].y = property;
+				valueArray[valueArray.length-1].y = parseInt(property);
 
 				// If no field was designated as the y values, then store the field name
 				if(!yColumn)
@@ -101,7 +101,16 @@ function constructGraph(selector, data)
 {
 	nv.addGraph(function() {
 		var chart = nv.models.lineChart();
-		chart.yDomain([0,40]);
+		
+		var max = d3.max
+			(data, function(d) 
+				{return d3.max
+					(d.values, function(e) 
+						{return e.y;}
+					);
+				}
+			);
+		chart.yDomain([0,(max+10)])
 
 		chart.xAxis
 			.axisLabel("Matches");
