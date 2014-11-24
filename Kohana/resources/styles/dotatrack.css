@@ -40,7 +40,10 @@ a:visited {
 }
 
 .nv-axis text, .nv-legend text {
-	stroke: grey;
+	fill: white;
+	stroke: white;
+	stroke-opacity: .1;
+	font-size: 100%;
 
 }
 .nvtooltip {
