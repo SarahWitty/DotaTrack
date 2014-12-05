@@ -5,6 +5,7 @@ class Controller_DotaTrack extends Controller {
 
 	protected function add_header()
 	{
+		
 		$header = View::Factory('mainpage_header');
 
 		$header->playerName = Session::instance()->get('playerName', 'No Name');
@@ -168,15 +169,27 @@ class Controller_DotaTrack extends Controller {
 		$player = ORM::Factory('ORM_Player',$playerId);
 		$api = Model::Factory('Api');
 		
-		$playerId64 = gmp_strval(gmp_add(strval($playerId), strval("76561197960265728")));
-		$playerInfo = $api -> get_player_summaries($playerId64);
+		$log = Log::instance();
+		$log->add(Log::DEBUG, "Summit: test: " . $playerId);
+		$log->write();
 		
 		if(!$player->loaded())
 		{
-			$player->playerId = $playerId;
-			$player->profileName = $playerInfo['nickname'];
-			$player->avatarURL = $playerInfo['avatar'];
-			$player->save();
+			$playerId64 = gmp_strval(gmp_add(strval($playerId), strval("76561197960265728")));
+			$playerInfo = $api -> get_player_summaries($playerId64);
+			if ($playerInfo) {
+				$player->playerId = $playerId;
+				$player->profileName = $playerInfo['nickname'];
+				$player->avatarURL = $playerInfo['avatar'];
+				$player->save();
+			
+				$log->add(Log::DEBUG, "Summit: Added player: " . $playerId);
+				$log->write();
+			}
+		}
+		else {
+			$log->add(Log::DEBUG, "Summit: Failed to add player: " . $playerId);
+			$log->write();
 		}
 	}
 }

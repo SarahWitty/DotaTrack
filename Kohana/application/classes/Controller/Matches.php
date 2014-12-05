@@ -49,7 +49,7 @@ class Controller_Matches extends Controller_DotaTrack {
 			}
 		}
 
-		$log->add(Log::DEBUG, "Summit: Added players to database.");
+		$log->add(Log::DEBUG, "Summit: Added all players to database.");
 		$log->write();
 		
 		$db->add_match_list($matchData);

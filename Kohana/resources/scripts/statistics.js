@@ -1,8 +1,8 @@
 $(document).ready(function() {
 	//issuing ajax request and putting info in div tags
-	//create date(timestamp) for 6 months ago
+	//create date(timestamp) for 2 years ago
 	var timestamp = new Date();
-	timestamp.setMonth(timestamp.getMonth() - 6);
+	timestamp.setMonth(timestamp.getMonth() - 24);
 	timestamp = Math.round(timestamp/1000);
 
 	var matchGraph = function(column, selector) {

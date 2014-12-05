@@ -12,8 +12,16 @@ class Controller_Login extends Controller_DotaTrack {
 		$view->output = "UserID: " . $session->get('userId');
 
 		if ($this->request->post('pid')) {
+			$playerId = $this->request->post('pid');
 			$view->has_pid = true;
-			$session->set('userId', $this->request->post('pid'));
+			$session->set('userId', $playerId);
+			
+			$this->add_player($playerId);
+			
+			$player = ORM::Factory('ORM_Player',$playerId);
+			
+			$session->set('playerName', $player->profileName);
+			$session->set('playerImage', $player->avatarURL);
 			$view->output = "Redirecting...";
 			$this->redirect("Matches");
 		}
